@@ -14,5 +14,10 @@ app.get('/', (req, res) => {
     console.log('api hit');
 })
 
+const userRoute = require('./routes/user.route')
+
+
+app.use('/api/v1/user', userRoute)
+
 
 module.exports = app;
