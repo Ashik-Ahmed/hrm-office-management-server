@@ -1,4 +1,4 @@
-const { createUserService, findUserByEmail } = require("../services/user.service");
+const { createUserService, findUserByEmail, getAllUserService } = require("../services/user.service");
 const { generateToken } = require("../utils/token");
 
 exports.createUser = async (req, res) => {
@@ -70,6 +70,33 @@ exports.login = async (req, res) => {
             data: {
                 user: others,
                 token
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+
+exports.getAllUser = async (req, res) => {
+    try {
+        const users = await getAllUserService()
+
+        if (!users) {
+            return res.status(401).json({
+                status: 'Failed',
+                error: 'Failed! Try again.'
+            })
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            data: {
+                users
             }
         })
 
