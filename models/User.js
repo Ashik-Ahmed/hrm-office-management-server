@@ -6,6 +6,9 @@ const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema(
     {
+        employeeId: {
+            type: Number
+        },
         email: {
             type: String,
             validate: [validator.isEmail, "Please provide a valid email"],
@@ -20,21 +23,28 @@ const userSchema = mongoose.Schema(
             default: 123456,
         },
 
-        role: {
+        userRole: {
             type: String,
             enum: ['Admin', 'User'],
             default: 'User',
         },
 
-        name: {
+        firstName: {
             type: String,
-            required: [true, 'Name is required'],
+            required: [true, 'First Name is required'],
             trim: true,
-            minLength: [3, 'Name must be at least 3 characters'],
-            maxLength: [60, 'Name length  is too large'],
+            minLength: [3, 'First Name must be at least 3 characters'],
+            maxLength: [60, 'First Name length  is too large'],
+        },
+        lastName: {
+            type: String,
+            required: [true, 'Last Name is required'],
+            trim: true,
+            minLength: [3, 'Last Name must be at least 3 characters'],
+            maxLength: [60, 'Last Name length  is too large'],
         },
 
-        imageURL: {
+        photo: {
             type: String,
             validate: [validator.isURL, 'PLease provide a valid url'],
         },

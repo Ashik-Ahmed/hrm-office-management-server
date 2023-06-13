@@ -2,6 +2,7 @@ const User = require("../models/User");
 
 //create a new user
 exports.createUserService = async (userInfo) => {
+    // console.log(userInfo);
 
     const user = await User.create(userInfo);
     return user;
@@ -15,6 +16,16 @@ exports.findUserByEmail = async (email) => {
 
 //find all users
 exports.getAllUserService = async () => {
-    const users = await User.find({})
+    const users = await User.aggregate([
+        {
+            $project: {
+                email: 1,
+                firstName: 1,
+                lastName: 1,
+                userRole: 1,
+                photo: 1
+            }
+        }
+    ])
     return users;
 }
