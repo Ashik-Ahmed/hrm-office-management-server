@@ -18,6 +18,12 @@ const userSchema = mongoose.Schema(
             required: [true, 'Email address is required'],
         },
 
+        designation: {
+            type: String,
+            required: [true, 'Designation is required'],
+            trim: true,
+        },
+
         password: {
             type: String,
             default: 123456,
@@ -25,8 +31,8 @@ const userSchema = mongoose.Schema(
 
         userRole: {
             type: String,
-            enum: ['Admin', 'User'],
-            default: 'User',
+            enum: ['Super Admin', 'Admin', 'HR Admin', 'Accounts', 'Employee'],
+            default: 'Employee',
         },
 
         firstName: {

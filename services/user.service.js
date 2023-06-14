@@ -23,6 +23,7 @@ exports.getAllUserService = async () => {
                 firstName: 1,
                 lastName: 1,
                 userRole: 1,
+                designation: 1,
                 photo: 1
             }
         }
