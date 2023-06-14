@@ -14,10 +14,10 @@ app.get('/', (req, res) => {
     console.log('api hit');
 })
 
-const userRoute = require('./routes/user.route')
+const employeeRoute = require('./routes/employee.route')
 
 
-app.use('/api/v1/user', userRoute)
+app.use('/api/v1/employee', employeeRoute)
 
 
 module.exports = app;

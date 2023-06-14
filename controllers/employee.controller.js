@@ -1,16 +1,16 @@
-const { createUserService, findUserByEmail, getAllUserService, deleteUserByIdService } = require("../services/user.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
-exports.createUser = async (req, res) => {
+exports.createEmployee = async (req, res) => {
     // console.log(req.body);
     try {
-        const user = await createUserService(req.body);
-        console.log(user);
-        if (user) {
+        const employee = await createEmployeeService(req.body);
+        console.log(employee);
+        if (employee) {
             res.status(200).json({
                 status: 'Success',
                 message: 'Successfully created User',
-                data: user
+                data: employee
             })
         }
         else {
@@ -42,16 +42,16 @@ exports.login = async (req, res) => {
             })
         }
 
-        const user = await findUserByEmail(email);
+        const employee = await findEmployeeByEmail(email);
 
-        if (!user) {
+        if (!employee) {
             return res.status(401).json({
                 status: 'Failed',
-                error: 'No user found'
+                error: 'No employee found'
             })
         }
 
-        const isPasswordMatched = user.comparePassword(password, user.password);
+        const isPasswordMatched = employee.comparePassword(password, employee.password);
 
         if (!isPasswordMatched) {
             return res.status(403).json({
@@ -60,15 +60,15 @@ exports.login = async (req, res) => {
             })
         }
 
-        const token = generateToken(user);
-        const { password: pwd, ...others } = user.toObject();
-        console.log('Found User:', others);
+        const token = generateToken(employee);
+        const { password: pwd, ...others } = employee.toObject();
+        console.log('Found employee:', others);
 
         res.status(200).json({
             status: 'Success',
             message: 'Successfully logged in',
             data: {
-                user: others,
+                employee: others,
                 token
             }
         })
@@ -82,11 +82,11 @@ exports.login = async (req, res) => {
 }
 
 
-exports.getAllUser = async (req, res) => {
+exports.getAllEmployee = async (req, res) => {
     try {
-        const users = await getAllUserService()
+        const employees = await getAllEmployeeService()
 
-        if (!users) {
+        if (!employees) {
             return res.status(401).json({
                 status: 'Failed',
                 error: 'Failed! Try again.'
@@ -96,7 +96,7 @@ exports.getAllUser = async (req, res) => {
         res.status(200).json({
             status: 'Success',
             data: {
-                users
+                employees
             }
         })
 
@@ -108,10 +108,10 @@ exports.getAllUser = async (req, res) => {
     }
 }
 
-exports.deleteUser = async (req, res) => {
+exports.deleteEmployee = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await deleteUserByIdService(id)
+        const result = await deleteEmployeeByIdService(id)
 
         if (!result) {
             return res.status(401).json({

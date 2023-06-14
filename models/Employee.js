@@ -4,10 +4,11 @@ const bcrypt = require('bcryptjs');
 
 
 
-const userSchema = mongoose.Schema(
+const employeeSchema = mongoose.Schema(
     {
         employeeId: {
-            type: Number
+            type: Number,
+            unique: [true, 'Duplicate Employee ID'],
         },
         email: {
             type: String,
@@ -55,6 +56,10 @@ const userSchema = mongoose.Schema(
             validate: [validator.isURL, 'PLease provide a valid url'],
         },
 
+        joiningDate: {
+            type: String,
+        },
+
         passwordChangedAt: Date,
         passwordResetToken: String,
         passwordResetExpires: Date
@@ -65,7 +70,7 @@ const userSchema = mongoose.Schema(
     }
 );
 
-userSchema.pre('save', function (next) {
+employeeSchema.pre('save', function (next) {
     const password = this.password;
 
     const hashedPassword = bcrypt.hashSync(password);
@@ -76,12 +81,12 @@ userSchema.pre('save', function (next) {
 })
 
 
-userSchema.methods.comparePassword = function (password, hash) {
+employeeSchema.methods.comparePassword = function (password, hash) {
     const isPasswordMatched = bcrypt.compareSync(password, hash);
     return isPasswordMatched;
 }
 
 
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const Employee = mongoose.model('Employee', employeeSchema);
+module.exports = Employee;
