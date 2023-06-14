@@ -30,3 +30,9 @@ exports.getAllUserService = async () => {
     ])
     return users;
 }
+
+//delete a user by id
+exports.deleteUserByIdService = async (id) => {
+    const result = await User.deleteOne({ _id: id });
+    return result;
+}

@@ -1,4 +1,4 @@
-const { createUserService, findUserByEmail, getAllUserService } = require("../services/user.service");
+const { createUserService, findUserByEmail, getAllUserService, deleteUserByIdService } = require("../services/user.service");
 const { generateToken } = require("../utils/token");
 
 exports.createUser = async (req, res) => {
@@ -98,6 +98,31 @@ exports.getAllUser = async (req, res) => {
             data: {
                 users
             }
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await deleteUserByIdService(id)
+
+        if (!result) {
+            return res.status(401).json({
+                status: 'Failed',
+                error: 'Failed! Try again.'
+            })
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            data: result
         })
 
     } catch (error) {
