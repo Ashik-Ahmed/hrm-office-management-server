@@ -62,6 +62,7 @@ exports.login = async (req, res) => {
 
         const token = generateToken(employee);
         const { password: pwd, ...others } = employee.toObject();
+        others.name = `${others.firstName} ${others.lastName}`
         console.log('Found employee:', others);
 
         res.status(200).json({
