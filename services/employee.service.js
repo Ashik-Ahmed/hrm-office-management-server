@@ -9,7 +9,7 @@ exports.createEmployeeService = async (employeeInfo) => {
 }
 
 // find a user by email 
-exports.findEmployeeByEmail = async (email) => {
+exports.findEmployeeByEmailService = async (email) => {
     const employee = await Employee.findOne({ email });
     return employee
 }

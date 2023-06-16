@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -14,7 +14,7 @@ exports.createEmployee = async (req, res) => {
             })
         }
         else {
-            res.status(500).json({
+            res.status(400).json({
                 status: 'Failed',
                 message: 'Failed! Try again.'
             })
@@ -25,6 +25,36 @@ exports.createEmployee = async (req, res) => {
             error: error.message
         })
     }
+}
+
+
+// get employee by email address 
+exports.findEmployeeByEmail = async (req, res) => {
+
+    try {
+        const employeeEmail = req.params;
+        const employee = await findEmployeeByEmailService(employeeEmail);
+
+        if (employee) {
+            res.status(200).json({
+                status: 'Success',
+                data: employee
+            })
+        }
+        else {
+            res.status(500).json({
+                status: 'Failed',
+                message: 'Failed! Try again.'
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+
 }
 
 
