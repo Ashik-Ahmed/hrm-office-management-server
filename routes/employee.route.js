@@ -11,7 +11,7 @@ router.route('/')
 
 router.route('/:id')
     .delete(employeeController.deleteEmployee)
-    .get(employeeController.findEmployeeByEmail)
+// .get(employeeController.findEmployeeByEmail)
 
 
 module.exports = router;

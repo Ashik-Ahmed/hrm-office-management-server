@@ -72,7 +72,7 @@ exports.login = async (req, res) => {
             })
         }
 
-        const employee = await findEmployeeByEmail(email);
+        const employee = await findEmployeeByEmailService(email);
 
         if (!employee) {
             return res.status(401).json({
@@ -99,8 +99,10 @@ exports.login = async (req, res) => {
             status: 'Success',
             message: 'Successfully logged in',
             data: {
-                employee: others,
-                token
+                employee: {
+                    ...others,
+                    accessToken: token
+                },
             }
         })
 
