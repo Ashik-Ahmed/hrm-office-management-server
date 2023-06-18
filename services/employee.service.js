@@ -8,9 +8,32 @@ exports.createEmployeeService = async (employeeInfo) => {
     return employee;
 }
 
+//find a employee by Id
+exports.findEmployeeByIdService = async (id) => {
+
+    const employee = await Employee.findOne({ _id: id });
+    return employee;
+}
+
 // find a user by email 
 exports.findEmployeeByEmailService = async (email) => {
-    const employee = await Employee.findOne({ email });
+
+    const employee = await Employee.findOne({ email })
+    // const employee = await Employee.aggregate([
+    //     {
+    //         $match: { email: email }
+    //     },
+    //     {
+    //         $project: {
+    //             email: 1,
+    //             password: 1,
+    //             // name: firstName + lastName,
+    //             firstName: 1,
+    //             lastName: 1,
+    //             userRole: 1,
+    //         }
+    //     }
+    // ])
     return employee;
 }
 

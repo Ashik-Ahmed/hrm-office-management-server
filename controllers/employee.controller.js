@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -19,6 +19,32 @@ exports.createEmployee = async (req, res) => {
                 message: 'Failed! Try again.'
             })
         }
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.findEmployeeById = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const employee = await findEmployeeByIdService(id)
+
+        if (!employee) {
+            res.status(400).json({
+                status: 'Failed',
+                message: 'No Employee Found'
+            })
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            data: employee
+        })
+
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
@@ -73,6 +99,7 @@ exports.login = async (req, res) => {
         }
 
         const employee = await findEmployeeByEmailService(email);
+        console.log('employee from controller', employee);
 
         if (!employee) {
             return res.status(401).json({
@@ -81,7 +108,7 @@ exports.login = async (req, res) => {
             })
         }
 
-        const isPasswordMatched = employee.comparePassword(password, employee.password);
+        const isPasswordMatched = await employee.comparePassword(password, employee.password);
 
         if (!isPasswordMatched) {
             return res.status(403).json({
@@ -93,7 +120,7 @@ exports.login = async (req, res) => {
         const token = generateToken(employee);
         const { password: pwd, ...others } = employee.toObject();
         others.name = `${others.firstName} ${others.lastName}`
-        console.log('Found employee:', others);
+        // console.log('Found employee:', others);
 
         res.status(200).json({
             status: 'Success',

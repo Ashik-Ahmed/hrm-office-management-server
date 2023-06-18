@@ -11,6 +11,7 @@ router.route('/')
 
 router.route('/:id')
     .delete(employeeController.deleteEmployee)
+    .get(employeeController.findEmployeeById)
 // .get(employeeController.findEmployeeByEmail)
 
 
