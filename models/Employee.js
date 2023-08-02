@@ -25,6 +25,11 @@ const employeeSchema = mongoose.Schema(
             trim: true,
         },
 
+        department: {
+            type: String,
+            required: [true, 'Employee Department is required']
+        },
+
         password: {
             type: String,
             default: 123456,
