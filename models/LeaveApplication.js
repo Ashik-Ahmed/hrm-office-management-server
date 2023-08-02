@@ -1,10 +1,12 @@
+const { ObjectId } = require("mongodb");
 const { default: mongoose } = require("mongoose");
 
 
 const leaveApplicationSchema = mongoose.Schema(
     {
         employeeId: {
-            type: String,
+            type: ObjectId,
+            ref: "Employee",
             required: [true, "Employee Id required"]
         },
         leaveType: {
