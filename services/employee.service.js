@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Employee = require("../models/Employee");
 
 //create a new user
@@ -11,8 +12,18 @@ exports.createEmployeeService = async (employeeInfo) => {
 //find a employee by Id
 exports.findEmployeeByIdService = async (id) => {
 
-    const employee = await Employee.findOne({ _id: id });
-    return employee;
+    // const employee = await Employee.findOne({ _id: id });
+
+    const employee = await Employee.aggregate([
+        {
+            $match: { _id: new ObjectId(id) }
+        },
+        {
+            $project: { password: 0 }
+        }
+    ])
+
+    return employee[0];
 }
 
 // find a user by email 
