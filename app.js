@@ -11,13 +11,14 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
     res.send('Server is Running!!')
-    console.log('api hit');
 })
 
 const employeeRoute = require('./routes/employee.route')
+const leaveApplicationRoute = require('./routes/leaveApplication.route')
 
 
 app.use('/api/v1/employee', employeeRoute)
+app.use('/api/v1/leaveApplication', leaveApplicationRoute)
 
 
 module.exports = app;
