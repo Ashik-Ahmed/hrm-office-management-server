@@ -1,8 +1,9 @@
+const { leaveApplicationService } = require("../services/leaveApplication.service")
 
 
 exports.leaveApplication = async (req, res) => {
     try {
-        console.log(req.body);
+        leaveApplicationService(req.body)
 
     } catch (error) {
         res.status(500).json({
