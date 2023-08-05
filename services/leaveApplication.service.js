@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const LeaveApplication = require("../models/LeaveApplication");
+const { default: mongoose } = require("mongoose");
 
 
 
@@ -12,9 +13,10 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
 }
 
 exports.getLeaveApplicationsByIdService = async (employeeId) => {
+
     const leaveApplications = await LeaveApplication.aggregate([
         {
-            $match: { employeeId }
+            $match: { employeeId: new ObjectId(employeeId) }
         }
     ])
     console.log("leaveApplications", leaveApplications);

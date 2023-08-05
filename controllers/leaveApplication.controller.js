@@ -28,9 +28,8 @@ exports.leaveApplication = async (req, res) => {
 
 exports.getLeaveApplicationsById = async (req, res) => {
     try {
-
-        console.log("emp Id:", req.params);
-        const leaveApplicatins = await getLeaveApplicationsByIdService(req.params);
+        const { employeeId } = req.params
+        const leaveApplicatins = await getLeaveApplicationsByIdService(employeeId);
 
         if (leaveApplicatins) {
             res.status(200).json({
