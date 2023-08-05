@@ -8,5 +8,8 @@ const router = express.Router();
 router.route('/')
     .post(leaveApplicationController.leaveApplication)
 
+router.route('/:employeeId')
+    .get(leaveApplicationController.getLeaveApplicationsById)
+
 
 module.exports = router

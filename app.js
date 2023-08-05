@@ -18,7 +18,7 @@ const leaveApplicationRoute = require('./routes/leaveApplication.route')
 
 
 app.use('/api/v1/employee', employeeRoute)
-app.use('/api/v1/leaveApplication', leaveApplicationRoute)
+app.use('/api/v1/leaveApplication/', leaveApplicationRoute)
 
 
 module.exports = app;
