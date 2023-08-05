@@ -3,7 +3,20 @@ const { leaveApplicationService } = require("../services/leaveApplication.servic
 
 exports.leaveApplication = async (req, res) => {
     try {
-        leaveApplicationService(req.body)
+        const leaveApplication = await leaveApplicationService(req.body)
+
+        if (leaveApplication) {
+            res.status(200).json({
+                status: 'Success',
+                data: leaveApplication
+            })
+        }
+        else {
+            res.status(400).json({
+                status: 'Failed',
+                error: "Failed! Please try again."
+            })
+        }
 
     } catch (error) {
         res.status(500).json({
