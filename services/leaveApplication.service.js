@@ -8,7 +8,6 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
     // console.log(leaveApplicationData);
 
     const leaveApplication = await LeaveApplication.create(leaveApplicationData)
-    console.log(leaveApplication);
     return leaveApplication;
 }
 
@@ -20,5 +19,5 @@ exports.getLeaveApplicationsByIdService = async (employeeId) => {
         }
     ])
     console.log("leaveApplications", leaveApplications);
-    return leaveApplications;
+    return leaveApplications.reverse();
 }
