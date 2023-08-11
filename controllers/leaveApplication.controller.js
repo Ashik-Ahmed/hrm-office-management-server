@@ -1,4 +1,4 @@
-const { leaveApplicationService, getLeaveApplicationsByIdService } = require("../services/leaveApplication.service")
+const { leaveApplicationService, getLeaveApplicationsByIdService, getPendingLeaveApplications } = require("../services/leaveApplication.service")
 
 
 exports.leaveApplication = async (req, res) => {
@@ -43,6 +43,31 @@ exports.getLeaveApplicationsById = async (req, res) => {
                 error: "Failed! Please try again"
             })
         }
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.getPendingLeaveApplications = async (req, res) => {
+    try {
+        const pendingLeaveApplications = await getPendingLeaveApplications();
+
+        if (pendingLeaveApplications) {
+            res.status(200).json({
+                status: "Success",
+                data: pendingLeaveApplications
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No data found"
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
