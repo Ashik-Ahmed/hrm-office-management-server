@@ -2,7 +2,7 @@ const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, delet
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     try {
         const employee = await createEmployeeService(req.body);
         console.log(employee);

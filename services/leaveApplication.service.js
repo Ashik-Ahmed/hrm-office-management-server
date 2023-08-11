@@ -21,3 +21,15 @@ exports.getLeaveApplicationsByIdService = async (employeeId) => {
     console.log("leaveApplications", leaveApplications);
     return leaveApplications.reverse();
 }
+
+exports.getPendingLeaveApplications = async () => {
+    const pendingLeaveApplications = await LeaveApplication.aggregate([
+        {
+            $match: {
+                status: { $ne: "approved" }
+            }
+        }
+    ])
+
+    return pendingLeaveApplications;
+}
