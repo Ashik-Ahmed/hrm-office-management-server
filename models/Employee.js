@@ -66,6 +66,10 @@ const employeeSchema = mongoose.Schema(
             type: String,
         },
 
+        leaveHistory: [{
+            type: ObjectId,
+            ref: "LeaveApplication"
+        }],
 
         passwordChangedAt: Date,
         passwordResetToken: String,
