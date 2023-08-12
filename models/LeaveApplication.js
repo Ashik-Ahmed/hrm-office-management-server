@@ -4,10 +4,13 @@ const { default: mongoose } = require("mongoose");
 
 const leaveApplicationSchema = mongoose.Schema(
     {
-        employeeId: {
-            type: ObjectId,
-            ref: "Employee",
-            required: [true, "Employee Id required"]
+        employee: {
+            name: String,
+            employeeId: {
+                type: ObjectId,
+                ref: "Employee",
+                required: [true, "Employee Id required"]
+            }
         },
         leaveType: {
             type: String,
