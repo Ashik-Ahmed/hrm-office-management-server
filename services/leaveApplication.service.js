@@ -13,11 +13,10 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
     const { _id: leaveApplicationId, employee } = leaveApplication;
 
     const res = await Employee.updateOne(
-        { _id: employee.id },
+        { _id: employee.employeeId },
         { $push: { leaveHistory: leaveApplicationId } }
     );
 
-    console.log(res);
 
     return leaveApplication;
 }
