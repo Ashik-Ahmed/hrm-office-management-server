@@ -12,7 +12,7 @@ router.route('/')
     .post(leaveApplicationController.leaveApplication)
 
 router.route('/:employeeId')
-    .get(leaveApplicationController.getLeaveApplicationsById)
+    .get(leaveApplicationController.getLeaveApplicationsByEmployeeId)
     .patch(leaveApplicationController.updateLeaveApplicationStatus)
 
 

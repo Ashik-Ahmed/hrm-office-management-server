@@ -5,6 +5,9 @@ const router = express.Router();
 
 router.post('/login', employeeController.login);
 
+router.route('/leaveHistory/:id')
+    .get(employeeController.getleaveHistoryByEmployeeId)
+
 router.route('/')
     .post(employeeController.createEmployee)
     .get(employeeController.getAllEmployee)

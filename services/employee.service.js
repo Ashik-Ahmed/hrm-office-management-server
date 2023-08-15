@@ -71,3 +71,15 @@ exports.deleteEmployeeByIdService = async (id) => {
     const result = await Employee.deleteOne({ _id: id });
     return result;
 }
+
+exports.getleaveHistoryByEmployeeIdService = async (id) => {
+    console.log(id);
+    const leaveHistory = await Employee.findOne({ _id: id })
+        .select({ leaveHistory: 1, _id: 0 }) //only get leaveHistory field from Employee Model
+        .populate({
+            path: "leaveHistory",
+            select: "-employee" //exclode the employee field from leaveHistory
+        })
+
+    return leaveHistory;
+}

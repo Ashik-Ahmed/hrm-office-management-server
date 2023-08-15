@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -27,31 +27,6 @@ exports.createEmployee = async (req, res) => {
     }
 }
 
-exports.findEmployeeById = async (req, res) => {
-    try {
-
-        const { id } = req.params;
-        const employee = await findEmployeeByIdService(id)
-
-        if (!employee) {
-            res.status(400).json({
-                status: 'Failed',
-                message: 'No Employee Found'
-            })
-        }
-
-        res.status(200).json({
-            status: 'Success',
-            data: employee
-        })
-
-    } catch (error) {
-        res.status(500).json({
-            status: 'Failed',
-            error: error.message
-        })
-    }
-}
 
 
 // get employee by email address 
@@ -141,6 +116,33 @@ exports.login = async (req, res) => {
     }
 }
 
+exports.findEmployeeById = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const employee = await findEmployeeByIdService(id)
+
+        if (!employee) {
+            res.status(400).json({
+                status: 'Failed',
+                message: 'No Employee Found'
+            })
+        }
+
+        res.status(200).json({
+            status: 'Success',
+            data: employee
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+
 
 exports.getAllEmployee = async (req, res) => {
     try {
@@ -185,6 +187,20 @@ exports.deleteEmployee = async (req, res) => {
             data: result
         })
 
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.getleaveHistoryByEmployeeId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const leaveHistory = await getleaveHistoryByEmployeeIdService(id);
+        console.log(leaveHistory);
+        return leaveHistory;
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
