@@ -21,16 +21,6 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
     return leaveApplication;
 }
 
-exports.getLeaveApplicationsByEmployeeIdService = async (employeeId) => {
-
-    const leaveApplications = await LeaveApplication.aggregate([
-        {
-            $match: { 'employee.employeeId': new ObjectId(employeeId) }
-        }
-    ])
-    return leaveApplications.reverse();
-}
-
 exports.getPendingLeaveApplications = async () => {
     const pendingLeaveApplications = await LeaveApplication.aggregate([
         {
@@ -43,8 +33,7 @@ exports.getPendingLeaveApplications = async () => {
     return pendingLeaveApplications.reverse();
 }
 
-exports.updateLeaveApplicationStatusService = async ({ employeeId, data }) => {
-    console.log("from service:", employeeId, data);
+exports.updateLeaveApplicationStatusService = async ({ id, data }) => {
     const updateStatus = await LeaveApplication.aggregate([
         {
             $match: { _id: employeeId }

@@ -11,8 +11,7 @@ router.route('/pendingApplications')
 router.route('/')
     .post(leaveApplicationController.leaveApplication)
 
-router.route('/:employeeId')
-    .get(leaveApplicationController.getLeaveApplicationsByEmployeeId)
+router.route('/:id')
     .patch(leaveApplicationController.updateLeaveApplicationStatus)
 
 

@@ -42,6 +42,9 @@ const leaveApplicationSchema = mongoose.Schema(
             },
             reason: {
                 type: String
+            },
+            updatedBy: {
+                type: String
             }
         }
     },

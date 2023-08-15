@@ -26,31 +26,6 @@ exports.leaveApplication = async (req, res) => {
     }
 }
 
-exports.getLeaveApplicationsByEmployeeId = async (req, res) => {
-    try {
-        const { employeeId } = req.params
-        const leaveApplicatins = await getLeaveApplicationsByEmployeeIdService(employeeId);
-
-        if (leaveApplicatins) {
-            res.status(200).json({
-                status: "Success",
-                data: leaveApplicatins
-            })
-        }
-        else {
-            res.status(400).json({
-                status: "Failed",
-                error: "Failed! Please try again"
-            })
-        }
-    } catch (error) {
-        res.status(500).json({
-            status: 'Failed',
-            error: error.message
-        })
-    }
-}
-
 exports.getPendingLeaveApplications = async (req, res) => {
     try {
         const pendingLeaveApplications = await getPendingLeaveApplications();
@@ -78,12 +53,14 @@ exports.getPendingLeaveApplications = async (req, res) => {
 
 exports.updateLeaveApplicationStatus = async (req, res) => {
     try {
-        const { employeeId } = req.params;
+        const { id } = req.params;
         const data = req.body;
 
-        const updateStatus = await updateLeaveApplicationStatusService({ employeeId, data })
+        console.log("controller:", id, data);
 
-        return updateStatus;
+        // const updateStatus = await updateLeaveApplicationStatusService({ employeeId, data })
+
+        // return updateStatus;
 
     } catch (error) {
         res.status(500).json({

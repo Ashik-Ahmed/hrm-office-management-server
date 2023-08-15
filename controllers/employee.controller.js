@@ -182,10 +182,12 @@ exports.deleteEmployee = async (req, res) => {
             })
         }
 
-        res.status(200).json({
-            status: 'Success',
-            data: result
-        })
+        else {
+            res.status(200).json({
+                status: 'Success',
+                data: result
+            })
+        }
 
     } catch (error) {
         res.status(500).json({
@@ -199,8 +201,19 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
     try {
         const { id } = req.params;
         const leaveHistory = await getleaveHistoryByEmployeeIdService(id);
-        console.log(leaveHistory);
-        return leaveHistory;
+        if (!leaveHistory) {
+            return res.status(401).json({
+                status: 'Failed',
+                error: 'No leave history found'
+            })
+        }
+        else {
+            res.status(200).json({
+                status: 'Success',
+                data: leaveHistory
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
