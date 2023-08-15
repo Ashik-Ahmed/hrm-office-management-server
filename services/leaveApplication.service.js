@@ -42,3 +42,7 @@ exports.getPendingLeaveApplications = async () => {
 
     return pendingLeaveApplications.reverse();
 }
+
+exports.updateLeaveApplicationStatusService = async () => {
+
+}

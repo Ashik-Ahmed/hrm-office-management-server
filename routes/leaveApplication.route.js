@@ -13,6 +13,7 @@ router.route('/')
 
 router.route('/:employeeId')
     .get(leaveApplicationController.getLeaveApplicationsById)
+    .patch(leaveApplicationController.updateLeaveApplicationStatus)
 
 
 module.exports = router
