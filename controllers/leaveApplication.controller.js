@@ -56,11 +56,20 @@ exports.updateLeaveApplicationStatus = async (req, res) => {
         const { id } = req.params;
         const data = req.body;
 
-        console.log("controller:", id, data);
+        const updateStatus = await updateLeaveApplicationStatusService({ id, data })
 
-        // const updateStatus = await updateLeaveApplicationStatusService({ employeeId, data })
-
-        // return updateStatus;
+        if (updateStatus.modifiedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: updateStatus
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Failed to update"
+            })
+        }
 
     } catch (error) {
         res.status(500).json({

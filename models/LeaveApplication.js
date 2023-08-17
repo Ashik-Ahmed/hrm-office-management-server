@@ -49,7 +49,7 @@ const leaveApplicationSchema = mongoose.Schema(
         }
     },
     {
-        timestamps: true,
+        timestamps: true
     }
 );
 

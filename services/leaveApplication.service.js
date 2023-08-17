@@ -34,11 +34,12 @@ exports.getPendingLeaveApplications = async () => {
 }
 
 exports.updateLeaveApplicationStatusService = async ({ id, data }) => {
-    const updateStatus = await LeaveApplication.aggregate([
-        {
-            $match: { _id: employeeId }
-        }
-    ])
+    const updateStatus = await LeaveApplication.updateOne(
+        { _id: id },
+        { $set: { currentStatus: data } }
+    )
+
+    console.log("from service : ", updateStatus);
 
     return updateStatus;
 }
