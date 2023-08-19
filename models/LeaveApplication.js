@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { default: mongoose } = require("mongoose");
+const moment = require('moment-timezone');
 
 
 const leaveApplicationSchema = mongoose.Schema(
@@ -17,15 +18,15 @@ const leaveApplicationSchema = mongoose.Schema(
             required: [true, "Leave Type is required"]
         },
         fromDate: {
-            type: String,
+            type: Date,
             required: [true, "From date is required"]
         },
         toDate: {
-            type: String,
+            type: Date,
             required: [true, "To date is required"]
         },
         rejoinDate: {
-            type: String,
+            type: Date,
             required: [true, "Rejoining date is required"]
         },
         totalDay: {
@@ -46,12 +47,35 @@ const leaveApplicationSchema = mongoose.Schema(
             updatedBy: {
                 type: String
             }
+        },
+        creationTime: {
+            type: Date,
+        },
+        updateTime: {
+            type: Date
         }
     },
     {
         timestamps: true
     }
 );
+
+// Pre-save middleware
+leaveApplicationSchema.pre('save', function (next) {
+    const bdTime = moment().tz('Asia/Dhaka');
+
+    console.log(bdTime);
+    this.updateTime = bdTime; // Set updateTime to current time
+    if (!this.creationTime) {
+        this.creationTime = bdTime; // Set creationTime only if it's not set
+    }
+    next();
+});
+
+// Pre-update middleware
+leaveApplicationSchema.pre('findOneAndUpdate', function () {
+    this.set({ updateTime: new Date() }); // Set updateTime to current time
+});
 
 
 const LeaveApplication = mongoose.model("LeaveApplication", leaveApplicationSchema);
