@@ -14,10 +14,12 @@ app.get('/', (req, res) => {
 
 const employeeRoute = require('./routes/employee.route')
 const leaveApplicationRoute = require('./routes/leaveApplication.route')
+const leaveRoute = require('./routes/leave.route')
 
 
 app.use('/api/v1/employee', employeeRoute)
 app.use('/api/v1/leaveApplication', leaveApplicationRoute)
+app.use('/api/v1/leave', leaveRoute)
 
 
 module.exports = app;

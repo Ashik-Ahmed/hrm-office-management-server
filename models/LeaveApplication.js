@@ -29,7 +29,7 @@ const leaveApplicationSchema = mongoose.Schema(
             required: [true, "Rejoining date is required"]
         },
         totalDay: {
-            type: String,
+            type: Number,
             required: [true, "Total day is required"]
         },
         purpose: {
