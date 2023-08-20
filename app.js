@@ -3,8 +3,6 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-process.env.TZ = 'Asia/Dhaka';
-
 //middleware
 app.use(express.json());
 app.use(cors());

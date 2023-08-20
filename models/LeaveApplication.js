@@ -1,6 +1,5 @@
 const { ObjectId } = require("mongodb");
 const { default: mongoose } = require("mongoose");
-const moment = require('moment-timezone');
 
 
 const leaveApplicationSchema = mongoose.Schema(
@@ -48,12 +47,12 @@ const leaveApplicationSchema = mongoose.Schema(
                 type: String
             }
         },
-        creationTime: {
-            type: Date,
-        },
-        updateTime: {
-            type: Date
-        }
+        // creationTime: {
+        //     type: Date,
+        // },
+        // updateTime: {
+        //     type: Date,
+        // }
     },
     {
         timestamps: true
@@ -61,21 +60,21 @@ const leaveApplicationSchema = mongoose.Schema(
 );
 
 // Pre-save middleware
-leaveApplicationSchema.pre('save', function (next) {
-    const bdTime = moment().tz('Asia/Dhaka');
+// leaveApplicationSchema.pre('save', function (next) {
+//     const bdTime = moment().tz('Asia/Dhaka');
 
-    console.log(bdTime);
-    this.updateTime = bdTime; // Set updateTime to current time
-    if (!this.creationTime) {
-        this.creationTime = bdTime; // Set creationTime only if it's not set
-    }
-    next();
-});
+//     console.log(bdTime);
+//     this.updateTime = bdTime; // Set updateTime to current time
+//     if (!this.creationTime) {
+//         this.creationTime = bdTime; // Set creationTime only if it's not set
+//     }
+//     next();
+// });
 
-// Pre-update middleware
-leaveApplicationSchema.pre('findOneAndUpdate', function () {
-    this.set({ updateTime: new Date() }); // Set updateTime to current time
-});
+// // Pre-update middleware
+// leaveApplicationSchema.pre('findOneAndUpdate', function () {
+//     this.set({ updateTime: new Date() }); // Set updateTime to current time
+// });
 
 
 const LeaveApplication = mongoose.model("LeaveApplication", leaveApplicationSchema);
