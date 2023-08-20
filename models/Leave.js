@@ -13,10 +13,14 @@ const leaveSchema = mongoose.Schema(
         },
         description: {
             type: String
+        },
+        createdBy: {
+            type: "String",
+            required: [true, "User is not available"]
         }
     },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 

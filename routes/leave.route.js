@@ -5,7 +5,7 @@ const leaveController = require('../controllers/leave.controller')
 const router = express.Router();
 
 router.route('/')
-    // .get()
+    .get(leaveController.getAllLeave)
     .post(leaveController.createLeave)
 
 module.exports = router
