@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -211,6 +211,34 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
             res.status(200).json({
                 status: 'Success',
                 data: leaveHistory
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+
+exports.getLeaveStatusByEmployeeId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const leaveStatus = await getLeaveStatusByEmployeeIdService(id)
+
+        if (leaveStatus) {
+            res.status(200).json({
+                status: "Success",
+                data: leaveStatus
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No Leave Status"
             })
         }
 

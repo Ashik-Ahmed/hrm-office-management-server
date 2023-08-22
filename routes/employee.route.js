@@ -5,8 +5,11 @@ const router = express.Router();
 
 router.post('/login', employeeController.login);
 
-router.route('/leaveHistory/:id')
+router.route('/leaveApplications/:id')
     .get(employeeController.getleaveHistoryByEmployeeId)
+
+router.route('/leaveStatus/:id')
+    .get(employeeController.getLeaveStatusByEmployeeId)
 
 router.route('/')
     .post(employeeController.createEmployee)

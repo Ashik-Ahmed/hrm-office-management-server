@@ -35,7 +35,6 @@ exports.updateLeaveByIdService = async (leaveId, updatedData) => {
 exports.deleteLeaveByIdServie = async (leaveId) => {
 
     const deleteStatus = await Leave.deleteOne({ _id: leaveId })
-    console.log(deleteStatus);
 
     return deleteStatus;
 }
