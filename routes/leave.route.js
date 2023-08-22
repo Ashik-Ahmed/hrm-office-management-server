@@ -10,6 +10,7 @@ router.route('/')
 
 router.route('/:id')
     .patch(leaveController.updateLeaveById)
+    .delete(leaveController.deleteLeaveById)
 
 
 

@@ -1,4 +1,4 @@
-const { createLeaveService, getAllLeaveService, updateLeaveByIdService } = require("../services/leave.service")
+const { createLeaveService, getAllLeaveService, updateLeaveByIdService, deleteLeaveByIdServie } = require("../services/leave.service")
 
 exports.createLeave = async (req, res) => {
     try {
@@ -62,7 +62,33 @@ exports.updateLeaveById = async (req, res) => {
         else {
             res.status(400).json({
                 status: "Failed",
-                error: "Failed to update"
+                error: "Failed to update. Try again"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.deleteLeaveById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteStatus = await deleteLeaveByIdServie(id)
+
+        if (deleteStatus.deletedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: deleteStatus
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Failed to delete. Try again"
             })
         }
 

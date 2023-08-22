@@ -23,19 +23,19 @@ exports.getAllLeaveService = async () => {
 
 
 exports.updateLeaveByIdService = async (leaveId, updatedData) => {
-    console.log(leaveId, updatedData);
+    // console.log(leaveId, updatedData);
     const updateStatus = await Leave.updateOne(
         { _id: leaveId },
         { $set: updatedData }
     )
 
-    // const leaveDetails = await Leave.aggregate([
-    //     {
-    //         $match: { _id: new ObjectId(leaveId) }
-    //     }
-    // ])
-
-    // console.log(leaveDetails, updateStatus, leaveDetails);
-
     return updateStatus;
+}
+
+exports.deleteLeaveByIdServie = async (leaveId) => {
+
+    const deleteStatus = await Leave.deleteOne({ _id: leaveId })
+    console.log(deleteStatus);
+
+    return deleteStatus;
 }
