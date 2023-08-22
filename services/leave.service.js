@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Leave = require("../models/Leave")
 
 exports.createLeaveService = async (leaveInfo) => {
@@ -21,9 +22,20 @@ exports.getAllLeaveService = async () => {
 }
 
 
-exports.updateLeaveByIdService = async (updatedData) => {
-    const updateResult = await Leave.updateOne(
+exports.updateLeaveByIdService = async (leaveId, updatedData) => {
+    console.log(leaveId, updatedData);
+    const updateStatus = await Leave.updateOne(
         { _id: leaveId },
-        { $set: { updatedData } }
+        { $set: updatedData }
     )
+
+    // const leaveDetails = await Leave.aggregate([
+    //     {
+    //         $match: { _id: new ObjectId(leaveId) }
+    //     }
+    // ])
+
+    // console.log(leaveDetails, updateStatus, leaveDetails);
+
+    return updateStatus;
 }

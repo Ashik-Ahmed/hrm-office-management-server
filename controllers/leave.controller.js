@@ -50,12 +50,13 @@ exports.getAllLeave = async (req, res) => {
 
 exports.updateLeaveById = async (req, res) => {
     try {
-        const updateResult = await updateLeaveByIdService(req.body)
+        const { id } = req.params;
+        const updateStatus = await updateLeaveByIdService(id, req.body)
 
-        if (updateResult) {
+        if (updateStatus.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
-                data: updateResult
+                data: updateStatus
             })
         }
         else {
