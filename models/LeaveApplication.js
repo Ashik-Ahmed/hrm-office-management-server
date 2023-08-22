@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { default: mongoose } = require("mongoose");
 
-
 const leaveApplicationSchema = mongoose.Schema(
     {
         employee: {
@@ -49,9 +48,11 @@ const leaveApplicationSchema = mongoose.Schema(
         },
         // creationTime: {
         //     type: Date,
+        //     default: dateThailand
         // },
         // updateTime: {
         //     type: Date,
+        //     default: dateThailand
         // }
     },
     {
@@ -76,6 +77,6 @@ const leaveApplicationSchema = mongoose.Schema(
 //     this.set({ updateTime: new Date() }); // Set updateTime to current time
 // });
 
-
+// console.log(leaveApplicationSchema);
 const LeaveApplication = mongoose.model("LeaveApplication", leaveApplicationSchema);
 module.exports = LeaveApplication;

@@ -17,6 +17,9 @@ const leaveSchema = mongoose.Schema(
         createdBy: {
             type: "String",
             required: [true, "User is not available"]
+        },
+        updatedBy: {
+            type: "String"
         }
     },
     {

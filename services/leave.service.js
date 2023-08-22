@@ -19,3 +19,11 @@ exports.getAllLeaveService = async () => {
 
     return leaves;
 }
+
+
+exports.updateLeaveByIdService = async (updatedData) => {
+    const updateResult = await Leave.updateOne(
+        { _id: leaveId },
+        { $set: { updatedData } }
+    )
+}

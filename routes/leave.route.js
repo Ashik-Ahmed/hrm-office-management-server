@@ -8,4 +8,9 @@ router.route('/')
     .get(leaveController.getAllLeave)
     .post(leaveController.createLeave)
 
+router.route('/:id')
+    .patch(leaveController.updateLeaveById)
+
+
+
 module.exports = router
