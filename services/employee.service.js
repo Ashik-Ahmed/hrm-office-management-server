@@ -86,7 +86,6 @@ exports.getleaveHistoryByEmployeeIdService = async (id) => {
 }
 
 exports.getLeaveStatusByEmployeeIdService = async (id) => {
-    console.log(id);
 
     const leaveStatus = await Employee.aggregate([
         {
@@ -126,8 +125,18 @@ exports.getLeaveStatusByEmployeeIdService = async (id) => {
         },
     ])
 
+    // console.log(leaveStatus);
 
-    console.log(leaveStatus);
+    // If result contains { _id: null, availed: 0 }, that means Emplpoyee doesn't have the property "leaveHistory", then set finalResult to an empty array
+    const leaveStatusUpdated = leaveStatus.some(entry => entry._id === null && entry.availed === 0)
+        ? []
+        : leaveStatus.map(entry => ({
+            leaveType: entry._id,
+            availed: entry.availed,
+            total: entry.total,
+        }));
+
+    // console.log(leaveStatusUpdated);
 
     // Create a Map to store the aggregation result
     const resultMap = new Map();
@@ -154,8 +163,11 @@ exports.getLeaveStatusByEmployeeIdService = async (id) => {
         total: values.total,
     }));
 
+    // Sort the final result by leaveType
+    finalResult.sort((a, b) => a.leaveType.localeCompare(b.leaveType));
+
     console.log(finalResult);
 
-    return leaveStatus;
+    return finalResult;
 
 }
