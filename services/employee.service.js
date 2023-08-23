@@ -136,7 +136,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id) => {
             total: entry.total,
         }));
 
-    // console.log(leaveStatusUpdated);
+    // console.log("leaveStatus:", leaveStatus);
 
     // Create a Map to store the aggregation result
     const resultMap = new Map();
@@ -145,16 +145,28 @@ exports.getLeaveStatusByEmployeeIdService = async (id) => {
     leaveStatus.forEach(entry => {
         resultMap.set(entry._id, { availed: entry.availed, total: entry.total });
     });
-
+    // console.log("First result map:", resultMap);
     // Fetch all unique leaveType values from the Leaves collection
-    const allLeaveTypes = await Leave.distinct('leaveType');
+    const allLeaveTypes = await Leave.aggregate([
+        {
+            $project: {
+                leaveType: 1,
+                total: 1,
+                _id: 0
+            }
+        }
+    ]);
+
+    // console.log("aggregation:", allLeaveTypes);
 
     // For leave types not present in the result, set availed value to 0
-    allLeaveTypes.forEach(leaveType => {
-        if (!resultMap.has(leaveType)) {
-            resultMap.set(leaveType, { availed: 0, total: 0 });
+    allLeaveTypes.forEach(leave => {
+        if (!resultMap.has(leave.leaveType)) {
+            resultMap.set(leave.leaveType, { availed: 0, total: leave.total });
         }
     });
+
+    // console.log("foreach resultMap:", resultMap);
 
     // Convert resultMap to an array of objects
     const finalResult = Array.from(resultMap, ([leaveType, values]) => ({
@@ -163,10 +175,13 @@ exports.getLeaveStatusByEmployeeIdService = async (id) => {
         total: values.total,
     }));
 
+    finalResult.map(entry => {
+        entry.balance = entry.total - entry.availed
+    })
+
     // Sort the final result by leaveType
     finalResult.sort((a, b) => a.leaveType.localeCompare(b.leaveType));
-
-    console.log(finalResult);
+    // console.log("final:", finalResult);
 
     return finalResult;
 
