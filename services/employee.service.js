@@ -85,45 +85,68 @@ exports.getleaveHistoryByEmployeeIdService = async (id) => {
     return leaveHistory.reverse();
 }
 
-exports.getLeaveStatusByEmployeeIdService = async (id) => {
+exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
+
+    const filteredYear = parseInt(year) || new Date().getFullYear();
+
+    console.log("filteredYear", filteredYear);
 
     const leaveStatus = await Employee.aggregate([
         {
-            $match: { _id: new ObjectId(id) }
+            $match: {
+                _id: new ObjectId(id)
+            }
         },
         {
             $lookup: {
-                from: 'leaveapplications', // The name of the collection
+                from: 'leaveapplications',
                 localField: 'leaveHistory',
                 foreignField: '_id',
-                as: 'leaveApplicationsDetails',
-            },
+                as: 'leaveApplicationsDetails'
+            }
         },
         {
             $unwind: { path: '$leaveApplicationsDetails', preserveNullAndEmptyArrays: true }
         },
         {
+            $match: {
+                $and: [
+                    {
+                        $or: [
+                            { 'leaveApplicationsDetails.currentStatus.status': 'Pending' },
+                            { 'leaveApplicationsDetails.currentStatus.status': 'Approved by Technical' }
+                        ]
+                    },
+                    {
+                        $expr: {
+                            $eq: [{ $year: '$leaveApplicationsDetails.toDate' }, filteredYear] // Match documents toDate in 2023
+                        }
+                    }
+                ]
+            }
+        },
+        {
             $group: {
                 _id: '$leaveApplicationsDetails.leaveType',
-                availed: { $sum: { $ifNull: ['$leaveApplicationsDetails.totalDay', 0] } },
-            },
+                availed: { $sum: { $ifNull: ['$leaveApplicationsDetails.totalDay', 0] } }
+            }
         },
         {
             $lookup: {
-                from: 'leaves', // The name of the collection
+                from: 'leaves',
                 localField: '_id',
                 foreignField: 'leaveType',
-                as: 'leaveDetails',
-            },
+                as: 'leaveDetails'
+            }
         },
         {
             $project: {
                 _id: 1,
                 availed: 1,
-                total: { $arrayElemAt: ['$leaveDetails.total', 0] },
-            },
-        },
-    ])
+                total: { $arrayElemAt: ['$leaveDetails.total', 0] }
+            }
+        }
+    ]);
 
     // console.log(leaveStatus);
 

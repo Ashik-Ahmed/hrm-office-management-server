@@ -226,8 +226,10 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
 exports.getLeaveStatusByEmployeeId = async (req, res) => {
     try {
         const { id } = req.params;
+        const { year } = req.query;
+        console.log("year: ", year);
 
-        const leaveStatus = await getLeaveStatusByEmployeeIdService(id)
+        const leaveStatus = await getLeaveStatusByEmployeeIdService(id, year)
 
         if (leaveStatus) {
             res.status(200).json({
