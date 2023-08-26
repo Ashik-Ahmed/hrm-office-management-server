@@ -89,8 +89,6 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 
     const filteredYear = parseInt(year) || new Date().getFullYear();
 
-    console.log("filteredYear", filteredYear);
-
     const leaveStatus = await Employee.aggregate([
         {
             $match: {

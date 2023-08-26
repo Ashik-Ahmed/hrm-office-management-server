@@ -227,7 +227,6 @@ exports.getLeaveStatusByEmployeeId = async (req, res) => {
     try {
         const { id } = req.params;
         const { year } = req.query;
-        console.log("year: ", year);
 
         const leaveStatus = await getLeaveStatusByEmployeeIdService(id, year)
 
