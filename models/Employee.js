@@ -57,7 +57,7 @@ const employeeSchema = mongoose.Schema(
             maxLength: [60, 'Last Name length  is too large'],
         },
 
-        photo: {
+        image: {
             type: String,
             validate: [validator.isURL, 'PLease provide a valid url'],
         },

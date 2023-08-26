@@ -59,7 +59,7 @@ exports.getAllEmployeeService = async () => {
                 lastName: 1,
                 userRole: 1,
                 designation: 1,
-                photo: 1,
+                image: 1,
                 joiningDate: 1,
             }
         }
