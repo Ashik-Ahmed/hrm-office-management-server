@@ -70,6 +70,10 @@ const employeeSchema = mongoose.Schema(
             type: ObjectId,
             ref: "LeaveApplication"
         }],
+        conveyance: [{
+            type: ObjectId,
+            ref: "Conveyance"
+        }],
 
         passwordChangedAt: Date,
         passwordResetToken: String,

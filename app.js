@@ -21,7 +21,7 @@ const conveyanceRoute = require('./routes/conveyance.route')
 app.use('/api/v1/employee', employeeRoute)
 app.use('/api/v1/leaveApplication', leaveApplicationRoute)
 app.use('/api/v1/leave', leaveRoute)
-app.use('api/v1/conveyance', conveyanceRoute)
+app.use('/api/v1/conveyance', conveyanceRoute)
 
 
 module.exports = app;
