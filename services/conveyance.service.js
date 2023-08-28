@@ -33,7 +33,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
 
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
-    console.log(month, year);
+    // console.log(month, year);
 
     const conveyance = await Employee.aggregate([
         {
@@ -67,8 +67,36 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                 _id: 0,
                 conveyanceDetails: 1
             }
+        },
+        {
+            $addFields: {
+                totalAmount: {
+                    $reduce: {
+                        input: '$conveyanceDetails',
+                        initialValue: 0,
+                        in: { $add: ['$$value', '$$this.amount'] }
+                    }
+                }
+            }
+        },
+        {
+            $addFields: {
+                totalDueAmount: {
+                    $reduce: {
+                        input: {
+                            $filter: {
+                                input: '$conveyanceDetails',
+                                as: 'conveyance',
+                                cond: { $eq: ['$$conveyance.paymentStatus', 'Pending'] }
+                            }
+                        },
+                        initialValue: 0,
+                        in: { $add: ['$$value', '$$this.amount'] }
+                    }
+                }
+            }
         }
     ])
     // console.log(conveyance[0].conveyanceDetails);
-    return conveyance[0].conveyanceDetails;
+    return conveyance;
 }
