@@ -28,3 +28,47 @@ exports.createConveyanceService = async (conveyanceData) => {
         return "Error Occurred"
     }
 }
+
+exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
+
+    const month = parseInt(query.month || (new Date().getMonth() + 1))
+    const year = parseInt(query.year || new Date().getFullYear())
+    console.log(month, year);
+
+    const conveyance = await Employee.aggregate([
+        {
+            $match: { email: employeeEmail }
+        },
+        {
+            $lookup: {
+                from: 'conveyances',
+                localField: 'conveyance',
+                foreignField: '_id',
+                as: 'conveyanceDetails'
+            }
+        },
+        {
+            $addFields: {
+                conveyanceDetails: {
+                    $filter: {
+                        input: '$conveyanceDetails',
+                        cond: {
+                            $and: [
+                                { $eq: [{ $year: '$$this.date' }, year] },
+                                { $eq: [{ $month: '$$this.date' }, month] }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                conveyanceDetails: 1
+            }
+        }
+    ])
+    // console.log(conveyance[0].conveyanceDetails);
+    return conveyance[0].conveyanceDetails;
+}

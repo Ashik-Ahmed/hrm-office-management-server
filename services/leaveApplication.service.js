@@ -17,7 +17,6 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
         { $push: { leaveHistory: leaveApplicationId } }
     );
 
-
     return leaveApplication;
 }
 

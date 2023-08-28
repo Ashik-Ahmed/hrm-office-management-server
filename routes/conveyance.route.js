@@ -4,8 +4,10 @@ const conveyanceController = require('../controllers/conveyance.controller')
 const router = express.Router()
 
 router.route('/')
-    .get(conveyanceController.getConveyanceByEmployeeEmail)
     .post(conveyanceController.createConveyance)
+
+router.route('/:employeeEmail')
+    .get(conveyanceController.getConveyanceByEmployeeEmail)
 
 
 module.exports = router

@@ -34,6 +34,10 @@ const conveyanceSchema = mongoose.Schema(
         },
         partner: {
             type: String
+        },
+        paymentStatus: {
+            type: String,
+            default: "Pending"
         }
     },
     {
