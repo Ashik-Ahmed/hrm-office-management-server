@@ -3,7 +3,7 @@ const { createConveyanceService, getConveyanceByEmployeeEmailService } = require
 exports.createConveyance = async (req, res) => {
     try {
         const conveyanceData = req.body
-
+        // console.log(conveyanceData);
         const result = await createConveyanceService(conveyanceData)
 
         if (result._id) {

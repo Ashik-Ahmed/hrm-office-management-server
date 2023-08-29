@@ -7,11 +7,11 @@ const conveyanceSchema = mongoose.Schema(
         employee: {
             name: String,
             email: String,
-            employeeId: {
-                type: ObjectId,
-                ref: "Employee",
-                required: [true, "Employee Id required"]
-            }
+            // employeeId: {
+            //     type: ObjectId,
+            //     ref: "Employee",
+            //     required: [true, "Employee Id required"]
+            // }
         },
         from: {
             type: String,

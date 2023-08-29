@@ -2,7 +2,7 @@ const Conveyance = require("../models/Conveyance");
 const Employee = require("../models/Employee");
 
 exports.createConveyanceService = async (conveyanceData) => {
-    // console.log(conveyanceData);
+    console.log(conveyanceData);
 
     const result = await Conveyance.create(conveyanceData);
 
@@ -12,9 +12,10 @@ exports.createConveyanceService = async (conveyanceData) => {
 
         // update Employee profile with conveyyance id 
         const res = await Employee.updateOne(
-            { _id: employee.employeeId },
+            { email: employee.email },
             { $push: { conveyance: conveyanceId } }
-        )
+        );
+        console.log(result);
         if (res.modifiedCount > 0) {
             return result;
         }
@@ -95,8 +96,21 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                     }
                 }
             }
+        },
+        {
+            $addFields: {
+                totalConveyances: { $size: '$conveyanceDetails' },
+                pendingConveyances: {
+                    $size: {
+                        $filter: {
+                            input: '$conveyanceDetails',
+                            cond: { $eq: ['$$this.paymentStatus', 'Pending'] }
+                        }
+                    }
+                }
+            }
         }
     ])
     // console.log(conveyance[0].conveyanceDetails);
-    return conveyance;
+    return conveyance[0];
 }

@@ -6,18 +6,18 @@ const Employee = require("../models/Employee");
 
 
 exports.leaveApplicationService = async (leaveApplicationData) => {
-    // console.log(leaveApplicationData);
+    console.log(leaveApplicationData);
 
-    const leaveApplication = await LeaveApplication.create(leaveApplicationData)
+    // const leaveApplication = await LeaveApplication.create(leaveApplicationData)
 
-    const { _id: leaveApplicationId, employee } = leaveApplication;
+    // const { _id: leaveApplicationId, employee } = leaveApplication;
 
-    const res = await Employee.updateOne(
-        { _id: employee.employeeId },
-        { $push: { leaveHistory: leaveApplicationId } }
-    );
+    // const res = await Employee.updateOne(
+    //     { _id: employee.employeeId },
+    //     { $push: { leaveHistory: leaveApplicationId } }
+    // );
 
-    return leaveApplication;
+    // return leaveApplication;
 }
 
 exports.getPendingLeaveApplications = async () => {
@@ -33,6 +33,7 @@ exports.getPendingLeaveApplications = async () => {
 }
 
 exports.updateLeaveApplicationStatusService = async ({ id, data }) => {
+
     const updateStatus = await LeaveApplication.updateOne(
         { _id: id },
         { $set: { currentStatus: data } }
