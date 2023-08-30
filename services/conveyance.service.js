@@ -123,7 +123,6 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
     const allConveyances = await Conveyance.aggregate([
         {
             $match: {
-                paymentStatus: 'Pending',
                 $expr: {
                     $and: [
                         { $eq: [{ $month: '$date' }, month] },
@@ -135,7 +134,10 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
         {
             $group: {
                 _id: '$employee',
-                totalPendingAmount: { $sum: '$amount' }
+                pendingAmount: { $sum: { $cond: [{ $eq: ['$paymentStatus', 'Pending'] }, '$amount', 0] } },
+                totalAmount: { $sum: '$amount' },
+                totalConveyances: { $sum: 1 }, // Count total conveyances
+                pendingConveyances: { $sum: { $cond: [{ $eq: ['$paymentStatus', 'Pending'] }, 1, 0] } }, // Count pending conveyances
             }
         },
         {
@@ -149,13 +151,39 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
         {
             $project: {
                 _id: 0,
-                employeeId: '$_id',
-                totalPendingAmount: 1,
-                employeeName: { $arrayElemAt: ['$employeeDetails.name', 0] }
+                employee: {
+                    name: '$_id.name',
+                    email: '$_id.email',
+                    totalAmount: '$totalAmount',
+                    pendingAmount: '$pendingAmount',
+                    totalConveyances: '$totalConveyances', // Include total conveyances count
+                    pendingConveyances: '$pendingConveyances', // Include pending conveyances count
+                }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                allEmployeePendingAmount: { $sum: '$employee.pendingAmount' },
+                allEmployeeTotalAmount: { $sum: '$employee.totalAmount' },
+                allEmployeeTotalConveyances: { $sum: '$employee.totalConveyances' },
+                allEmployeePendingConveyances: { $sum: '$employee.pendingConveyances' },
+                employeeData: { $push: '$employee' }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                allEmployeeTotalConveyances: 1,
+                allEmployeeTotalAmount: 1,
+                allEmployeePendingConveyances: 1,
+                allEmployeePendingAmount: 1,
+                employeeData: 1
             }
         }
     ]);
 
-    return allConveyances;
+
+    return allConveyances[0];
 
 }
