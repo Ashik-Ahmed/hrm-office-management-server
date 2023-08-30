@@ -60,7 +60,8 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
 
 exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
     try {
-        const allConveyances = await getAllEmployeeMonthlyConveyanceService()
+        console.log(req.query);
+        const allConveyances = await getAllEmployeeMonthlyConveyanceService(req.query)
 
         if (allConveyances) {
             res.status(200).json({

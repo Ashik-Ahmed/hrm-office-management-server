@@ -115,6 +115,47 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
     return conveyance[0];
 }
 
-exports.getAllEmployeeMonthlyConveyanceService = async () => {
+exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
     console.log("Monthly Conveyance");
+    const month = parseInt(query.month || (new Date().getMonth() + 1))
+    const year = parseInt(query.year || new Date().getFullYear())
+
+    const allConveyances = await Conveyance.aggregate([
+        {
+            $match: {
+                paymentStatus: 'Pending',
+                $expr: {
+                    $and: [
+                        { $eq: [{ $month: '$date' }, month] },
+                        { $eq: [{ $year: '$date' }, year] },
+                    ]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: '$employee',
+                totalPendingAmount: { $sum: '$amount' }
+            }
+        },
+        {
+            $lookup: {
+                from: 'employees',
+                localField: '_id',
+                foreignField: 'conveyance',
+                as: 'employeeDetails'
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                employeeId: '$_id',
+                totalPendingAmount: 1,
+                employeeName: { $arrayElemAt: ['$employeeDetails.name', 0] }
+            }
+        }
+    ]);
+
+    return allConveyances;
+
 }
