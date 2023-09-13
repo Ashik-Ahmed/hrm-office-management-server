@@ -64,53 +64,41 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
             }
         },
         {
+            $unwind: '$conveyanceDetails' // Unwind the array to treat each conveyance as a separate document
+        },
+        {
+            $sort: { 'conveyanceDetails.date': 1 } // Sort by date in ascending order
+        },
+        {
+            $group: {
+                _id: '$_id', // Group by employee (you can change this if needed)
+                conveyanceDetails: { $push: '$conveyanceDetails' }, // Push sorted conveyances back into an array
+                totalAmount: { $sum: '$conveyanceDetails.amount' },
+                totalDueAmount: {
+                    $sum: {
+                        $cond: [{ $eq: ['$conveyanceDetails.paymentStatus', 'Pending'] }, '$conveyanceDetails.amount', 0]
+                    }
+                },
+                totalConveyances: { $sum: 1 },
+                pendingConveyances: {
+                    $sum: {
+                        $cond: [{ $eq: ['$conveyanceDetails.paymentStatus', 'Pending'] }, 1, 0]
+                    }
+                }
+            }
+        },
+        {
             $project: {
                 _id: 0,
-                conveyanceDetails: 1
-            }
-        },
-        {
-            $addFields: {
-                totalAmount: {
-                    $reduce: {
-                        input: '$conveyanceDetails',
-                        initialValue: 0,
-                        in: { $add: ['$$value', '$$this.amount'] }
-                    }
-                }
-            }
-        },
-        {
-            $addFields: {
-                totalDueAmount: {
-                    $reduce: {
-                        input: {
-                            $filter: {
-                                input: '$conveyanceDetails',
-                                as: 'conveyance',
-                                cond: { $eq: ['$$conveyance.paymentStatus', 'Pending'] }
-                            }
-                        },
-                        initialValue: 0,
-                        in: { $add: ['$$value', '$$this.amount'] }
-                    }
-                }
-            }
-        },
-        {
-            $addFields: {
-                totalConveyances: { $size: '$conveyanceDetails' },
-                pendingConveyances: {
-                    $size: {
-                        $filter: {
-                            input: '$conveyanceDetails',
-                            cond: { $eq: ['$$this.paymentStatus', 'Pending'] }
-                        }
-                    }
-                }
+                conveyanceDetails: 1,
+                totalAmount: 1,
+                totalDueAmount: 1,
+                totalConveyances: 1,
+                pendingConveyances: 1
             }
         }
-    ])
+    ]);
+
     // console.log(conveyance[0].conveyanceDetails);
     return conveyance[0];
 }
