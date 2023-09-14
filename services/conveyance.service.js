@@ -31,8 +31,6 @@ exports.createConveyanceService = async (conveyanceData) => {
 }
 
 exports.deleteConveyanceByIdServicce = async (conveyanceId) => {
-    console.log('service');
-    console.log(conveyanceId);
 
     const result = await Conveyance.deleteOne({ _id: conveyanceId })
 

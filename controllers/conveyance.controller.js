@@ -32,7 +32,20 @@ exports.deleteConveyanceById = async (req, res) => {
         const { id } = req.params;
 
         const result = await deleteConveyanceByIdServicce(id)
-        console.log(result);
+
+        if (result.deletedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No Such Conveyance"
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
