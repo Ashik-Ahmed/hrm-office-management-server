@@ -1,4 +1,4 @@
-const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService } = require("../services/conveyance.service")
+const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce } = require("../services/conveyance.service")
 
 exports.createConveyance = async (req, res) => {
     try {
@@ -27,11 +27,25 @@ exports.createConveyance = async (req, res) => {
     }
 }
 
+exports.deleteConveyanceById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const result = await deleteConveyanceByIdServicce(id)
+        console.log(result);
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
 exports.getConveyanceByEmployeeEmail = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
         const query = req.query;
-        console.log(query);
+        // console.log(query);
         const conveyance = await getConveyanceByEmployeeEmailService(employeeEmail, query);
 
         if (conveyance) {

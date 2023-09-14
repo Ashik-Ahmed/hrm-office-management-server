@@ -10,5 +10,8 @@ router.route('/')
 router.route('/:employeeEmail')
     .get(conveyanceController.getConveyanceByEmployeeEmail)
 
+router.route('/:id')
+    .delete(conveyanceController.deleteConveyanceById)
+
 
 module.exports = router

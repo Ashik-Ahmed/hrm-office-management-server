@@ -30,6 +30,18 @@ exports.createConveyanceService = async (conveyanceData) => {
     }
 }
 
+exports.deleteConveyanceByIdServicce = async (conveyanceId) => {
+    console.log('service');
+    console.log(conveyanceId);
+
+    const result = await Conveyance.deleteOne({ _id: conveyanceId })
+
+    console.log(result);
+
+    return result
+
+}
+
 exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
 
     const month = parseInt(query.month || (new Date().getMonth() + 1))
