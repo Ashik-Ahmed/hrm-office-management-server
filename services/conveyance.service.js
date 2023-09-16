@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const Conveyance = require("../models/Conveyance");
 const Employee = require("../models/Employee");
 
@@ -183,5 +184,20 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
 
 
     return allConveyances[0];
+}
 
+
+exports.makePaymentConveyanceBillService = async (pendingIds) => {
+    console.log(pendingIds);
+    const result = await Conveyance.updateMany({
+        _id: {
+            $in: pendingIds
+        },
+        $set: {
+            paymentStatus: 'Paid'
+        }
+    })
+
+    console.log(result);
+    return result;
 }

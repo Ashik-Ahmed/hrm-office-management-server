@@ -1,4 +1,4 @@
-const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce } = require("../services/conveyance.service")
+const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce, makePaymentConveyanceBillService } = require("../services/conveyance.service")
 
 exports.createConveyance = async (req, res) => {
     try {
@@ -102,6 +102,21 @@ exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
                 error: "No data found"
             })
         }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.makePaymentConveyanceBill = async (req, res) => {
+    try {
+        // const data = JSON.parse(req.body)
+        const { pendingIds } = req.body
+        console.log('data: ', pendingIds);
+        const result = await makePaymentConveyanceBillService(pendingIds)
 
     } catch (error) {
         res.status(500).json({

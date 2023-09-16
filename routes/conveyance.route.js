@@ -3,6 +3,9 @@ const conveyanceController = require('../controllers/conveyance.controller')
 
 const router = express.Router()
 
+router.route('/makePayment')
+    .patch(conveyanceController.makePaymentConveyanceBill)
+
 router.route('/')
     .post(conveyanceController.createConveyance)
     .get(conveyanceController.getAllEmployeeMonthlyConveyance)
