@@ -118,6 +118,19 @@ exports.makePaymentConveyanceBill = async (req, res) => {
         console.log('data: ', pendingIds);
         const result = await makePaymentConveyanceBillService(pendingIds)
 
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: 'Success',
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: 'Failed',
+                error: 'Try again'
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
