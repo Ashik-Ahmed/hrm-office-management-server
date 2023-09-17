@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { default: mongoose } = require("mongoose");
+const Employee = require("./Employee");
 
 const requiitionSchema = mongoose.Schema({
     submittedBy: {
@@ -7,6 +8,10 @@ const requiitionSchema = mongoose.Schema({
         ref: Employee,
         required: [true, "Employee info required"]
     },
+    // date: {
+    //     type: Date,
+    //     default: new Date()
+    // },
     department: {
         type: String,
     },
@@ -30,7 +35,11 @@ const requiitionSchema = mongoose.Schema({
 
         }
     ]
-})
+},
+    {
+        timestamps: true,
+    }
+)
 
 const Requisition = mongoose.model('Requisition', requiitionSchema);
 module.exports = Requisition;
