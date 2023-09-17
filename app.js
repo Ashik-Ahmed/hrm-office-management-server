@@ -16,12 +16,14 @@ const employeeRoute = require('./routes/employee.route')
 const leaveApplicationRoute = require('./routes/leaveApplication.route')
 const leaveRoute = require('./routes/leave.route')
 const conveyanceRoute = require('./routes/conveyance.route')
+const requisitionRoute = require('./routes/Requisition.route')
 
 
 app.use('/api/v1/employee', employeeRoute)
 app.use('/api/v1/leaveApplication', leaveApplicationRoute)
 app.use('/api/v1/leave', leaveRoute)
 app.use('/api/v1/conveyance', conveyanceRoute)
+app.use('/api/v1/requisition', requisitionRoute)
 
 
 module.exports = app;

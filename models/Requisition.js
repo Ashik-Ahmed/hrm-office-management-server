@@ -3,11 +3,9 @@ const { default: mongoose } = require("mongoose");
 
 const requiitionSchema = mongoose.Schema({
     submittedBy: {
-        enployee: {
-            type: ObjectId,
-            ref: Employee,
-            required: [true, "Employee info required"]
-        }
+        type: ObjectId,
+        ref: Employee,
+        required: [true, "Employee info required"]
     },
     department: {
         type: String,
@@ -18,7 +16,7 @@ const requiitionSchema = mongoose.Schema({
     proposedAmount: {
         type: Number
     },
-    totalAmount: {
+    finalAmount: {
         type: Number
     },
     itemList: [
