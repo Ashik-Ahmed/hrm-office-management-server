@@ -114,7 +114,7 @@ exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
 exports.makePaymentConveyanceBill = async (req, res) => {
     try {
         // const data = JSON.parse(req.body)
-        const { pendingIds } = req.body
+        const pendingIds = req.body
         console.log('data: ', pendingIds);
         const result = await makePaymentConveyanceBillService(pendingIds)
 
