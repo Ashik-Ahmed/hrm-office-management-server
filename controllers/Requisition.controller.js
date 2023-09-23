@@ -1,4 +1,4 @@
-const { createRequisitionService, getAllRequisitionByUserEmailService } = require("../services/Requisition.service");
+const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService } = require("../services/Requisition.service");
 
 exports.createRequisition = async (req, res) => {
     try {

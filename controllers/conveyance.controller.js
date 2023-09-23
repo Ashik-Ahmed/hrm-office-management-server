@@ -1,4 +1,4 @@
-const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce, makePaymentConveyanceBillService } = require("../services/conveyance.service")
+const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce, makePaymentConveyanceBillService, editConveyanceByIdService } = require("../services/conveyance.service")
 
 exports.createConveyance = async (req, res) => {
     try {
@@ -132,6 +132,35 @@ exports.makePaymentConveyanceBill = async (req, res) => {
         }
 
     } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.editConveyanceById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+
+        const result = await editConveyanceByIdService(id, updatedData)
+
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Please try again"
+            })
+        }
+
+    } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'Failed',
             error: error.message

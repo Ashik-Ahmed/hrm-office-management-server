@@ -204,3 +204,14 @@ exports.makePaymentConveyanceBillService = async (pendingIds) => {
     console.log(result);
     return result;
 }
+
+
+exports.editConveyanceByIdService = async (id, updatedData) => {
+    console.log(id);
+    console.log(updatedData);
+
+    const result = await Conveyance.updateOne({ _id: id }, updatedData)
+
+    console.log(result);
+    return result;
+}

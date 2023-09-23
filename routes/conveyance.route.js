@@ -15,6 +15,7 @@ router.route('/:employeeEmail')
 
 router.route('/:id')
     .delete(conveyanceController.deleteConveyanceById)
+    .patch(conveyanceController.editConveyanceById)
 
 
 module.exports = router
