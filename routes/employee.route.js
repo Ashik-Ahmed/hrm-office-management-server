@@ -11,6 +11,9 @@ router.route('/leaveApplications/:id')
 router.route('/leaveStatus/:id')
     .get(employeeController.getLeaveStatusByEmployeeId)
 
+router.route('/requisition/:id')
+    .get(employeeController.getAllRequisitionByEmployeeId)
+
 router.route('/')
     .post(employeeController.createEmployee)
     .get(employeeController.getAllEmployee)

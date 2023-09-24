@@ -27,27 +27,3 @@ exports.createRequisition = async (req, res) => {
     }
 }
 
-exports.getAllRequisitionByUserEmail = async (req, res) => {
-    try {
-        const { id: employeeId } = req.params;
-        const requisitions = await getAllRequisitionByUserEmailService(employeeId);
-
-        if (requisitions.length > 0) {
-            res.status(200).json({
-                status: 'Success',
-                data: requisitions
-            })
-        }
-        else {
-            res.status(400).json({
-                status: 'Failed',
-                error: 'No requisition found'
-            })
-        }
-    } catch (error) {
-        res.status(500).json({
-            status: 'Failed',
-            error: error.message
-        })
-    }
-}

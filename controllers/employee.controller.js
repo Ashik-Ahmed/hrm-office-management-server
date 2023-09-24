@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -248,6 +248,32 @@ exports.getLeaveStatusByEmployeeId = async (req, res) => {
         res.status(500).json({
             status: 'Failed',
             error: error.message,
+        })
+    }
+}
+
+
+exports.getAllRequisitionByEmployeeId = async (req, res) => {
+    try {
+        const { id: employeeId } = req.params;
+        const requisitions = await getAllRequisitionByEmployeeIdService(employeeId);
+
+        if (requisitions.length > 0) {
+            res.status(200).json({
+                status: 'Success',
+                data: requisitions
+            })
+        }
+        else {
+            res.status(400).json({
+                status: 'Failed',
+                error: 'No requisition found'
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
         })
     }
 }

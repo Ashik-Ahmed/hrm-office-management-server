@@ -1,6 +1,8 @@
 const { ObjectId } = require("mongodb");
 const Employee = require("../models/Employee");
 const Leave = require("../models/Leave");
+const Requisition = require("../models/Requisition");
+const { default: mongoose } = require("mongoose");
 
 //create a new user
 exports.createEmployeeService = async (employeeInfo) => {
@@ -206,4 +208,47 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 
     return finalResult;
 
+}
+
+
+exports.getAllRequisitionByEmployeeIdService = async (employeeId) => {
+
+    const allRequisition = await Requisition.aggregate([
+        {
+            $match: { submittedBy: new mongoose.Types.ObjectId(employeeId) }
+        },
+        {
+            $project: {
+                department: 1,
+                status: 1,
+                createdAt: 1,
+                totalProposedItems: {
+                    $sum: "$itemList.proposedQuantity"
+                },
+                totalApprovedItems: {
+                    $sum: "$itemList.approvedQuantity"
+                },
+                proposedAmount: {
+                    $sum: {
+                        $map: {
+                            input: "$itemList",
+                            as: "item",
+                            in: { $multiply: ["$$item.proposedQuantity", "$$item.unitPrice"] }
+                        }
+                    }
+                },
+                finalAmount: {
+                    $sum: {
+                        $map: {
+                            input: "$itemList",
+                            as: "item",
+                            in: { $multiply: ["$$item.approvedQuantity", "$$item.unitPrice"] }
+                        }
+                    }
+                }
+            }
+        }
+    ])
+
+    return allRequisition;
 }
