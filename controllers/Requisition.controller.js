@@ -1,4 +1,4 @@
-const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService } = require("../services/Requisition.service");
+const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService, getRequisitionDetailsByIdService } = require("../services/Requisition.service");
 
 exports.createRequisition = async (req, res) => {
     try {
@@ -27,3 +27,29 @@ exports.createRequisition = async (req, res) => {
     }
 }
 
+exports.getRequisitionDetailsById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const requisitionDetails = await getRequisitionDetailsByIdService(id)
+        console.log(requisitionDetails);
+
+        if (requisitionDetails) {
+            res.status(200).json({
+                status: "Success",
+                data: requisitionDetails
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No data found"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}

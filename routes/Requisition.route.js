@@ -7,7 +7,7 @@ const router = express.Router()
 router.route('/')
     .post(requisitionController.createRequisition)
 
-// router.route('/:id')
-//     .get(requisitionController.getAllRequisitionByUserEmail)
+router.route('/:id')
+    .get(requisitionController.getRequisitionDetailsById)
 
 module.exports = router;
