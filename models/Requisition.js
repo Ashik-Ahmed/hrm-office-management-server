@@ -30,8 +30,9 @@ const requiitionSchema = mongoose.Schema({
             name: { type: String },
             model: { type: String },
             proposedQuantity: { type: Number },
-            appvedQuantity: { type: Number },
-            unitPrice: { type: Number }
+            approvedQuantity: { type: Number },
+            unitPrice: { type: Number },
+            buyingPrice: { type: Number }
 
         }
     ]

@@ -66,5 +66,5 @@ exports.getRequisitionDetailsByIdService = async (requisitionId) => {
         }
     ])
 
-    return requisitionDetails;
+    return requisitionDetails[0];
 }
