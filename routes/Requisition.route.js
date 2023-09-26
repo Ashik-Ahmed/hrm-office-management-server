@@ -9,5 +9,6 @@ router.route('/')
 
 router.route('/:id')
     .get(requisitionController.getRequisitionDetailsById)
+    .delete(requisitionController.deleteRequisitionById)
 
 module.exports = router;

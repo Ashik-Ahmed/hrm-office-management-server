@@ -68,3 +68,9 @@ exports.getRequisitionDetailsByIdService = async (requisitionId) => {
 
     return requisitionDetails[0];
 }
+
+exports.deleteRequisitionByIdService = async (requisitionId) => {
+    const result = await Requisition.deleteOne({ _id: requisitionId })
+    console.log(result);;
+    return result
+}
