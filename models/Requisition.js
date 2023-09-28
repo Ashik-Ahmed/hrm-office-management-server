@@ -16,7 +16,8 @@ const requiitionSchema = mongoose.Schema({
         type: String,
     },
     status: {
-        type: String
+        type: String,
+        default: "Pending"
     },
     proposedAmount: {
         type: Number

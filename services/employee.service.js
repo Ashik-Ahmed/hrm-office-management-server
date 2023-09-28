@@ -211,11 +211,20 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 }
 
 
-exports.getAllRequisitionByEmployeeIdService = async (employeeId) => {
-
+exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
+    console.log('query get: ', query);
+    const month = parseInt(query.month || (new Date().getMonth() + 1))
+    const year = parseInt(query.year || new Date().getFullYear())
+    console.log(month, year);
     const allRequisition = await Requisition.aggregate([
         {
-            $match: { submittedBy: new mongoose.Types.ObjectId(employeeId) }
+            $match: {
+                submittedBy: new mongoose.Types.ObjectId(employeeId),
+                createdAt: {
+                    $gte: new Date(year, month - 1, 1), // Start of the month
+                    $lt: new Date(year, month, 1), // Start of the next month
+                },
+            }
         },
         {
             $project: {
@@ -249,6 +258,7 @@ exports.getAllRequisitionByEmployeeIdService = async (employeeId) => {
             }
         }
     ])
-
+    // console.log('service');
+    console.log(allRequisition);
     return allRequisition;
 }

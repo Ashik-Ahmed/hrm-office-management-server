@@ -256,7 +256,8 @@ exports.getLeaveStatusByEmployeeId = async (req, res) => {
 exports.getAllRequisitionByEmployeeId = async (req, res) => {
     try {
         const { id: employeeId } = req.params;
-        const requisitions = await getAllRequisitionByEmployeeIdService(employeeId);
+        const query = req.query;
+        const requisitions = await getAllRequisitionByEmployeeIdService(employeeId, query);
 
         if (requisitions.length > 0) {
             res.status(200).json({
