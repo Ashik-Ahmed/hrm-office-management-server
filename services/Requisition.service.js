@@ -61,12 +61,97 @@ exports.getRequisitionDetailsByIdService = async (requisitionId) => {
                             in: { $multiply: ["$$item.approvedQuantity", "$$item.unitPrice"] }
                         }
                     }
+                },
+                itemList: {
+                    $map: {
+                        input: "$itemList",
+                        as: "item",
+                        in: {
+                            $mergeObjects: [
+                                "$$item",
+                                {
+                                    total: {
+                                        $multiply: ["$$item.unitPrice", "$$item.proposedQuantity"]
+                                    }
+                                }
+                            ]
+                        }
+                    }
                 }
             }
         }
     ])
 
     return requisitionDetails[0];
+}
+
+exports.getMonthlyRequisitionDataService = async (query) => {
+
+    const month = parseInt(query.month || (new Date().getMonth() + 1))
+    const year = parseInt(query.year || new Date().getFullYear())
+
+    const requisitionData = await Requisition.aggregate([
+        {
+            $match: {
+                createdAt: {
+                    $gte: new Date(year, month - 1, 1), // Start of the month
+                    $lt: new Date(year, month, 1), // Start of the next month
+                },
+            }
+        },
+        {
+            $project: {
+                department: 1,
+                status: 1,
+                createdAt: 1,
+                totalProposedItems: {
+                    $sum: "$itemList.proposedQuantity"
+                },
+                totalApprovedItems: {
+                    $sum: "$itemList.approvedQuantity"
+                },
+                proposedAmount: {
+                    $sum: {
+                        $map: {
+                            input: "$itemList",
+                            as: "item",
+                            in: { $multiply: ["$$item.proposedQuantity", "$$item.unitPrice"] }
+                        }
+                    }
+                },
+                finalAmount: {
+                    $sum: {
+                        $map: {
+                            input: "$itemList",
+                            as: "item",
+                            in: { $multiply: ["$$item.approvedQuantity", "$$item.unitPrice"] }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            $group: {
+                _id: null, // Group all documents into a single group
+                totalProposedAmount: {
+                    $sum: "$proposedAmount" // Calculate the sum of all proposedAmount values
+                },
+                requisitions: {
+                    $push: "$$ROOT" // Preserve the original documents in the group
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                totalProposedAmount: 1,
+                requisitions: 1
+            }
+        }
+    ]);
+    console.log(requisitionData);
+
+    return requisitionData[0]
 }
 
 exports.deleteRequisitionByIdService = async (requisitionId) => {
