@@ -90,7 +90,7 @@ exports.getMonthlyRequisitionDataService = async (query) => {
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
 
-    const requisitionData = await Requisition.aggregate([
+    const monthlyRequisitionData = await Requisition.aggregate([
         {
             $match: {
                 createdAt: {
@@ -149,9 +149,9 @@ exports.getMonthlyRequisitionDataService = async (query) => {
             }
         }
     ]);
-    console.log(requisitionData);
+    // console.log(monthlyRequisitionData);
 
-    return requisitionData[0]
+    return monthlyRequisitionData[0];
 }
 
 exports.deleteRequisitionByIdService = async (requisitionId) => {

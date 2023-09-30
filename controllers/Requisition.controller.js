@@ -57,7 +57,6 @@ exports.getRequisitionDetailsById = async (req, res) => {
 exports.getMonthlyRequisitionData = async (req, res) => {
     try {
         const query = req.query;
-
         const requisitionData = await getMonthlyRequisitionDataService(query)
 
         if (requisitionData) {
