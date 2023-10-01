@@ -94,11 +94,10 @@ exports.getMonthlyRequisitionDataService = async (query) => {
                 department: 1,
                 status: 1,
                 createdAt: 1,
-                totalProposedItems: {
+                purchasedAmount: 1,
+                purchasedItems: 1,
+                proposedItems: {
                     $sum: "$itemList.proposedQuantity"
-                },
-                totalApprovedItems: {
-                    $sum: "$itemList.approvedQuantity"
                 },
                 proposedAmount: {
                     $sum: {
@@ -109,15 +108,6 @@ exports.getMonthlyRequisitionDataService = async (query) => {
                         }
                     }
                 },
-                finalAmount: {
-                    $sum: {
-                        $map: {
-                            input: "$itemList",
-                            as: "item",
-                            in: { $multiply: ["$$item.approvedQuantity", "$$item.unitPrice"] }
-                        }
-                    }
-                }
             }
         },
         {
@@ -135,7 +125,13 @@ exports.getMonthlyRequisitionDataService = async (query) => {
             $project: {
                 _id: 0,
                 totalProposedAmount: 1,
-                requisitions: 1
+                requisitions: 1,
+                totalPurchasedAmount: {
+                    $sum: "$requisitions.purchasedAmount"
+                },
+                totalPurchasedItems: {
+                    $sum: "$requisitions.purchasedItems"
+                }
             }
         }
     ]);
