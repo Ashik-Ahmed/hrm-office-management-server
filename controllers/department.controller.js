@@ -1,4 +1,4 @@
-const { createDepartmentService } = require("../services/department.service");
+const { createDepartmentService, getAllDepartmentService } = require("../services/department.service");
 
 exports.createDepartment = async (req, res) => {
     try {
@@ -28,7 +28,22 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartment = async (req, res) => {
     try {
-        console.log('get department controller');
+        const departments = await getAllDepartmentService();
+
+        if (departments) {
+            res.status(200).json({
+                status: "Success",
+                data: departments
+            })
+        }
+
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No department found"
+            })
+        }
+
     } catch (error) {
         res.status(500).json({
             status: "Failed",

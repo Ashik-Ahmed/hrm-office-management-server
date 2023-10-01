@@ -6,6 +6,7 @@ exports.createDepartmentService = async (data) => {
 }
 
 exports.getAllDepartmentService = async () => {
-    console.log('get all edpartment service');
+    const departments = await Department.find({});
+    return departments;
 }
 
