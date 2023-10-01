@@ -11,5 +11,6 @@ router.route('/')
 router.route('/:id')
     .get(requisitionController.getRequisitionDetailsById)
     .delete(requisitionController.deleteRequisitionById)
+    .patch(requisitionController.completePurchaseById)
 
 module.exports = router;

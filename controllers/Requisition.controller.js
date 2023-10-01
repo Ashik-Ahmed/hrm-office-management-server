@@ -1,4 +1,4 @@
-const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService, getRequisitionDetailsByIdService, deleteRequisitionByIdService, getMonthlyRequisitionDataService } = require("../services/Requisition.service");
+const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService, getRequisitionDetailsByIdService, deleteRequisitionByIdService, getMonthlyRequisitionDataService, completePurchaseByIdSevice } = require("../services/Requisition.service");
 
 exports.createRequisition = async (req, res) => {
     try {
@@ -73,6 +73,35 @@ exports.getMonthlyRequisitionData = async (req, res) => {
         }
 
     } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.completePurchaseById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        let data = req.body;
+
+        const result = await completePurchaseByIdSevice(id, data)
+        console.log(result);
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Please try again"
+            })
+        }
+    } catch (error) {
+        console.log(error.message);
         res.status(500).json({
             status: 'Failed',
             error: error.message

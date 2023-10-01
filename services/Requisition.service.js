@@ -27,6 +27,8 @@ exports.getRequisitionDetailsByIdService = async (requisitionId) => {
                 department: 1,
                 status: 1,
                 createdAt: 1,
+                purchasedAmount: 1,
+                purchasedItems: 1,
                 itemList: 1,
                 submittedBy: {
                     name: {
@@ -41,24 +43,12 @@ exports.getRequisitionDetailsByIdService = async (requisitionId) => {
                 totalProposedItems: {
                     $sum: "$itemList.proposedQuantity"
                 },
-                totalApprovedItems: {
-                    $sum: "$itemList.approvedQuantity"
-                },
                 proposedAmount: {
                     $sum: {
                         $map: {
                             input: "$itemList",
                             as: "item",
                             in: { $multiply: ["$$item.proposedQuantity", "$$item.unitPrice"] }
-                        }
-                    }
-                },
-                finalAmount: {
-                    $sum: {
-                        $map: {
-                            input: "$itemList",
-                            as: "item",
-                            in: { $multiply: ["$$item.approvedQuantity", "$$item.unitPrice"] }
                         }
                     }
                 },
@@ -154,8 +144,27 @@ exports.getMonthlyRequisitionDataService = async (query) => {
     return monthlyRequisitionData[0];
 }
 
+exports.completePurchaseByIdSevice = async (requisitionId, data) => {
+
+    data.status = "Completed"
+    data.purchasedAmount = Number(data.purchasedAmount)
+    data.purchasedItems = Number(data.purchasedItems)
+    console.log(requisitionId, data);
+
+    const result = await Requisition.updateOne(
+        {
+            _id: requisitionId
+        },
+        {
+            $set: data
+        },
+    )
+
+    return result;
+}
+
 exports.deleteRequisitionByIdService = async (requisitionId) => {
     const result = await Requisition.deleteOne({ _id: requisitionId })
-    console.log(result);;
+    console.log(result);
     return result
 }

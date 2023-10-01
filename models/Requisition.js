@@ -22,7 +22,10 @@ const requiitionSchema = mongoose.Schema({
     proposedAmount: {
         type: Number
     },
-    finalAmount: {
+    purchasedAmount: {
+        type: Number
+    },
+    purchasedItems: {
         type: Number
     },
     itemList: [
@@ -31,9 +34,9 @@ const requiitionSchema = mongoose.Schema({
             name: { type: String },
             model: { type: String },
             proposedQuantity: { type: Number },
-            approvedQuantity: { type: Number },
+            // approvedQuantity: { type: Number },
             unitPrice: { type: Number },
-            buyingPrice: { type: Number }
+            // buyingPrice: { type: Number }
 
         }
     ]
