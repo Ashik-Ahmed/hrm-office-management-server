@@ -7,5 +7,8 @@ router.route('/')
     .get(departmentController.getAllDepartment)
     .post(departmentController.createDepartment)
 
+// router.route('/:id')
+//     .delete()
+
 
 module.exports = router;

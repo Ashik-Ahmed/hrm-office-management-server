@@ -6,7 +6,16 @@ exports.createDepartmentService = async (data) => {
 }
 
 exports.getAllDepartmentService = async () => {
-    const departments = await Department.find({});
+    const departments = await Department.aggregate([
+        {
+            $project: {
+                departmentName: 1,
+                description: 1,
+                employeeCount: { $size: "$employeeList" }
+            }
+        }
+    ]);
     return departments;
 }
+
 
