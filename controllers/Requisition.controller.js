@@ -3,6 +3,7 @@ const { createRequisitionService, getAllRequisitionByUserEmailService, editRequi
 exports.createRequisition = async (req, res) => {
     try {
         const requisitionData = req.body;
+        console.log('from frontend: ', requisitionData);
 
         const result = await createRequisitionService(requisitionData)
 

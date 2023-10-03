@@ -4,12 +4,12 @@ const Requisition = require("../models/Requisition");
 exports.createRequisitionService = async (requisitionData) => {
 
     const result = await Requisition.create(requisitionData)
-    console.log(result);
+    // console.log(result);
     return result;
 }
 
 exports.getRequisitionDetailsByIdService = async (requisitionId) => {
-    console.log(requisitionId);
+    // console.log(requisitionId);
     const requisitionDetails = await Requisition.aggregate([
         {
             $match: { _id: new mongoose.Types.ObjectId(requisitionId) }
@@ -145,7 +145,7 @@ exports.completePurchaseByIdSevice = async (requisitionId, data) => {
     data.status = "Completed"
     data.purchasedAmount = Number(data.purchasedAmount)
     data.purchasedItems = Number(data.purchasedItems)
-    console.log(requisitionId, data);
+    // console.log(requisitionId, data);
 
     const result = await Requisition.updateOne(
         {
@@ -161,6 +161,6 @@ exports.completePurchaseByIdSevice = async (requisitionId, data) => {
 
 exports.deleteRequisitionByIdService = async (requisitionId) => {
     const result = await Requisition.deleteOne({ _id: requisitionId })
-    console.log(result);
+    // console.log(result);
     return result
 }

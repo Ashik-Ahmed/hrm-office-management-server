@@ -212,10 +212,10 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 
 
 exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
-    console.log('query get: ', query);
+    // console.log('query get: ', query);
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
-    console.log(month, year);
+    // console.log(month, year);
     const allRequisition = await Requisition.aggregate([
         {
             $match: {
@@ -259,6 +259,6 @@ exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
         }
     ])
     // console.log('service');
-    console.log(allRequisition);
+    // console.log(allRequisition);
     return allRequisition;
 }
