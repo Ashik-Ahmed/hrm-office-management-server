@@ -22,7 +22,7 @@ exports.findEmployeeByIdService = async (id) => {
             $match: { _id: new ObjectId(id) }
         },
         {
-            $project: { password: 0 }
+            $project: { password: 0, leaveHistory: 0, conveyance: 0 }
         }
     ])
 
@@ -67,6 +67,13 @@ exports.getAllEmployeeService = async () => {
         }
     ])
     return employee;
+}
+
+//update employee profile
+exports.updateEmployeeByIdService = async (empId, data) => {
+    const result = await Employee.updateOne({ _id: empId }, data)
+
+    return result;
 }
 
 //delete a user by id

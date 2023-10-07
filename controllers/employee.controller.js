@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService } = require("../services/employee.service");
+const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -169,6 +169,36 @@ exports.getAllEmployee = async (req, res) => {
             error: error.message,
         })
     }
+}
+
+exports.updateEmployeeById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+
+        console.log(id, data);
+
+        const result = await updateEmployeeByIdService(id, data);
+        console.log(result);
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Please try again"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            error: error.message
+        })
+    }
+
 }
 
 exports.deleteEmployee = async (req, res) => {
