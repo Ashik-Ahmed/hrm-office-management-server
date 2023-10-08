@@ -1,4 +1,4 @@
-const { createEmployeeService, findEmployeeByEmail, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService } = require("../services/employee.service");
+const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -201,30 +201,36 @@ exports.updateEmployeeById = async (req, res) => {
 }
 
 // update user password 
-exports.updateEmployeePasswordById = async (req, res) => {
+exports.updateEmployeePasswordByEmail = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { email } = req.params;
         const { currentPassword, newPassword, confirmPassword } = req.body;
 
         //compare new passwords
         if (newPassword !== confirmPassword) {
             return res.status(500).json({
                 status: 'Failed',
-                message: "New password didn't match"
+                error: "New password didn't match"
+            })
+        }
+        if (newPassword.length < 6) {
+            return res.status(401).json({
+                status: "Failed",
+                error: "New Password too short"
             })
         }
 
-        const employee = await findEmployeeByIdService(id)
+        const employee = await findEmployeeByEmailService(email)
 
         const isPasswordMatched = employee.comparePassword(currentPassword, employee.password);
         if (!isPasswordMatched) {
-            return res.status(500).json({
+            return res.status(402).json({
                 status: 'Failed',
-                message: "Current password is wrong"
+                error: "Current password is wrong"
             })
         }
 
-        const result = await updatePasswordService(id, req.body.newPassword);
+        const result = await updateEmployeePasswordByEmailService(email, req.body.newPassword);
 
         if (result.modifiedCount > 0) {
             return res.status(200).json({
@@ -242,7 +248,7 @@ exports.updateEmployeePasswordById = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             status: 'Failed',
-            message: error.message,
+            error: error.message,
         })
     }
 }

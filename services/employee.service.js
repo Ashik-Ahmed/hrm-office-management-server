@@ -3,6 +3,7 @@ const Employee = require("../models/Employee");
 const Leave = require("../models/Leave");
 const Requisition = require("../models/Requisition");
 const { default: mongoose } = require("mongoose");
+const bcrypt = require('bcryptjs');
 
 //create a new user
 exports.createEmployeeService = async (employeeInfo) => {
@@ -25,7 +26,7 @@ exports.findEmployeeByIdService = async (id) => {
             $project: { password: 0, leaveHistory: 0, conveyance: 0 }
         }
     ])
-
+    console.log(employee);
     return employee[0];
 }
 
@@ -77,9 +78,9 @@ exports.updateEmployeeByIdService = async (empId, data) => {
 }
 
 //update user password
-exports.updateEmployeePasswordByIdService = async (id, newPassword) => {
+exports.updateEmployeePasswordByEmailService = async (email, newPassword) => {
     const hashedPassword = bcrypt.hashSync(newPassword);
-    const result = await Employee.updateOne({ _id: id }, { $set: { password: hashedPassword } })
+    const result = await Employee.updateOne({ email }, { $set: { password: hashedPassword } })
     console.log(result);
     return result;
 
