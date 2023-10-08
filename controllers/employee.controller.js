@@ -28,7 +28,6 @@ exports.createEmployee = async (req, res) => {
 }
 
 
-
 // get employee by email address 
 exports.findEmployeeByEmail = async (req, res) => {
 
@@ -199,6 +198,53 @@ exports.updateEmployeeById = async (req, res) => {
         })
     }
 
+}
+
+// update user password 
+exports.updateEmployeePasswordById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+
+        //compare new passwords
+        if (newPassword !== confirmPassword) {
+            return res.status(500).json({
+                status: 'Failed',
+                message: "New password didn't match"
+            })
+        }
+
+        const employee = await findEmployeeByIdService(id)
+
+        const isPasswordMatched = employee.comparePassword(currentPassword, employee.password);
+        if (!isPasswordMatched) {
+            return res.status(500).json({
+                status: 'Failed',
+                message: "Current password is wrong"
+            })
+        }
+
+        const result = await updatePasswordService(id, req.body.newPassword);
+
+        if (result.modifiedCount > 0) {
+            return res.status(200).json({
+                status: 'Success',
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Please try again"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error.message,
+        })
+    }
 }
 
 exports.deleteEmployee = async (req, res) => {

@@ -19,7 +19,9 @@ const employeeSchema = mongoose.Schema(
             unique: [true, 'Duplicate Email'],
             required: [true, 'Email address is required'],
         },
-
+        mobile: {
+            type: String,
+        },
         designation: {
             type: String,
             required: [true, 'Designation is required'],

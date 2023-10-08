@@ -76,6 +76,16 @@ exports.updateEmployeeByIdService = async (empId, data) => {
     return result;
 }
 
+//update user password
+exports.updateEmployeePasswordByIdService = async (id, newPassword) => {
+    const hashedPassword = bcrypt.hashSync(newPassword);
+    const result = await Employee.updateOne({ _id: id }, { $set: { password: hashedPassword } })
+    console.log(result);
+    return result;
+
+    // console.log(email, currentPassword, newPassword, confirmPassword);
+}
+
 //delete a user by id
 exports.deleteEmployeeByIdService = async (id) => {
     const result = await Employee.deleteOne({ _id: id });

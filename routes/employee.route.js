@@ -14,6 +14,9 @@ router.route('/leaveStatus/:id')
 router.route('/requisition/:id')
     .get(employeeController.getAllRequisitionByEmployeeId)
 
+router.route('/updatePassword/:id')
+    .patch(employeeController.updateEmployeePasswordById)
+
 router.route('/')
     .post(employeeController.createEmployee)
     .get(employeeController.getAllEmployee)
