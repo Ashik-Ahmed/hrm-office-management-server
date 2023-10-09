@@ -32,6 +32,9 @@ const conveyanceSchema = mongoose.Schema(
         purpose: {
             type: String
         },
+        vehicle: {
+            type: String
+        },
         partner: {
             type: String
         },
