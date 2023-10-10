@@ -18,6 +18,9 @@ const guestSchema = mongoose.Schema(
         purpose: {
             type: String
         }
+    },
+    {
+        timestamps: true
     }
 )
 

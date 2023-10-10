@@ -1,15 +1,15 @@
-const { createNewGuestService } = require("../services/guest.service");
+const { createNewVisitorService } = require("../services/visitor.service");
 
-exports.createNewGuest = async (req, res) => {
+exports.createNewVisitor = async (req, res) => {
     try {
-        const guestData = req.body;
+        const visitorData = req.body;
 
-        const guest = await createNewGuestService(guestData)
+        const visitor = await createNewVisitorService(visitorData)
 
-        if (guest._id) {
+        if (visitor._id) {
             res.status(200).json({
                 status: "Success",
-                data: guest
+                data: visitor
             })
         }
         else {
