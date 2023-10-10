@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
-const guestSchema = mongoose.Schema(
+const visitorSchema = mongoose.Schema(
     {
         name: {
             type: String,
@@ -24,5 +24,5 @@ const guestSchema = mongoose.Schema(
     }
 )
 
-const Guest = mongoose.model("Guest", guestSchema)
-module.exports = Guest;
+const Visitor = mongoose.model("Visitor", visitorSchema)
+module.exports = Visitor;

@@ -5,6 +5,7 @@ const router = express.Router();
 
 
 router.route('/')
+    .get(visitorController.getMonthlyVisitor)
     .post(visitorController.createNewVisitor)
 
 
