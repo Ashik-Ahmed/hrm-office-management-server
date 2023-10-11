@@ -15,6 +15,12 @@ const visitorSchema = mongoose.Schema(
         company: {
             type: String
         },
+        entryTime: {
+            type: String
+        },
+        exitTime: {
+            type: String
+        },
         purpose: {
             type: String
         }

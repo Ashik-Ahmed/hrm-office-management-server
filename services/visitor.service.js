@@ -22,6 +22,6 @@ exports.getMonthlyVisitorService = async (month, year) => {
             }
         }
     ]);
-    console.log(visitors);
+    // console.log(visitors);
     return visitors;
 }
