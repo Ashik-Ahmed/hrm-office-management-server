@@ -57,6 +57,7 @@ exports.getAllEmployeeService = async () => {
     const employee = await Employee.aggregate([
         {
             $project: {
+                employeeId: 1,
                 email: 1,
                 firstName: 1,
                 lastName: 1,
