@@ -59,6 +59,7 @@ exports.getAllEmployeeService = async () => {
             $project: {
                 employeeId: 1,
                 email: 1,
+                mobile: 1,
                 firstName: 1,
                 lastName: 1,
                 userRole: 1,
