@@ -19,4 +19,11 @@ exports.getAllDepartmentService = async () => {
     return departments;
 }
 
+exports.updateDepartmentByIdService = async (deptId, updatedData) => {
+    console.log(deptId, updatedData);
+    const result = await Department.updateOne({ _id: deptId }, updatedData)
+
+    // console.log(result);
+    return result;
+}
 

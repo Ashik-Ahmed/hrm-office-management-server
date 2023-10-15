@@ -7,6 +7,9 @@ router.route('/')
     .get(departmentController.getAllDepartment)
     .post(departmentController.createDepartment)
 
+router.route('/:id')
+    .patch(departmentController.updateDepartmentById)
+
 // router.route('/:id')
 //     .delete()
 
