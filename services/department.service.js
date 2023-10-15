@@ -11,6 +11,7 @@ exports.getAllDepartmentService = async () => {
             $project: {
                 departmentName: 1,
                 description: 1,
+                status: 1,
                 employeeCount: { $size: "$employeeList" }
             }
         }

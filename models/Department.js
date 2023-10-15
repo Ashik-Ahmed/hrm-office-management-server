@@ -10,6 +10,11 @@ const departmentSchema = mongoose.Schema({
     description: {
         type: String
     },
+    status: {
+        type: String,
+        enum: ['Active', 'Inactive'],
+        default: 'Active',
+    },
     employeeList: [{
         type: ObjectId,
         ref: Employee
