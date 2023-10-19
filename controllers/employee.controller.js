@@ -1,3 +1,4 @@
+const Employee = require("../models/Employee");
 const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
@@ -27,10 +28,36 @@ exports.createEmployee = async (req, res) => {
     }
 }
 
+exports.getEmployeeByEmail = async (req, res) => {
+    try {
+        const { email } = req.params;
+        console.log(email);
+        const employee = await Employee.find({ email })
+
+        if (employee) {
+            res.status(200).json({
+                status: 'Success',
+                data: employee
+            })
+        }
+        else {
+            res.status(500).json({
+                status: 'Failed',
+                message: 'Failed! Try again.'
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
 
 // get employee by email address 
 exports.findEmployeeByEmail = async (req, res) => {
-
     try {
         const employeeEmail = req.params;
         const employee = await findEmployeeByEmailService(employeeEmail);

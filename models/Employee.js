@@ -76,6 +76,9 @@ const employeeSchema = mongoose.Schema(
             type: ObjectId,
             ref: "Conveyance"
         }],
+        bio: {
+            type: String
+        },
 
         passwordChangedAt: Date,
         passwordResetToken: String,
