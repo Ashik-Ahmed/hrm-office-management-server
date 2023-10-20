@@ -4,7 +4,7 @@ const employeeController = require('../controllers/employee.controller')
 const router = express.Router();
 
 router.post('/login', employeeController.login);
-router.get('/employeeByEmail/:email', employeeController.getEmployeeByEmail)
+// router.get('/employeeByEmail/:email', employeeController.getEmployeeByEmail)
 
 router.route('/leaveApplications/:id')
     .get(employeeController.getleaveHistoryByEmployeeId)
