@@ -21,9 +21,9 @@ const taskSchema = mongoose.Schema(
         },
         updates: [
             {
-                updatedBy: String,
-                updateMessage: String,
-                updateTime: Date
+                updatedBy: { type: ObjectId, ref: Employee },
+                updateMessage: { type: String },
+                updateTime: { type: Date, default: Date.now }
             }
         ]
     },

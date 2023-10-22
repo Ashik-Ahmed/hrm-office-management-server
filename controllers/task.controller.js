@@ -1,4 +1,4 @@
-const { createNewTaskService, getAllTasksService } = require("../services/task.service");
+const { createNewTaskService, getAllTasksService, updateTaskByIdService } = require("../services/task.service");
 
 exports.createNewTask = async (req, res) => {
     try {
@@ -39,6 +39,33 @@ exports.getAllTasks = async (req, res) => {
             res.status(400).json({
                 status: "Failed",
                 error: "No task foud"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
+exports.updateTaskById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+
+        const result = await updateTaskByIdService(id, updatedData)
+
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "Failed to update"
             })
         }
     } catch (error) {
