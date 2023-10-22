@@ -15,6 +15,18 @@ const taskSchema = mongoose.Schema(
             ref: Employee,
             required: [true, "Assignee is missing"]
         },
+        department: {
+            type: String,
+            required: [true, "Department is missing"]
+        },
+        heading: {
+            type: String,
+            required: [true, "Task heading is missing"]
+        },
+        description: {
+            type: String,
+            required: [true, "Task description is missing"]
+        },
         currentStatus: {
             type: String,
             default: "New"

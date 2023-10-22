@@ -1,3 +1,5 @@
+const { default: mongoose } = require("mongoose");
+const Employee = require("../models/Employee");
 const { createNewTaskService, getAllTasksService, updateTaskByIdService, getTaskByIdService } = require("../services/task.service");
 
 exports.createNewTask = async (req, res) => {
@@ -54,7 +56,13 @@ exports.getTaskById = async (req, res) => {
 
 exports.getAllTasks = async (req, res) => {
     try {
-        const tasks = await getAllTasksService()
+        const { employeeId } = req.query;
+        console.log(employeeId);
+
+        const employee = await Employee.findOne({ _id: new mongoose.Types.ObjectId(employeeId) }, { firstName: 1, lastName: 1, department: 1 })
+        // console.log(employee);
+
+        const tasks = await getAllTasksService(employee)
         if (tasks.length > 0) {
             res.status(200).json({
                 status: "Success",
@@ -64,7 +72,7 @@ exports.getAllTasks = async (req, res) => {
         else {
             res.status(400).json({
                 status: "Failed",
-                error: "No task foud"
+                error: "No task found"
             })
         }
     } catch (error) {
