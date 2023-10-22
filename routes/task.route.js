@@ -8,6 +8,7 @@ router.route('/')
     .get(taskController.getAllTasks)
 
 router.route('/:id')
+    .get(taskController.getTaskById)
     .patch(taskController.updateTaskById)
 
 

@@ -7,6 +7,12 @@ exports.createNewTaskService = async (taskData) => {
     return result;
 }
 
+exports.getTaskByIdService = async (taskId) => {
+    const task = await Task.findById({ _id: taskId });
+
+    return task;
+}
+
 
 exports.getAllTasksService = async () => {
     const tasks = await Task.find();
