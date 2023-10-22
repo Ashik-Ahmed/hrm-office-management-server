@@ -23,7 +23,7 @@ const taskSchema = mongoose.Schema(
             {
                 updatedBy: String,
                 updateMessage: String,
-                updateTime: Timestamp
+                updateTime: Date
             }
         ]
     },
