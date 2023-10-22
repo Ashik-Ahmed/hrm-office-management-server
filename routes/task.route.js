@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.route('/')
     .post(taskController.createNewTask)
+    .get(taskController.getAllTasks)
 
 
 module.exports = router;
