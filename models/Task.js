@@ -16,7 +16,8 @@ const taskSchema = mongoose.Schema(
             required: [true, "Assignee is missing"]
         },
         currentStatus: {
-            type: String
+            type: String,
+            default: "New"
         },
         updates: [
             {
