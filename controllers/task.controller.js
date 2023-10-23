@@ -57,10 +57,16 @@ exports.getTaskById = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
         const { employeeId } = req.query;
-        console.log(employeeId);
 
         const employee = await Employee.findOne({ _id: new mongoose.Types.ObjectId(employeeId) }, { firstName: 1, lastName: 1, department: 1 })
         // console.log(employee);
+
+        if (!employee) {
+            res.status(401).json({
+                status: "Failed",
+                error: "Please login first!"
+            })
+        }
 
         const tasks = await getAllTasksService(employee)
         if (tasks.length > 0) {

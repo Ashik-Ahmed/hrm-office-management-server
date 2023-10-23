@@ -16,11 +16,12 @@ exports.getTaskByIdService = async (taskId) => {
 
 
 exports.getAllTasksService = async (employee) => {
-    console.log(employee);
+    // console.log(employee);
     let tasks;
 
     // if employee is management send all the tasks 
     if (employee.department == "Management") {
+        // console.log('Employee is management');
         tasks = await Task.aggregate([
             {
                 $lookup: {
@@ -64,6 +65,7 @@ exports.getAllTasksService = async (employee) => {
 
     //if employee is not management check the other conditions
     else {
+        // console.log('Employee is not management');
         tasks = await Task.aggregate([
             {
                 $match: {
