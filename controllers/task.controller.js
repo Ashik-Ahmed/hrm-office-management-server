@@ -56,9 +56,11 @@ exports.getTaskById = async (req, res) => {
 
 exports.getAllTasks = async (req, res) => {
     try {
-        const { employeeId } = req.query;
+        const { employeeEmail } = req.params;
+        const query = req.query;
+        console.log(employeeEmail, query);
 
-        const employee = await Employee.findOne({ _id: new mongoose.Types.ObjectId(employeeId) }, { firstName: 1, lastName: 1, department: 1 })
+        const employee = await Employee.findOne({ email: employeeEmail }, { firstName: 1, lastName: 1, department: 1 })
         // console.log(employee);
 
         if (!employee) {
@@ -68,7 +70,7 @@ exports.getAllTasks = async (req, res) => {
             })
         }
 
-        const tasks = await getAllTasksService(employee)
+        const tasks = await getAllTasksService(employee, query)
         if (tasks.length > 0) {
             res.status(200).json({
                 status: "Success",
