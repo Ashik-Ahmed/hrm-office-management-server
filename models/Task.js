@@ -29,7 +29,7 @@ const taskSchema = mongoose.Schema(
         },
         currentStatus: {
             type: String,
-            default: "New"
+            default: "Open"
         },
         updates: [
             {

@@ -16,7 +16,7 @@ exports.getTaskByIdService = async (taskId) => {
 
 
 exports.getAllTasksService = async (employee, query) => {
-    console.log(query);
+    // console.log(query);
     let tasks;
 
     // if employee is management send all the tasks 
