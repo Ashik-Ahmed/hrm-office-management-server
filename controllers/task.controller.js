@@ -57,8 +57,14 @@ exports.getTaskById = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
-        const query = req.query;
-        console.log(employeeEmail, query);
+        const { page = 0, limit = 10 } = req.query;
+        const queryObject = { ...req.query }
+        console.log(queryObject);
+        const excludeFields = ['page', 'sort', 'limit'];
+
+        excludeFields.forEach(field => delete queryObject[field])
+
+        console.log(queryObject);
 
         const employee = await Employee.findOne({ email: employeeEmail }, { firstName: 1, lastName: 1, department: 1 })
         // console.log(employee);
