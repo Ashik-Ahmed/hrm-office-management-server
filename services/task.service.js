@@ -34,7 +34,7 @@ exports.getAllTasksService = async (employee, query) => {
         console.log('Employee is management');
         tasks = await Task.aggregate([
             {
-                $match: query
+                $match: queryObject
             },
             {
                 $lookup: {
@@ -83,7 +83,7 @@ exports.getAllTasksService = async (employee, query) => {
             {
                 $match: {
                     $and: [
-                        query,
+                        queryObject,
                         {
                             $or: [
                                 { department: employee.department },
