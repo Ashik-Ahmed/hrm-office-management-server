@@ -57,17 +57,10 @@ exports.getTaskById = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
-        const { page = 0, limit = 10 } = req.query;
-        const queryObject = { ...req.query }
-        console.log(queryObject);
-        const excludeFields = ['page', 'sort', 'limit'];
-
-        excludeFields.forEach(field => delete queryObject[field])
-
-        console.log(queryObject);
+        // console.log(req.params);
 
         const employee = await Employee.findOne({ email: employeeEmail }, { firstName: 1, lastName: 1, department: 1 })
-        // console.log(employee);
+        console.log(employee);
 
         if (!employee) {
             res.status(401).json({
@@ -76,7 +69,7 @@ exports.getAllTasks = async (req, res) => {
             })
         }
 
-        const tasks = await getAllTasksService(employee, query)
+        const tasks = await getAllTasksService(employee, req.query)
         if (tasks.length > 0) {
             res.status(200).json({
                 status: "Success",

@@ -16,12 +16,22 @@ exports.getTaskByIdService = async (taskId) => {
 
 
 exports.getAllTasksService = async (employee, query) => {
-    // console.log(query);
+    // console.log(employee);
+
+    const { page = 0, limit = 10 } = query;
+    const queryObject = { ...query }
+    console.log(queryObject);
+    const excludeFields = ['page', 'sort', 'limit'];
+
+    excludeFields.forEach(field => delete queryObject[field])
+
+    console.log(queryObject);
+
     let tasks;
 
     // if employee is management send all the tasks 
     if (employee.department == "Management") {
-        // console.log('Employee is management');
+        console.log('Employee is management');
         tasks = await Task.aggregate([
             {
                 $match: query
@@ -68,7 +78,7 @@ exports.getAllTasksService = async (employee, query) => {
 
     //if employee is not management check the other conditions
     else {
-        // console.log('Employee is not management');
+        console.log('Employee is not management');
         tasks = await Task.aggregate([
             {
                 $match: {
