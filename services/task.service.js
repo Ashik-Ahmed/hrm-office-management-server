@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 const Task = require("../models/Task")
 
 exports.createNewTaskService = async (taskData) => {
-    // console.log(taskData);
+    console.log(taskData);
     const result = await Task.create(taskData)
     // console.log(result);
     return result;
@@ -128,7 +128,8 @@ exports.getAllTasksService = async (employee, query) => {
                     },
                     heading: 1,
                     currentStatus: 1,
-                    updatedAt: 1
+                    updatedAt: 1,
+                    createdAt: 1
                 }
             }
         ]);

@@ -6,6 +6,7 @@ exports.createNewTask = async (req, res) => {
     try {
         // console.log(req.body);
         const result = await createNewTaskService(req.body)
+        console.log(result);
 
         if (result._id) {
             res.status(200).json({

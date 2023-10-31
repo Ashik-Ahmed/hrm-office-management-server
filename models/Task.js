@@ -1,10 +1,16 @@
 const { ObjectId, Timestamp } = require("mongodb");
 const { default: mongoose } = require("mongoose");
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
 const Employee = require("./Employee");
 
 
 const taskSchema = mongoose.Schema(
     {
+        taskNumber: {
+            type: Number,
+
+        },
         creator: {
             type: ObjectId,
             ref: Employee,
@@ -43,6 +49,8 @@ const taskSchema = mongoose.Schema(
         timestamps: true,
     }
 )
+
+taskSchema.plugin(AutoIncrement, { inc_field: 'taskNumber' });
 
 const Task = mongoose.model("Task", taskSchema);
 module.exports = Task;

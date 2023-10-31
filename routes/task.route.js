@@ -4,7 +4,7 @@ const taskController = require('../controllers/task.controller')
 const router = express.Router()
 
 router.route('/:employeeEmail')
-    .get(taskController.getAllTasks)
+    .get(taskController.getAllTasks)    //only get if the employee is an assignee and his own dept tasks. Management will get all dept. tasks
 
 router.route('/')
     .post(taskController.createNewTask)
