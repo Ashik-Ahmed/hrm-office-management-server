@@ -58,7 +58,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
         const query = req.query;
-        // console.log(query);
+        console.log(query);
         const conveyance = await getConveyanceByEmployeeEmailService(employeeEmail, query);
 
         if (conveyance) {

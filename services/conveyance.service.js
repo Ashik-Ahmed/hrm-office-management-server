@@ -112,6 +112,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
     ]);
 
     // console.log(conveyance[0].conveyanceDetails);
+    console.log(conveyance[0]);
     return conveyance[0];
 }
 
