@@ -366,6 +366,7 @@ exports.getAllRequisitionByEmployeeId = async (req, res) => {
     try {
         const { id: employeeId } = req.params;
         const query = req.query;
+        console.log(employeeId, query);
         const requisitions = await getAllRequisitionByEmployeeIdService(employeeId, query);
 
         if (requisitions.length > 0) {

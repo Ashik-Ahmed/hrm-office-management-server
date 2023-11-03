@@ -70,8 +70,12 @@ exports.getAllTasksService = async (employee, query) => {
                     },
                     heading: 1,
                     currentStatus: 1,
+                    createdAt: 1,
                     updatedAt: 1
                 }
+            },
+            {
+                $sort: { createdAt: -1 }
             }
         ]);
     }
@@ -128,9 +132,12 @@ exports.getAllTasksService = async (employee, query) => {
                     },
                     heading: 1,
                     currentStatus: 1,
+                    createdAt: 1,
                     updatedAt: 1,
-                    createdAt: 1
                 }
+            },
+            {
+                $sort: { createdAt: -1 }
             }
         ]);
     }
