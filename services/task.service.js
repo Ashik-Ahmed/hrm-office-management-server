@@ -76,6 +76,12 @@ exports.getAllTasksService = async (employee, query) => {
             },
             {
                 $sort: { createdAt: -1 }
+            },
+            {
+                $skip: (parseInt(page) * parseInt(limit))
+            },
+            {
+                $limit: parseInt(limit)
             }
         ]);
     }
@@ -138,6 +144,12 @@ exports.getAllTasksService = async (employee, query) => {
             },
             {
                 $sort: { createdAt: -1 }
+            },
+            {
+                $skip: (parseInt(page) * parseInt(limit))
+            },
+            {
+                $limit: parseInt(limit)
             }
         ]);
     }
