@@ -70,11 +70,11 @@ exports.getAllTasks = async (req, res) => {
             })
         }
 
-        const tasks = await getAllTasksService(employee, req.query)
-        if (tasks.length > 0) {
+        const taskData = await getAllTasksService(employee, req.query)
+        if (taskData?.tasks?.length > 0) {
             res.status(200).json({
                 status: "Success",
-                data: tasks
+                data: taskData
             })
         }
         else {

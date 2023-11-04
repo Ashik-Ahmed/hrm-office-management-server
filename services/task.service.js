@@ -27,11 +27,21 @@ exports.getAllTasksService = async (employee, query) => {
 
     console.log(queryObject);
 
-    let tasks;
+    let tasks, totalDocuments;
 
     // if employee is management send all the tasks 
     if (employee.department == "Management") {
         console.log('Employee is management');
+
+        totalDocuments = await Task.aggregate([
+            {
+                $match: queryObject
+            },
+            {
+                $count: 'totalDocumentCount'
+            }
+        ]);
+
         tasks = await Task.aggregate([
             {
                 $match: queryObject
@@ -68,6 +78,7 @@ exports.getAllTasksService = async (employee, query) => {
                             { $arrayElemAt: ["$Assignee.lastName", 0] },
                         ]
                     },
+                    totalDocuments: 1,
                     heading: 1,
                     currentStatus: 1,
                     createdAt: 1,
@@ -89,6 +100,27 @@ exports.getAllTasksService = async (employee, query) => {
     //if employee is not management check the other conditions
     else {
         console.log('Employee is not management');
+
+        totalDocuments = await Task.aggregate([
+            {
+                $match: {
+                    $and: [
+                        queryObject,
+                        {
+                            $or: [
+                                { department: employee.department },
+                                { creator: new mongoose.Types.ObjectId(employee._id) },
+                                { assignee: new mongoose.Types.ObjectId(employee._id) }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                $count: 'totalDocumentCount'
+            }
+        ])
+
         tasks = await Task.aggregate([
             {
                 $match: {
@@ -136,6 +168,7 @@ exports.getAllTasksService = async (employee, query) => {
                             { $arrayElemAt: ["$Assignee.lastName", 0] },
                         ]
                     },
+                    totalDocuments: 1,
                     heading: 1,
                     currentStatus: 1,
                     createdAt: 1,
@@ -153,7 +186,13 @@ exports.getAllTasksService = async (employee, query) => {
             }
         ]);
     }
-    return tasks;
+    console.log(totalDocuments[0].totalDocumentCount, parseInt(limit));
+
+    const totalPage = Math.ceil(totalDocuments[0]?.totalDocumentCount / parseInt(limit));
+    console.log(totalPage);
+    const taskData = { totalPage, tasks }
+
+    return taskData;
 }
 
 exports.updateTaskByIdService = async (taskId, updatedData) => {
