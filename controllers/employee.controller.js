@@ -1,5 +1,5 @@
 const Employee = require("../models/Employee");
-const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService } = require("../services/employee.service");
+const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -188,6 +188,35 @@ exports.getAllEmployee = async (req, res) => {
                 employees
             }
         })
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.getEmployeeByDepartment = async (req, res) => {
+    try {
+
+        const { department } = req.query;
+        console.log(department);
+
+        const employees = await getEmployeeByDepartmentService(department);
+        if (employees.length > 0) {
+            res.status(200).json({
+                status: "Success",
+                data: employees
+            })
+        }
+
+        else {
+            res.status(400).json({
+                status: "Failed",
+                error: "No employee found"
+            })
+        }
 
     } catch (error) {
         res.status(500).json({

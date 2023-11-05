@@ -79,6 +79,21 @@ exports.updateEmployeeByIdService = async (empId, data) => {
     return result;
 }
 
+// get employees by department name 
+exports.getEmployeeByDepartmentService = async (department) => {
+    const employees = await Employee.aggregate([
+        {
+            $match: { department: department }
+        },
+        {
+            $project: {
+                name: { $concat: ["$firstName", " ", "$lastName"] }
+            }
+        }
+    ])
+    return employees
+}
+
 //update user password
 exports.updateEmployeePasswordByEmailService = async (email, newPassword) => {
     const hashedPassword = bcrypt.hashSync(newPassword);
