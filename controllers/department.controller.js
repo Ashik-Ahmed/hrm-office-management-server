@@ -28,7 +28,10 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartment = async (req, res) => {
     try {
-        const departments = await getAllDepartmentService();
+
+        const query = req.query;
+        console.log(query);
+        const departments = await getAllDepartmentService(query);
 
         if (departments) {
             res.status(200).json({

@@ -5,8 +5,12 @@ exports.createDepartmentService = async (data) => {
     return result;
 }
 
-exports.getAllDepartmentService = async () => {
+exports.getAllDepartmentService = async (query) => {
+    console.log(query);
     const departments = await Department.aggregate([
+        {
+            $match: query
+        },
         {
             $project: {
                 departmentName: 1,
