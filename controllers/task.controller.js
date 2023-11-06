@@ -4,8 +4,11 @@ const { createNewTaskService, getAllTasksService, updateTaskByIdService, getTask
 
 exports.createNewTask = async (req, res) => {
     try {
-        // console.log(req.body);
-        const result = await createNewTaskService(req.body)
+        const taskData = req.body;
+        const creator = await Employee.findOne({ email: taskData.creator }, { id: 1 })
+        console.log(creator);
+        taskData.creator = creator._id;
+        const result = await createNewTaskService(taskData)
         console.log(result);
 
         if (result._id) {
