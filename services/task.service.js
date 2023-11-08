@@ -9,8 +9,8 @@ exports.createNewTaskService = async (taskData) => {
 }
 
 exports.getTaskByIdService = async (taskId) => {
+    console.log(taskId);
     const task = await Task.findById({ _id: taskId });
-
     return task;
 }
 
