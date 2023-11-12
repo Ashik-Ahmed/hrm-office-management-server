@@ -33,10 +33,8 @@ exports.createNewTask = async (req, res) => {
 }
 
 exports.getTaskById = async (req, res) => {
-    console.log('taskId: ');
-    const id = req.params;
     try {
-
+        const { id } = req.params;
         const task = await getTaskByIdService(id);
 
         if (task) {

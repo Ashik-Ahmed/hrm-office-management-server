@@ -9,9 +9,54 @@ exports.createNewTaskService = async (taskData) => {
 }
 
 exports.getTaskByIdService = async (taskId) => {
-    console.log(taskId);
-    const task = await Task.findById({ _id: taskId });
-    return task;
+    const task = await Task.aggregate([
+        {
+            $match: { _id: new mongoose.Types.ObjectId(taskId) }
+        },
+        {
+            $lookup: {
+                from: "employees",
+                localField: "creator",
+                foreignField: "_id",
+                as: "Creator"
+            }
+        },
+        {
+            $lookup: {
+                from: "employees",
+                localField: "assignee",
+                foreignField: "_id",
+                as: "Assignee"
+            }
+        },
+        {
+            $project: {
+                creator: {
+                    $concat: [
+                        { $arrayElemAt: ["$Creator.firstName", 0] },
+                        " ",
+                        { $arrayElemAt: ["$Creator.lastName", 0] },
+                    ]
+                },
+                assignee: {
+                    $concat: [
+                        { $arrayElemAt: ["$Assignee.firstName", 0] },
+                        " ",
+                        { $arrayElemAt: ["$Assignee.lastName", 0] },
+                    ]
+                },
+                heading: 1,
+                description: 1,
+                currentStatus: 1,
+                department: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                updates: 1
+            }
+        }
+    ]);
+
+    return task[0];
 }
 
 
