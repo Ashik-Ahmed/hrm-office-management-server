@@ -241,11 +241,11 @@ exports.getAllTasksService = async (employee, query) => {
 }
 
 exports.updateTaskByIdService = async (taskId, updatedData) => {
-
+    console.log(taskId, updatedData);
     let result;
-    if (updatedData.updates) {
+    if (updatedData.updateMessage) {
         const update = updatedData.updates
-        result = await Task.updateOne({ _id: taskId }, { $push: { updates: update } });
+        result = await Task.updateOne({ _id: taskId }, { $push: { updates: updatedData } });
     }
     else {
         result = await Task.updateOne({ _id: taskId }, updatedData);
