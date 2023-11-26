@@ -34,21 +34,7 @@ exports.findEmployeeByIdService = async (id) => {
 exports.findEmployeeByEmailService = async (email) => {
 
     const employee = await Employee.findOne({ email }, { firstName: 1, lastName: 1, designation: 1, department: 1, userRole: 1, image: 1, email: 1, password: 1 })
-    // const employee = await Employee.aggregate([
-    //     {
-    //         $match: { email: email }
-    //     },
-    //     {
-    //         $project: {
-    //             email: 1,
-    //             password: 1,
-    //             // name: firstName + lastName,
-    //             // firstName: 1,
-    //             // lastName: 1,
-    //             userRole: 1,
-    //         }
-    //     }
-    // ])
+
     return employee;
 }
 
