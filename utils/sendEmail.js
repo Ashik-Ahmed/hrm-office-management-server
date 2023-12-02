@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-module.exports = async (req, res, next) => {
+exports.sendEmail = async () => {
     // Create a transporter using Zimbra settings
     try {
         const transporter = nodemailer.createTransport({
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
         };
 
         // Send the email
-        const emailStatus = transporter.sendMail(message, (error, info) => {
+        const emailStatus = await transporter.sendMail(message, (error, info) => {
             if (error) {
                 console.error('Error occurred:', error);
                 return;
@@ -34,7 +34,6 @@ module.exports = async (req, res, next) => {
             console.log('Message ID:', info.messageId);
         });
 
-        next()
 
     } catch (error) {
         console.log('Error: ', error);
