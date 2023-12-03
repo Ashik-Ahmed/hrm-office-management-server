@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-exports.sendEmail = async () => {
+exports.sendEmail = async (emailInfo) => {
     // Create a transporter using Zimbra settings
     try {
         const transporter = nodemailer.createTransport({
@@ -17,11 +17,12 @@ exports.sendEmail = async () => {
 
         // Message object
         const message = {
-            from: 'obaydul@infotelebd.com',
-            to: 'ashik@infotelebd.com',
-            subject: 'Hello from Node.js!',
-            text: 'This is a test email sent from Node.js using Nodemailer and Zimbra.',
-            html: '<p>This is a test email sent from <strong>Node.js</strong> using <em>Zimbra</em>.</p>',
+            from: 'office@infotelebd.com',
+            to: emailInfo.to,
+            subject: emailInfo.subject,
+            html: emailInfo.body
+            // text: 'This is a test email sent from Node.js using Nodemailer and Zimbra.',
+            // html: '<p>This is a test email sent from <strong>Node.js</strong> using <em>Zimbra</em>.</p>',
         };
 
         // Send the email
