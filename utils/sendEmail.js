@@ -5,7 +5,7 @@ exports.sendEmail = async (emailInfo) => {
     try {
         const transporter = nodemailer.createTransport({
             host: 'mail.colocity.host',
-            port: 587, // Use the appropriate port for your server
+            port: 587, // outgoing port for mail server
             secure: false, // Set to true for secure connections like TLS, false for non-secure
             auth: {
                 user: process.env.AUTH_EMAIL,
