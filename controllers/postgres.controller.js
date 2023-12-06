@@ -2,9 +2,12 @@ const { getPostgresDataService } = require("../services/a2pReport.service");
 
 exports.getPostgresData = async (req, res) => {
     try {
+        const { date } = req.query;
+        // console.log(date);
+        const data = await getPostgresDataService(date)
 
-        const data = await getPostgresDataService()
-        console.log(data.rows);
+        // console.log(data.rows);
+
         if (data.rowCount > 0) {
             res.status(200).json({
                 status: "Succes",
