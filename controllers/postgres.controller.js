@@ -5,6 +5,7 @@ exports.getPostgresData = async (req, res) => {
         const { date } = req.query;
         // console.log(date);
         const data = await getPostgresDataService(date)
+        // const data = await getPostgresDataService()
 
         // console.log(data.rows);
 
