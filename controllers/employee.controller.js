@@ -310,6 +310,49 @@ exports.updateEmployeePasswordByEmail = async (req, res) => {
     }
 }
 
+exports.updatePasswordByToken = async (req, res) => {
+    try {
+        const { token } = req.params;
+        console.log(token);
+
+        const employee = await findEmployeeByTokenService(token);
+        console.log(employee);
+        if (!employee) {
+            res.status(401).json({
+                status: "Failed",
+                error: "Invalid token"
+            })
+        }
+
+        const date = new Date()
+        console.log(date, employee.passwordResetTokenExpires);
+
+        // if the current time is greater than expired time, the token is expired 
+        const isTokenExpired = date > employee.passwordResetTokenExpires
+        console.log(isTokenExpired);
+
+        if (isTokenExpired) {
+            res.status(402).json({
+                status: "Failed",
+                error: "Token expired"
+            })
+        }
+
+        else {
+            res.status(200).json({
+                status: "Success",
+                data: "Valid Token"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
 exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
@@ -335,7 +378,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
             const emailInfo = {
                 to: employee.email,
                 subject: "Reset your Password",
-                body: "Please reset your password. Click the folowing lnk to reset: "
+                body: `Please reset your password. Click the folowing lnk to reset: ${req.protocol}://${req.get("host")}/reset-password/${token}`
             }
 
             const emailSend = await sendEmail(emailInfo)

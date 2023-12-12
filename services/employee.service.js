@@ -40,6 +40,7 @@ exports.findEmployeeByEmailService = async (email) => {
 
 exports.findEmployeeByTokenService = async (token) => {
     const employee = await Employee.findOne({ passwordResetToken: token }, { passwordResetToken: 1, passwordResetTokenExpires: 1, email: 1 })
+    return employee;
 }
 
 //find all users

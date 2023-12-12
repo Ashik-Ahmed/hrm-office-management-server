@@ -24,8 +24,8 @@ router.route('/updatePassword/:email')
 router.route('/send-password-reset-email/:email')
     .get(employeeController.sendResetPasswordEmail)
 
-// router.route('/resetPassword/:token')
-//     .get()
+router.route('/reset-password/:token')
+    .get(employeeController.updatePasswordByToken)
 
 router.route('/')
     .post(employeeController.createEmployee)
