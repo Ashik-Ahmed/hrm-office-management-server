@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require("validator");
 const bcrypt = require('bcryptjs');
 const { ObjectId } = require('mongodb');
+const crypto = require('crypto')
 
 
 
@@ -82,7 +83,7 @@ const employeeSchema = mongoose.Schema(
 
         passwordChangedAt: Date,
         passwordResetToken: String,
-        passwordResetExpires: Date
+        passwordResetTokenExpires: Date
     },
 
     {
@@ -106,7 +107,18 @@ employeeSchema.methods.comparePassword = function (password, hash) {
     return isPasswordMatched;
 }
 
+employeeSchema.methods.resetPassword = function () {
+    const token = crypto.randomBytes(32).toString('hex');
 
+    this.passwordResetToken = token;
+
+    const date = new Date()
+    date.setDate(date.getTime() + 5)
+    this.passwordResetTokenExpires = date;
+
+    return token;
+
+}
 
 const Employee = mongoose.model('Employee', employeeSchema);
 module.exports = Employee;
