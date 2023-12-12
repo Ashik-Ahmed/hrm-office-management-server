@@ -114,9 +114,8 @@ employeeSchema.methods.generateResetPasswordToken = function () {
     this.passwordResetToken = token;
 
     const date = new Date()
-    console.log(date.getTime());
-    date.setDate(date.getTime() + 5)
-    this.passwordResetTokenExpires = date;
+    const expiryDate = new Date(date.getTime() + 5 * 60000)
+    this.passwordResetTokenExpires = expiryDate;
 
     return token;
 }
