@@ -107,13 +107,14 @@ employeeSchema.methods.comparePassword = function (password, hash) {
     return isPasswordMatched;
 }
 
-employeeSchema.methods.resetPassword = function () {
+employeeSchema.methods.generateResetPasswordToken = function () {
 
     const token = crypto.randomBytes(32).toString('hex');
 
     this.passwordResetToken = token;
 
     const date = new Date()
+    console.log(date.getTime());
     date.setDate(date.getTime() + 5)
     this.passwordResetTokenExpires = date;
 

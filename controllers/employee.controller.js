@@ -1,5 +1,6 @@
 const Employee = require("../models/Employee");
 const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService } = require("../services/employee.service");
+const { sendEmail } = require("../utils/sendEmail");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -309,16 +310,41 @@ exports.updateEmployeePasswordByEmail = async (req, res) => {
     }
 }
 
-exports.resetPassword = async (req, res) => {
+exports.sendResetPasswordEmail = async (req, res) => {
     try {
-        const { token } = req.params;
+        const { email } = req.params;
 
-        const employee = await findEmployeeByTokenService(token);
+        console.log(email);
+
+        // const employee = await findEmployeeByTokenService(token);
+
+        const employee = await findEmployeeByEmailService(email)
+
+        const token = employee.generateResetPasswordToken();
+
+        await employee.save({ validateBeforeSave: false })
 
         if (!employee) {
             res.status(401).json({
                 status: "Failed",
-                error: "Token Expired"
+                error: "Invalid employee email"
+            })
+        }
+        else {
+
+            const emailInfo = {
+                to: employee.email,
+                subject: "Reset your Password",
+                body: "Please reset your password. Click the folowing lnk to reset: "
+            }
+
+            const emailSend = await sendEmail(emailInfo)
+
+            console.log(emailSend);
+
+            res.status(200).json({
+                status: "Success",
+                data: "Password reset email sent"
             })
         }
 
