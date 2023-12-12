@@ -38,6 +38,10 @@ exports.findEmployeeByEmailService = async (email) => {
     return employee;
 }
 
+exports.findEmployeeByTokenService = async (token) => {
+    const employee = await Employee.findOne({ passwordResetToken: token }, { passwordResetToken: 1, passwordResetTokenExpires: 1, email: 1 })
+}
+
 //find all users
 exports.getAllEmployeeService = async () => {
     const employee = await Employee.aggregate([

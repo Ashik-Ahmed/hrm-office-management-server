@@ -108,6 +108,7 @@ employeeSchema.methods.comparePassword = function (password, hash) {
 }
 
 employeeSchema.methods.resetPassword = function () {
+
     const token = crypto.randomBytes(32).toString('hex');
 
     this.passwordResetToken = token;
@@ -117,7 +118,6 @@ employeeSchema.methods.resetPassword = function () {
     this.passwordResetTokenExpires = date;
 
     return token;
-
 }
 
 const Employee = mongoose.model('Employee', employeeSchema);

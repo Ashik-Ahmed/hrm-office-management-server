@@ -21,6 +21,9 @@ router.route('/requisition/:id')
 router.route('/updatePassword/:email')
     .patch(employeeController.updateEmployeePasswordByEmail)
 
+router.route('/resetPassword/:token')
+    .get()
+
 router.route('/')
     .post(employeeController.createEmployee)
     .get(employeeController.getAllEmployee)

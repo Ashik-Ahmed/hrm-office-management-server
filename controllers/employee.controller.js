@@ -1,5 +1,5 @@
 const Employee = require("../models/Employee");
-const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService } = require("../services/employee.service");
+const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService } = require("../services/employee.service");
 const { generateToken } = require("../utils/token");
 
 exports.createEmployee = async (req, res) => {
@@ -298,6 +298,27 @@ exports.updateEmployeePasswordByEmail = async (req, res) => {
             res.status(400).json({
                 status: "Failed",
                 error: "Please try again"
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const employee = await findEmployeeByTokenService(token);
+
+        if (!employee) {
+            res.status(401).json({
+                status: "Failed",
+                error: "Token Expired"
             })
         }
 
