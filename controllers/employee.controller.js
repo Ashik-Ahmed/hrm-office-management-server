@@ -2,6 +2,13 @@ const Employee = require("../models/Employee");
 const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService } = require("../services/employee.service");
 const { sendEmail } = require("../utils/sendEmail");
 const { generateToken } = require("../utils/token");
+// const app = require('../app')
+// const express = require('express');
+// const path = require('path');
+
+
+// app.use(express.static(path.join(__dirname, 'utils')));
+
 
 exports.createEmployee = async (req, res) => {
     console.log(req.body);
@@ -332,17 +339,40 @@ exports.updatePasswordByToken = async (req, res) => {
         console.log(isTokenExpired);
 
         if (isTokenExpired) {
-            res.status(402).json({
-                status: "Failed",
-                error: "Token expired"
-            })
+            // res.status(402).json({
+            //     status: "Failed",
+            //     error: "Token expired"
+            // })
+            res.send(`<!DOCTYPE html>
+                <head>
+                    <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Your Form</title>
+                        </head>
+                        <body>
+
+                            <h1>Your Form</h1>
+
+                            <form action="/submit" method="post">
+                                <!-- Your form fields go here -->
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" required>
+
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" required>
+
+                                        <input type="submit" value="Submit">
+                                        </form>
+
+                                    </body>
+                                </html>`)
         }
 
         else {
-            res.status(200).json({
-                status: "Success",
-                data: "Valid Token"
-            })
+            // res.status(200).json({
+            //     status: "Success",
+            //     data: "Valid Token"
+            // })
         }
 
     } catch (error) {
