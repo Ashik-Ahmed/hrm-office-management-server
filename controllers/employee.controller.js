@@ -445,7 +445,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
             const emailInfo = {
                 to: employee.email,
                 subject: "Reset your Password",
-                body: `Please reset your password. Click the following link to reset: <a href=${req.protocol}://${req.get("host")}/reset-password/${token}>Click here</a>`
+                body: `Please reset your password. Click the following link to reset: <a href=${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}>Click here</a>`
             }
 
             const emailSend = await sendEmail(emailInfo)
