@@ -31,10 +31,12 @@ exports.sendEmail = async (emailInfo) => {
                 console.error('Error occurred:', error);
                 return;
             }
-            console.log('Email sent successfully!');
-            console.log('Message ID:', info.messageId);
+            else {
+                console.log('Email sent successfully!');
+                console.log('Message ID:', info.messageId);
+                return info;
+            }
         });
-
 
     } catch (error) {
         console.log('Error: ', error);

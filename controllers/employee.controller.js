@@ -450,12 +450,20 @@ exports.sendResetPasswordEmail = async (req, res) => {
 
             const emailSend = await sendEmail(emailInfo)
 
-            console.log(emailSend);
+            console.log('email info:', emailSend);
 
-            res.status(200).json({
-                status: "Success",
-                data: "Password reset email sent"
-            })
+            if (emailSend.messageId) {
+                res.status(200).json({
+                    status: "Success",
+                    data: "Password reset email sent"
+                })
+            }
+            else {
+                res.status(400).json({
+                    status: "Failed",
+                    error: "Email send failed"
+                })
+            }
         }
 
     } catch (error) {
