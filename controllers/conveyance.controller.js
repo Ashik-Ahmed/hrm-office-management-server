@@ -1,4 +1,5 @@
 const { createConveyanceService, getConveyanceByEmployeeEmailService, getAllEmployeeMonthlyConveyanceService, deleteConveyanceByIdServicce, makePaymentConveyanceBillService, editConveyanceByIdService } = require("../services/conveyance.service")
+const { sendEmail } = require("../utils/sendEmail")
 
 exports.createConveyance = async (req, res) => {
     try {
@@ -113,12 +114,30 @@ exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
 
 exports.makePaymentConveyanceBill = async (req, res) => {
     try {
+
+        const { employeeEmail, amount } = req.query;
+        // console.log(employeeEmail, amount);
+
         // const data = JSON.parse(req.body)
         const pendingIds = req.body
-        console.log('data: ', pendingIds);
+        // console.log('data: ', pendingIds);
         const result = await makePaymentConveyanceBillService(pendingIds)
 
         if (result.modifiedCount > 0) {
+
+            const emailInfo = {
+                to: employeeEmail,
+                subject: 'Conveyance Bill',
+                body: `Dear Employee, <p>Your conveyance bill has been approved. Bill amount: ${amount} </p> 
+                <br>
+                <p>Please collect your bill from Accounts.</p>
+                <br>
+                <br>
+                <p>Thank you.</p>`
+            }
+
+            await sendEmail(emailInfo)
+
             res.status(200).json({
                 status: 'Success',
                 data: result

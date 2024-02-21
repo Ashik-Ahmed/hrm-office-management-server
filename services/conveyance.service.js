@@ -101,7 +101,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
         },
         {
             $project: {
-                _id: 0,
+                _id: 1,
                 conveyanceDetails: 1,
                 totalAmount: 1,
                 totalDueAmount: 1,
@@ -112,7 +112,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
     ]);
 
     // console.log(conveyance[0].conveyanceDetails);
-    console.log(conveyance[0]);
+    // console.log(conveyance[0]);
     return conveyance[0];
 }
 
