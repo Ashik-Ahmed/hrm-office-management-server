@@ -108,7 +108,7 @@ exports.login = async (req, res) => {
         }
 
         const employee = await findEmployeeByEmailService(email);
-        console.log('employee from controller', employee);
+        // console.log('employee from controller', employee);
 
         if (!employee) {
             return res.status(401).json({
