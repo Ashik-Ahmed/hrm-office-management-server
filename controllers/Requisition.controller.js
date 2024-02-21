@@ -1,13 +1,39 @@
 const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService, getRequisitionDetailsByIdService, deleteRequisitionByIdService, getMonthlyRequisitionDataService, completePurchaseByIdSevice } = require("../services/Requisition.service");
+const { sendEmail } = require("../utils/sendEmail");
 
 exports.createRequisition = async (req, res) => {
     try {
         const requisitionData = req.body;
-        console.log('from frontend: ', requisitionData);
 
         const result = await createRequisitionService(requisitionData)
 
-        if (result) {
+        if (result?._id) {
+            const requisitionDetails = await getRequisitionDetailsByIdService(result?._id)
+            // console.log(requisitionDetails);
+
+            // send email
+            const emailInfo = {
+                to: 'mnp.desk@infotelebd.com',
+                subject: 'New Requisition',
+                body: ` <p>Dear Concern,</p> <p>${requisitionDetails?.submittedBy?.name} just submitted a requisition. The requisition details are given below.
+                <br>
+                <br>
+                <b>Department:</b> ${requisitionDetails?.department}
+                <br>
+                 <b>Total items:</b> ${requisitionDetails?.totalProposedItems}
+                <br>
+                <b>Total amount:</b> ${requisitionDetails?.proposedAmount}
+                <br>
+                <br>
+                Click <a href="http://localhost:3000/manage-requisition">here</a> to review the requisition.
+                <br>
+                <br> 
+                <p>Thank you.</p>`
+            }
+
+            await sendEmail(emailInfo);
+
+
             res.status(200).json({
                 status: "Success",
                 data: result

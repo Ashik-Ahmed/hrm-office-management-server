@@ -17,7 +17,7 @@ exports.sendEmail = async (emailInfo) => {
 
         // Message object
         const message = {
-            from: 'office@infotelebd.com',
+            from: process.env.AUTH_EMAIL,
             to: emailInfo.to,
             subject: emailInfo.subject,
             html: emailInfo.body
