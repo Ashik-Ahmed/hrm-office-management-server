@@ -1,3 +1,4 @@
+const Requisition = require("../models/Requisition");
 const { createRequisitionService, getAllRequisitionByUserEmailService, editRequisitionByIdService, getRequisitionDetailsByIdService, deleteRequisitionByIdService, getMonthlyRequisitionDataService, completePurchaseByIdSevice, cancelRequisitionByIdService } = require("../services/Requisition.service");
 const { sendEmail } = require("../utils/sendEmail");
 
@@ -141,7 +142,26 @@ exports.cancelRequisitionById = async (req, res) => {
         const { id } = req.params;
         const result = await cancelRequisitionByIdService(id)
 
+        const requisition = await Requisition.findOne({ _id: id }, { "submittedBy": 1, _id: 0 }).populate('submittedBy', 'email')
+
+        // console.log(requisition);
+
         if (result.modifiedCount > 0) {
+
+
+            const emailInfo = {
+                to: `${requisition?.submittedBy?.email}`,
+                subject: 'Requisition Cancelled',
+                body: `<p>Dear Concern,</p> <p>Your requisition has been cancelled. 
+                Click <a href="http://localhost:3000/requisition">here</a> to see your requisition list.
+                
+                <br>
+                <br>
+                Please check.</p>`
+            }
+
+            await sendEmail(emailInfo);
+
             res.status(200).json({
                 status: "Success",
                 data: result
