@@ -45,6 +45,9 @@ exports.getTaskByIdService = async (taskId) => {
                         { $arrayElemAt: ["$Assignee.lastName", 0] },
                     ]
                 },
+                assigneeEmail: {
+                    $arrayElemAt: ["$Assignee.email", 0]
+                },
                 heading: 1,
                 description: 1,
                 currentStatus: 1,
@@ -75,8 +78,7 @@ exports.getAllTasksService = async (employee, query) => {
     let tasks, totalDocuments;
 
     // if employee is management send all the tasks 
-    if (employee.department == "Management") {
-        console.log('Employee is management');
+    if (employee?.department == "Management") {
 
         totalDocuments = await Task.aggregate([
             {
@@ -144,7 +146,6 @@ exports.getAllTasksService = async (employee, query) => {
 
     //if employee is not management check the other conditions
     else {
-        console.log('Employee is not management');
 
         totalDocuments = await Task.aggregate([
             {

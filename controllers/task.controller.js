@@ -1,17 +1,41 @@
 const { default: mongoose } = require("mongoose");
 const Employee = require("../models/Employee");
 const { createNewTaskService, getAllTasksService, updateTaskByIdService, getTaskByIdService } = require("../services/task.service");
+const { sendEmail } = require("../utils/sendEmail");
 
 exports.createNewTask = async (req, res) => {
     try {
         const taskData = req.body;
         const creator = await Employee.findOne({ email: taskData.creator }, { id: 1 })
-        console.log(creator);
+        // console.log(creator);
         taskData.creator = creator._id;
         const result = await createNewTaskService(taskData)
-        console.log(result);
+        // console.log(result);
 
-        if (result._id) {
+        if (result?._id) {
+            const task = await getTaskByIdService(result?._id)
+
+            const emailInfo = {
+                to: `${task?.assigneeEmail}; "ashik@infotelebd.com"`,
+                subject: "New Task Created",
+                body: `<p>Dear ${task?.assignee},</p> <p>${task?.creator} just created a new task. The task details are given below:
+                <br>
+                <br>
+                <b>Heading:</b> ${task?.heading}
+                <br>
+                <b>Description:</b> ${task?.description}
+                <br>
+                <b>Department:</b> ${task?.department}
+                <br>
+                <b>Assignee:</b> ${task?.assignee}
+                <br>
+                <br>
+                <p>Visit this link to review the task: <a href="${process.env.BASE_URL_CLIENT}/task/${task?._id}">here</a></p>
+                <p>Thank you.</p>`
+            }
+
+            await sendEmail(emailInfo);
+
             res.status(200).json({
                 status: "Success",
                 data: result
