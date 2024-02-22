@@ -4,6 +4,9 @@ const requisitionController = require('../controllers/Requisition.controller')
 
 const router = express.Router()
 
+router.route('/cancelRequisition/:id')
+    .patch(requisitionController.cancelRequisitionById)
+
 router.route('/')
     .get(requisitionController.getMonthlyRequisitionData)
     .post(requisitionController.createRequisition)

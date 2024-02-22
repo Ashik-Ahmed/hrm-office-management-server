@@ -159,6 +159,20 @@ exports.completePurchaseByIdSevice = async (requisitionId, data) => {
     return result;
 }
 
+exports.cancelRequisitionByIdService = async (requisitionId) => {
+    const result = await Requisition.updateOne(
+        {
+            _id: requisitionId
+        },
+        {
+            $set: {
+                status: "Cancelled"
+            }
+        }
+    )
+    return result;
+}
+
 exports.deleteRequisitionByIdService = async (requisitionId) => {
     const result = await Requisition.deleteOne({ _id: requisitionId })
     // console.log(result);
