@@ -504,7 +504,9 @@ exports.deleteEmployee = async (req, res) => {
 exports.getleaveHistoryByEmployeeId = async (req, res) => {
     try {
         const { id } = req.params;
-        const leaveHistory = await getleaveHistoryByEmployeeIdService(id);
+        const query = req.query;
+
+        const leaveHistory = await getleaveHistoryByEmployeeIdService(id, query);
         if (!leaveHistory) {
             return res.status(401).json({
                 status: 'Failed',
@@ -519,6 +521,7 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'Failed',
             error: error.message,

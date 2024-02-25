@@ -30,7 +30,7 @@ exports.createNewTask = async (req, res) => {
                 <b>Assignee:</b> ${task?.assignee}
                 <br>
                 <br>
-                <p>Visit this link to review the task: <a href="${process.env.BASE_URL_CLIENT}/task/${task?._id}">here</a></p>
+                <p>Visit this link to review the task: <a href="${req.protocol}://${req.get("host")}${req.baseUrl}/task-manager/${task?._id}">here</a></p>
                 <p>Thank you.</p>`
             }
 

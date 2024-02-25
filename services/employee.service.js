@@ -102,13 +102,55 @@ exports.deleteEmployeeByIdService = async (id) => {
     return result;
 }
 
-exports.getleaveHistoryByEmployeeIdService = async (id) => {
-    const leaveHistoryFromDB = await Employee.findOne({ _id: id })
-        .select({ leaveHistory: 1, _id: 0 }) //only get leaveHistory field from Employee Model
-        .populate({
-            path: "leaveHistory",
-            select: "-employee" //exclode the employee field from leaveHistory
-        })
+exports.getleaveHistoryByEmployeeIdService = async (id, query) => {
+    const { year } = query;
+
+    // const leaveHistoryFromDB = await Employee.findOne({
+    //     _id: id,
+    // }, { leaveHistory: 1, _id: 0 })
+    //     // .select({ leaveHistory: 1, _id: 0 }) //only get leaveHistory field from Employee Model
+    //     .populate({
+    //         path: "leaveHistory",
+    //         select: "-employee" //exclude the employee field from leaveHistory
+    //     })
+
+    const leaveHistoryFromDB = await Employee.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+            $lookup: {
+                from: 'leaveApplications',
+                localField: 'leaveHistory',
+                foreignField: '_id',
+                as: 'leaveApplicationsData'
+            }
+        },
+        {
+            $unwind: '$leaveApplicationsData'
+        },
+        // {
+        //     $match: {
+        //         $expr: {
+        //             $eq: [{ $year: '$leaveApplicationsData.toDate' }, 2023]
+        //         }
+        //     }
+        // },
+        {
+            $project: {
+                _id: '$leaveApplicationsData._id',
+                fromDate: '$leaveApplicationsData.fromDate',
+                toDate: '$leaveApplicationsData.toDate',
+                totalDay: '$leaveApplicationsData.totalDay',
+                // Add other fields as needed
+            }
+        }
+    ]);
+    console.log("Result:", leaveHistoryFromDB);
+
+    if (!leaveHistoryFromDB) {
+        console.log("No matching document found.");
+    } else {
+        console.log("Matching document found.");
+    }
     const { leaveHistory } = leaveHistoryFromDB;
 
     return leaveHistory.reverse();
