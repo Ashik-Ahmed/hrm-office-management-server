@@ -10,8 +10,6 @@ exports.sendEmail = async (emailInfo) => {
             auth: {
                 user: process.env.AUTH_EMAIL,
                 pass: process.env.EMAIL_PASSWORD,
-                // user: 'office@infotelebd.com',
-                // pass: 'Itbl@it321',
             },
         });
 
