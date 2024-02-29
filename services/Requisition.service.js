@@ -131,6 +131,15 @@ exports.getMonthlyRequisitionDataService = async (query) => {
                 },
                 totalPurchasedItems: {
                     $sum: "$requisitions.purchasedItems"
+                },
+                totalProposedItems: {
+                    $sum: "$requisitions.proposedItems"
+                },
+                totalRequisitions: {
+                    $size: "$requisitions"
+                },
+                totalProposedItems: {
+                    $sum: "$requisitions.proposedItems"
                 }
             }
         }
