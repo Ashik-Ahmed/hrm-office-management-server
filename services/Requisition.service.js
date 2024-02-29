@@ -126,6 +126,15 @@ exports.getMonthlyRequisitionDataService = async (query) => {
                 _id: 0,
                 totalProposedAmount: 1,
                 requisitions: 1,
+                numberOfCompletedRequisition: {
+                    $size: {
+                        $filter: {
+                            input: "$requisitions",
+                            as: "requisition",
+                            cond: { $eq: ["$$requisition.status", "Completed"] }
+                        }
+                    }
+                },
                 totalPurchasedAmount: {
                     $sum: "$requisitions.purchasedAmount"
                 },
