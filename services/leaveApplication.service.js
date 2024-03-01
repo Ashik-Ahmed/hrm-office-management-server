@@ -20,16 +20,21 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
     return leaveApplication;
 }
 
-exports.getAllLeaveApplicationsService = async () => {
-    const pendingLeaveApplications = await LeaveApplication.aggregate([
+exports.getAllLeaveApplicationsService = async (query) => {
+    const { year } = query;
+    console.log(year);
+    const leaveApplications = await LeaveApplication.aggregate([
         {
             $match: {
-                currentStatus: { $ne: "Approved" }
+                // currentStatus: { $ne: "Approved" },
+                $expr: {
+                    $eq: [{ $year: "$createdAt" }, year]
+                }
             }
         }
     ])
-
-    return pendingLeaveApplications.reverse();
+    console.log(leaveApplications);
+    return leaveApplications.reverse();
 }
 
 exports.updateLeaveApplicationStatusService = async ({ id, data }) => {

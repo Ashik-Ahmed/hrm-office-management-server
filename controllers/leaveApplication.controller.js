@@ -28,7 +28,9 @@ exports.leaveApplication = async (req, res) => {
 
 exports.getAllLeaveApplications = async (req, res) => {
     try {
-        const leaveApplications = await getAllLeaveApplicationsService();
+        const query = req.query;
+        // console.log(query);
+        const leaveApplications = await getAllLeaveApplicationsService(query);
 
         if (leaveApplications) {
             res.status(200).json({
