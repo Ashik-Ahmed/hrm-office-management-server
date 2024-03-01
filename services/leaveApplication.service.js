@@ -21,12 +21,12 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
 }
 
 exports.getAllLeaveApplicationsService = async (query) => {
-    const { year } = query;
+    let { year } = query;
     console.log(year);
+    year = parseInt(year, 10); // Convert year to a number if it's a string
     const leaveApplications = await LeaveApplication.aggregate([
         {
             $match: {
-                // currentStatus: { $ne: "Approved" },
                 $expr: {
                     $eq: [{ $year: "$createdAt" }, year]
                 }
