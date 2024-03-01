@@ -104,7 +104,7 @@ exports.deleteEmployeeByIdService = async (id) => {
 
 exports.getleaveHistoryByEmployeeIdService = async (id, query) => {
     const { year } = query;
-    console.log(year);
+    // console.log(year);
     const leaveHistoryFromDB = await Employee.findOne({
         _id: id,
     })

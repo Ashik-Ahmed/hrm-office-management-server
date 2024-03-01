@@ -20,7 +20,7 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
     return leaveApplication;
 }
 
-exports.getPendingLeaveApplications = async () => {
+exports.getAllLeaveApplicationsService = async () => {
     const pendingLeaveApplications = await LeaveApplication.aggregate([
         {
             $match: {

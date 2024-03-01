@@ -5,11 +5,12 @@ const leaveApplicationController = require('../controllers/leaveApplication.cont
 const router = express.Router();
 
 
-router.route('/pendingApplications')
-    .get(leaveApplicationController.getPendingLeaveApplications)
+// router.route('/pendingApplications')
+//     .get(leaveApplicationController.getPendingLeaveApplications)
 
 router.route('/')
     .post(leaveApplicationController.leaveApplication)
+    .get(leaveApplicationController.getAllLeaveApplications)
 
 router.route('/:id')
     .patch(leaveApplicationController.updateLeaveApplicationStatus)

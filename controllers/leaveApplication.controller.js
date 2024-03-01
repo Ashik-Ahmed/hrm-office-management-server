@@ -1,4 +1,4 @@
-const { leaveApplicationService, getPendingLeaveApplications, updateLeaveApplicationStatusService, getLeaveApplicationsByEmployeeIdService } = require("../services/leaveApplication.service")
+const { leaveApplicationService, getPendingLeaveApplications, updateLeaveApplicationStatusService, getLeaveApplicationsByEmployeeIdService, getAllLeaveApplicationsService } = require("../services/leaveApplication.service")
 
 
 exports.leaveApplication = async (req, res) => {
@@ -26,14 +26,14 @@ exports.leaveApplication = async (req, res) => {
     }
 }
 
-exports.getPendingLeaveApplications = async (req, res) => {
+exports.getAllLeaveApplications = async (req, res) => {
     try {
-        const pendingLeaveApplications = await getPendingLeaveApplications();
+        const leaveApplications = await getAllLeaveApplicationsService();
 
-        if (pendingLeaveApplications) {
+        if (leaveApplications) {
             res.status(200).json({
                 status: "Success",
-                data: pendingLeaveApplications
+                data: leaveApplications
             })
         }
         else {
