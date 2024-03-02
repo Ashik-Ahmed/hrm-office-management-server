@@ -21,20 +21,36 @@ exports.leaveApplicationService = async (leaveApplicationData) => {
 }
 
 exports.getAllLeaveApplicationsService = async (query) => {
-    let { year } = query;
-    console.log(year);
+    let { year, status } = query;
+
     year = parseInt(year, 10); // Convert year to a number if it's a string
+
+
+    let match = {
+        $expr: {
+            $eq: [{ $year: "$createdAt" }, year]
+        }
+    };
+
+    // Add the currentStatus condition only if the status is not "All"
+    if (status.includes("Pending") || status.includes("Approved") || status.includes("Rejected")) {
+
+        match['currentStatus.status'] = {
+            $regex: status,
+            $options: 'i'   //for case insensitive
+        };
+    }
+
     const leaveApplications = await LeaveApplication.aggregate([
         {
-            $match: {
-                $expr: {
-                    $eq: [{ $year: "$createdAt" }, year]
-                }
-            }
+            $match: match
+        },
+        {
+            $sort: { createdAt: -1 }
         }
     ])
-    console.log(leaveApplications);
-    return leaveApplications.reverse();
+    // console.log(leaveApplications);
+    return leaveApplications;
 }
 
 exports.updateLeaveApplicationStatusService = async ({ id, data }) => {
