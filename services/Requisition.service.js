@@ -93,7 +93,13 @@ exports.getMonthlyRequisitionDataService = async (query) => {
             $project: {
                 department: 1,
                 status: 1,
-                createdAt: 1,
+                createdAt: {
+                    $dateToString: {
+                        format: "%Y-%m-%d", // Format as YYYY-MM-DD
+                        date: "$createdAt",
+                        // timezone: "UTC" // Assuming your dates are in UTC
+                    }
+                },
                 purchasedAmount: 1,
                 purchasedItems: 1,
                 proposedItems: {
