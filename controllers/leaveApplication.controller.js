@@ -1,4 +1,5 @@
-const { leaveApplicationService, getPendingLeaveApplications, updateLeaveApplicationStatusService, getLeaveApplicationsByEmployeeIdService, getAllLeaveApplicationsService } = require("../services/leaveApplication.service")
+const { leaveApplicationService, updateLeaveApplicationStatusService, getAllLeaveApplicationsService } = require("../services/leaveApplication.service")
+const { sendEmail } = require("../utils/sendEmail")
 
 
 exports.leaveApplication = async (req, res) => {
@@ -6,6 +7,33 @@ exports.leaveApplication = async (req, res) => {
         const leaveApplication = await leaveApplicationService(req.body)
 
         if (leaveApplication) {
+
+            const emailInfo = {
+                to: "ashik@infotelebd.com",
+                subject: "New Leave Application",
+                body: ` <p>Dear Concern,</p> <p>${leaveApplication?.employee?.name} just submitted a leave application. The leave application details are given below.
+                </br>
+                </br>
+                Leave Type: ${leaveApplication?.leaveType}
+                </br>
+                Start Date: ${leaveApplication?.fromDate}
+                </br>
+                End Date: ${leaveApplication?.toDate}
+                </br>
+                Total days: ${leaveApplication?.totalDay}
+
+                </p>
+                </br>
+                </br>
+                <p>Please take necessary action.</p>
+                </br>
+                </br>
+                <p>Thank you.</p>
+                `
+            }
+
+            await sendEmail(emailInfo)
+
             res.status(200).json({
                 status: 'Success',
                 data: leaveApplication
