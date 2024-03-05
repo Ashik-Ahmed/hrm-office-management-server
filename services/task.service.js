@@ -125,6 +125,7 @@ exports.getAllTasksService = async (employee, query) => {
                             { $arrayElemAt: ["$Assignee.lastName", 0] },
                         ]
                     },
+                    department: 1,
                     totalDocuments: 1,
                     heading: 1,
                     currentStatus: 1,
@@ -214,6 +215,7 @@ exports.getAllTasksService = async (employee, query) => {
                             { $arrayElemAt: ["$Assignee.lastName", 0] },
                         ]
                     },
+                    department: 1,
                     totalDocuments: 1,
                     heading: 1,
                     currentStatus: 1,
