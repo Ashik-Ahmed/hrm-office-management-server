@@ -86,29 +86,28 @@ exports.updateLeaveApplicationStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const data = req.body;
-        console.log(data);
 
-        // const updateStatus = await updateLeaveApplicationStatusService({ id, data })
-        const leaveApplication = await LeaveApplication.findOne({ _id: id }, { "employee": 1, _id: 0, "": 1 }).populate({
-            path: 'employee.employeeId',
-            select: 'email',
-            model: 'Employee'  // Replace 'Employee' with the actual model name
-        });
-        console.log(leaveApplication);
-        const emailInfo = {
-            to: leaveApplication?.employee.employeeId.email,
-            subject: "Leave Application Status",
-            body: ` <p>Dear ${leaveApplication?.employee?.name},</p> <p>Your leave application status has been updated.</p>
-            <p>Current Status: ${leaveApplication?.currentStatus.status}</p>
-            ${leaveApplication?.currentStatus?.rejectionReason && `<p>Reason: ${leaveApplication?.currentStatus?.rejectionReason}</p>`}
-            <p>Thank you.</p>
-            `
-        }
-        console.log(emailInfo);
+        const updateStatus = await updateLeaveApplicationStatusService({ id, data })
+
 
         if (updateStatus.modifiedCount > 0) {
+            const leaveApplication = await LeaveApplication.findOne({ _id: id }, { "employee": 1, _id: 0, "currentStatus": 1 }).populate({
+                path: 'employee.employeeId',
+                select: 'email',
+                model: 'Employee'
+            });
 
-            // await sendEmail(emailInfo)
+            const emailInfo = {
+                to: leaveApplication?.employee.employeeId.email,
+                subject: "Leave Application Status",
+                body: ` <p>Dear ${leaveApplication?.employee?.name},</p> <p>Your leave application status has been updated.</p>
+                <p> <b>Current Status:</b> ${leaveApplication?.currentStatus.status}</p>
+                ${leaveApplication?.currentStatus?.rejectionReason ? `<p> <b>Rejection Reason:</b> ${leaveApplication?.currentStatus?.rejectionReason}</p>` : ''}
+                <p>Thank you.</p>
+                `
+            }
+
+            await sendEmail(emailInfo)
 
             res.status(200).json({
                 status: "Success",
