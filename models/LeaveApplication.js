@@ -39,7 +39,7 @@ const leaveApplicationSchema = mongoose.Schema(
                 type: String,
                 default: 'Pending'
             },
-            reason: {
+            rejectionReason: {
                 type: String
             },
             updatedBy: {
