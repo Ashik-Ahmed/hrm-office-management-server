@@ -18,9 +18,9 @@ const visitorSchema = mongoose.Schema(
         entryTime: {
             type: String
         },
-        exitTime: {
-            type: String
-        },
+        // exitTime: {
+        //     type: String
+        // },
         purpose: {
             type: String
         }
