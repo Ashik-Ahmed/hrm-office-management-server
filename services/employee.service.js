@@ -44,8 +44,12 @@ exports.findEmployeeByTokenService = async (token) => {
 }
 
 //find all users
-exports.getAllEmployeeService = async () => {
+exports.getAllEmployeeService = async (query) => {
+    console.log("query from Service", query);
     const employee = await Employee.aggregate([
+        {
+            $match: query
+        },
         {
             $project: {
                 employeeId: 1,
@@ -53,6 +57,7 @@ exports.getAllEmployeeService = async () => {
                 mobile: 1,
                 firstName: 1,
                 lastName: 1,
+                department: 1,
                 userRole: 1,
                 designation: 1,
                 image: 1,

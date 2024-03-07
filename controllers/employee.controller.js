@@ -181,7 +181,10 @@ exports.findEmployeeById = async (req, res) => {
 
 exports.getAllEmployee = async (req, res) => {
     try {
-        const employees = await getAllEmployeeService()
+        const query = req.query;
+        console.log(query);
+        const employees = await getAllEmployeeService(query)
+
 
         if (!employees) {
             return res.status(401).json({
