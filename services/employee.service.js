@@ -45,10 +45,15 @@ exports.findEmployeeByTokenService = async (token) => {
 
 //find all users
 exports.getAllEmployeeService = async (query) => {
-    console.log("query from Service", query);
+    console.log("query from Service", query.department);
+    const matchCondition = {};
+    if (query?.department !== "All") {
+        matchCondition.department = query.department;
+    }
+
     const employee = await Employee.aggregate([
         {
-            $match: query
+            $match: matchCondition
         },
         {
             $project: {
