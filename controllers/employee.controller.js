@@ -211,7 +211,7 @@ exports.getEmployeeByDepartment = async (req, res) => {
     try {
 
         const { department } = req.query;
-        console.log(department);
+        // console.log(department);
 
         const employees = await getEmployeeByDepartmentService(department);
         if (employees.length > 0) {
@@ -241,10 +241,10 @@ exports.updateEmployeeById = async (req, res) => {
         const { id } = req.params;
         const data = req.body;
 
-        console.log(id, data);
+        // console.log(id, data);
 
         const result = await updateEmployeeByIdService(id, data);
-        console.log(result);
+        // console.log(result);
         if (result.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
@@ -426,7 +426,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
 
-        console.log(email);
+        // console.log(email);
 
         // const employee = await findEmployeeByTokenService(token);
 
@@ -452,7 +452,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
 
             const emailSend = await sendEmail(emailInfo)
 
-            console.log('email info:', emailSend);
+            // console.log('email info:', emailSend);
 
             if (emailSend.messageId) {
                 res.status(200).json({
@@ -523,7 +523,7 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             status: 'Failed',
             error: error.message,
@@ -565,7 +565,7 @@ exports.getAllRequisitionByEmployeeId = async (req, res) => {
     try {
         const { id: employeeId } = req.params;
         const query = req.query;
-        console.log(employeeId, query);
+        // console.log(employeeId, query);
         const requisitions = await getAllRequisitionByEmployeeIdService(employeeId, query);
 
         if (requisitions.length > 0) {
