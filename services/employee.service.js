@@ -26,7 +26,7 @@ exports.findEmployeeByIdService = async (id) => {
             $project: { password: 0, leaveHistory: 0, conveyance: 0 }
         }
     ])
-    console.log(employee);
+    // console.log(employee);
     return employee[0];
 }
 
@@ -45,7 +45,7 @@ exports.findEmployeeByTokenService = async (token) => {
 
 //find all users
 exports.getAllEmployeeService = async (query) => {
-    console.log("query from Service", query.department);
+
     const matchCondition = {};
     if (query?.department !== "All") {
         matchCondition.department = query.department;
@@ -75,7 +75,7 @@ exports.getAllEmployeeService = async (query) => {
 
 //update employee profile
 exports.updateEmployeeByIdService = async (empId, data) => {
-    console.log(empId, data);
+    // console.log(empId, data);
     const result = await Employee.updateOne({ _id: empId }, data)
 
     return result;
