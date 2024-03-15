@@ -1,21 +1,22 @@
 const express = require('express')
 const conveyanceController = require('../controllers/conveyance.controller')
+const authorization = require('../middleware/authorization')
 
 const router = express.Router()
 
 router.route('/makePayment')
-    .patch(conveyanceController.makePaymentConveyanceBill)
+    .patch(authorization, conveyanceController.makePaymentConveyanceBill)
 
 router.route('/')
-    .post(conveyanceController.createConveyance)
-    .get(conveyanceController.getAllEmployeeMonthlyConveyance)
+    .post(authorization, conveyanceController.createConveyance)
+    .get(authorization, conveyanceController.getAllEmployeeMonthlyConveyance)
 
 router.route('/:employeeEmail')
-    .get(conveyanceController.getConveyanceByEmployeeEmail)
+    .get(authorization, conveyanceController.getConveyanceByEmployeeEmail)
 
 router.route('/:id')
-    .delete(conveyanceController.deleteConveyanceById)
-    .patch(conveyanceController.editConveyanceById)
+    .delete(authorization, conveyanceController.deleteConveyanceById)
+    .patch(authorization, conveyanceController.editConveyanceById)
 
 
 module.exports = router
