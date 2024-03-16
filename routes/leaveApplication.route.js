@@ -1,5 +1,6 @@
 const express = require('express')
-const leaveApplicationController = require('../controllers/leaveApplication.controller')
+const leaveApplicationController = require('../controllers/leaveApplication.controller');
+const verifyToken = require('../middleware/verifyToken');
 
 
 const router = express.Router();
@@ -9,11 +10,11 @@ const router = express.Router();
 //     .get(leaveApplicationController.getPendingLeaveApplications)
 
 router.route('/')
-    .post(leaveApplicationController.leaveApplication)
-    .get(leaveApplicationController.getAllLeaveApplications)
+    .post(verifyToken, leaveApplicationController.leaveApplication)
+    .get(verifyToken, leaveApplicationController.getAllLeaveApplications)
 
 router.route('/:id')
-    .patch(leaveApplicationController.updateLeaveApplicationStatus)
+    .patch(verifyToken, leaveApplicationController.updateLeaveApplicationStatus)
 
 
 module.exports = router
