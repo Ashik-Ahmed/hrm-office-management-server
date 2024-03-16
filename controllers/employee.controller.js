@@ -11,7 +11,7 @@ const { generateToken } = require("../utils/token");
 
 
 exports.createEmployee = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const employee = await createEmployeeService(req.body);
         console.log(employee);
@@ -241,8 +241,6 @@ exports.updateEmployeeById = async (req, res) => {
         const { id } = req.params;
         const data = req.body;
 
-        // console.log(id, data);
-
         const result = await updateEmployeeByIdService(id, data);
         // console.log(result);
         if (result.modifiedCount > 0) {
@@ -426,8 +424,6 @@ exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
 
-        // console.log(email);
-
         // const employee = await findEmployeeByTokenService(token);
 
         const employee = await findEmployeeByEmailService(email)
@@ -451,8 +447,6 @@ exports.sendResetPasswordEmail = async (req, res) => {
             }
 
             const emailSend = await sendEmail(emailInfo)
-
-            // console.log('email info:', emailSend);
 
             if (emailSend.messageId) {
                 res.status(200).json({
@@ -523,7 +517,7 @@ exports.getleaveHistoryByEmployeeId = async (req, res) => {
         }
 
     } catch (error) {
-        // console.log(error);
+
         res.status(500).json({
             status: 'Failed',
             error: error.message,
