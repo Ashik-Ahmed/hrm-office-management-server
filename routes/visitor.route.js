@@ -1,12 +1,13 @@
 const express = require('express');
-const visitorController = require("../controllers/visitor.controller")
+const visitorController = require("../controllers/visitor.controller");
+const verifyToken = require('../middleware/verifyToken');
 
 const router = express.Router();
 
 
 router.route('/')
-    .get(visitorController.getMonthlyVisitor)
-    .post(visitorController.createNewVisitor)
+    .get(verifyToken, visitorController.getMonthlyVisitor)
+    .post(verifyToken, visitorController.createNewVisitor)
 
 
 module.exports = router;
