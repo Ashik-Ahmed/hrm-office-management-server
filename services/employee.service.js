@@ -309,7 +309,13 @@ exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
             $project: {
                 department: 1,
                 status: 1,
-                createdAt: 1,
+                createdAt: {
+                    $dateToString: {
+                        format: "%Y-%m-%d", // Format as YYYY-MM-DD
+                        date: "$createdAt",
+                        // timezone: "UTC" // Assuming your dates are in UTC
+                    }
+                },
                 totalProposedItems: {
                     $sum: "$itemList.proposedQuantity"
                 },
