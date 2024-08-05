@@ -42,6 +42,9 @@ const leaveApplicationSchema = mongoose.Schema(
             rejectionReason: {
                 type: String
             },
+            actedDept: {
+                type: String
+            },
             updatedBy: {
                 type: String
             }
