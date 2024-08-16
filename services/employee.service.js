@@ -193,7 +193,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
                     {
                         $or: [
                             { 'leaveApplicationsDetails.currentStatus.status': 'Pending' },
-                            { 'leaveApplicationsDetails.currentStatus.status': 'Approved by Technical' }
+                            { 'leaveApplicationsDetails.currentStatus.status': 'Approved' }
                         ]
                     },
                     {
