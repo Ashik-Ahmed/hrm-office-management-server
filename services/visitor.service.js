@@ -24,13 +24,14 @@ exports.getMonthlyVisitorService = async (month, year) => {
         {
             $project: {
                 _id: 0,
-                createdAt: {
-                    $dateToString: {
-                        format: "%Y-%m-%d", // Format as YYYY-MM-DD
-                        date: "$createdAt",
-                        // timezone: "UTC" // Assuming your dates are in UTC
-                    }
-                },
+                createdAt: 1,
+                // createdAt: {
+                //     $dateToString: {
+                //         format: "%Y-%m-%d", // Format as YYYY-MM-DD
+                //         date: "$createdAt",
+                //         // timezone: "UTC" // Assuming your dates are in UTC
+                //     }
+                // },
                 name: 1,
                 mobile: 1,
                 company: 1,
