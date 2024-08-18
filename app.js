@@ -21,6 +21,7 @@ const departmentRoute = require('./routes/department.route')
 const visitorRoute = require('./routes/visitor.route')
 const taskRoute = require('./routes/task.route')
 const roleRoute = require('./routes/role.route')
+const pageRoute = require('./routes/page.route')
 const postgresRoute = require('./routes/postgres.route')
 
 
@@ -33,6 +34,7 @@ app.use('/api/v1/department', departmentRoute)
 app.use('/api/v1/visitor', visitorRoute)
 app.use('/api/v1/task', taskRoute)
 app.use('/api/v1/role', roleRoute)
+app.use('/api/v1/page', pageRoute)
 app.use('/api/v1/postgres', postgresRoute)
 
 
