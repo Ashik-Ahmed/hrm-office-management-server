@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require("validator");
 const bcrypt = require('bcryptjs');
 const { ObjectId } = require('mongodb');
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 
 
@@ -39,12 +39,16 @@ const employeeSchema = mongoose.Schema(
             default: 123456,
         },
 
+        // userRole: {
+        //     type: String,
+        //     enum: ['Super Admin', 'Admin', 'HR Admin', 'Accounts', 'Employee', 'Office Assistant'],
+        //     default: 'Employee',
+        // },
         userRole: {
-            type: String,
-            enum: ['Super Admin', 'Admin', 'HR Admin', 'Accounts', 'Employee', 'Office Assistant'],
-            default: 'Employee',
+            type: ObjectId,
+            required: [true, 'User Role is required'],
+            ref: "Role"
         },
-
         firstName: {
             type: String,
             required: [true, 'First Name is required'],
