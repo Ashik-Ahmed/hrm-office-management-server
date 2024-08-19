@@ -6,10 +6,15 @@ const roleSchema = mongoose.Schema({
         type: String,
         required: [true, "Role name is required"]
     },
-    pageAccess: [
+    users: [
         {
             type: ObjectId,
-            ref: "Page"
+            ref: "User"
+        }
+    ],
+    pageAccess: [
+        {
+            type: String
         }
     ]
 },

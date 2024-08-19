@@ -65,32 +65,32 @@ exports.createEmployee = async (req, res) => {
 
 
 // get employee by email address 
-exports.findEmployeeByEmail = async (req, res) => {
-    try {
-        const employeeEmail = req.params;
-        const employee = await findEmployeeByEmailService(employeeEmail);
+// exports.findEmployeeByEmail = async (req, res) => {
+//     try {
+//         const employeeEmail = req.params;
+//         const employee = await findEmployeeByEmailService(employeeEmail);
 
-        if (employee) {
-            res.status(200).json({
-                status: 'Success',
-                data: employee
-            })
-        }
-        else {
-            res.status(500).json({
-                status: 'Failed',
-                message: 'Failed! Try again.'
-            })
-        }
+//         if (employee) {
+//             res.status(200).json({
+//                 status: 'Success',
+//                 data: employee
+//             })
+//         }
+//         else {
+//             res.status(500).json({
+//                 status: 'Failed',
+//                 message: 'Failed! Try again.'
+//             })
+//         }
 
-    } catch (error) {
-        res.status(500).json({
-            status: 'Failed',
-            error: error.message
-        })
-    }
+//     } catch (error) {
+//         res.status(500).json({
+//             status: 'Failed',
+//             error: error.message
+//         })
+//     }
 
-}
+// }
 
 
 // user login 
@@ -99,7 +99,7 @@ exports.login = async (req, res) => {
     try {
 
         const { email, password } = req.body;
-        console.log(email, password);
+        // console.log(email, password);
 
         if (!email || !password) {
             return res.status(401).json({
@@ -109,7 +109,7 @@ exports.login = async (req, res) => {
         }
 
         const employee = await findEmployeeByEmailService(email);
-        console.log('employee from controller', employee);
+        // console.log('employee from controller', employee);
 
         if (!employee) {
             return res.status(401).json({
@@ -128,8 +128,9 @@ exports.login = async (req, res) => {
         }
 
         const token = generateToken(employee);
-        const { password: pwd, ...others } = employee.toObject();
+        const { password: pwd, userRole, ...others } = employee.toObject();
         others.name = `${others.firstName} ${others.lastName}`
+        others.userRole = employee.userRole.roleName
         // console.log('Found employee:', others);
 
         res.status(200).json({
@@ -144,7 +145,7 @@ exports.login = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             status: 'Failed',
             error: error.message,
@@ -186,19 +187,21 @@ exports.getAllEmployee = async (req, res) => {
         const employees = await getAllEmployeeService(query)
 
 
-        if (!employees) {
+        if (employees.length <= 0) {
             return res.status(401).json({
                 status: 'Failed',
-                error: 'Failed! Try again.'
+                error: 'No employee found'
             })
         }
 
-        res.status(200).json({
-            status: 'Success',
-            data: {
-                employees
-            }
-        })
+        else {
+            res.status(200).json({
+                status: 'Success',
+                data: {
+                    employees
+                }
+            })
+        }
 
     } catch (error) {
         res.status(500).json({

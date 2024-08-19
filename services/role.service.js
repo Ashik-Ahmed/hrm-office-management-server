@@ -6,6 +6,6 @@ exports.createNewRoleService = async (data) => {
 }
 
 exports.getAllRoleService = async () => {
-    const role = await Role.find({}, { _id: 1, roleName: 1 })
-    return role
+    const roles = await Role.find({}, { _id: 1, roleName: 1, users: 1, pageAccess: 1 })
+    return roles;
 }

@@ -6,6 +6,6 @@ exports.createNewPageService = async (data) => {
 }
 
 exports.getAllPageService = async () => {
-    const page = await Page.find({}, { createdAt: 0, updatedAt: 0, __v: 0 })
+    const page = await Page.find({}, { createdAt: 0, updatedAt: 0, __v: 0 }).sort({ serial: 1 })
     return page
 }

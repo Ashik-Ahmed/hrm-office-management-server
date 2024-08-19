@@ -16,14 +16,28 @@ exports.createEmployeeService = async (employeeInfo) => {
 //find a employee by Id
 exports.findEmployeeByIdService = async (id) => {
 
-    // const employee = await Employee.findOne({ _id: id });
-
     const employee = await Employee.aggregate([
         {
             $match: { _id: new ObjectId(id) }
         },
         {
-            $project: { password: 0, leaveHistory: 0, conveyance: 0 }
+            $lookup: {
+                from: "roles", // Collection name of the Role model in MongoDB
+                localField: "userRole",
+                foreignField: "_id",
+                as: "roleDetails"
+            }
+        },
+        {
+            $unwind: "$roleDetails"
+        },
+        {
+            $addFields: {
+                userRole: "$roleDetails.roleName" // Add userRole field with roleName
+            }
+        },
+        {
+            $project: { password: 0, leaveHistory: 0, conveyance: 0, roleDetails: 0 }
         }
     ])
     // console.log(employee);
@@ -33,9 +47,39 @@ exports.findEmployeeByIdService = async (id) => {
 // find a user by email 
 exports.findEmployeeByEmailService = async (email) => {
 
-    const employee = await Employee.findOne({ email }, { firstName: 1, lastName: 1, designation: 1, department: 1, userRole: 1, image: 1, email: 1, password: 1 })
+    const employee = await Employee.findOne({ email }, { firstName: 1, lastName: 1, designation: 1, department: 1, userRole: 1, image: 1, email: 1, password: 1 }).populate({
+        path: 'userRole',
+        select: 'roleName',
+        model: 'Role'
+    })
 
     return employee;
+    // const employee = await Employee.aggregate([
+    //     {
+    //         $match: { email }
+    //     },
+    //     {
+    //         $lookup: {
+    //             from: "roles",
+    //             localField: "userRole",
+    //             foreignField: "_id",
+    //             as: "roleDetails"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$roleDetails"
+    //     },
+    //     {
+    //         $addFields: {
+    //             userRole: "$roleDetails.roleName" // Add userRole field with roleName
+    //         }
+    //     },
+    //     {
+    //         $project: { employeeId: 0, leaveHistory: 0, conveyance: 0, roleDetails: 0, bio: 0, mobile: 0, joiningDate: 0, passwordResetToken: 0, passwordResetTokenExpires: 0, updatedAt: 0 }
+    //     }
+    // ])
+    // // console.log(employee[0]);
+    // return employee[0];
 }
 
 exports.findEmployeeByTokenService = async (token) => {
@@ -45,7 +89,6 @@ exports.findEmployeeByTokenService = async (token) => {
 
 //find all users
 exports.getAllEmployeeService = async (query) => {
-
     const matchCondition = {};
     if (query?.department !== "All") {
         matchCondition.department = query.department;
@@ -56,6 +99,17 @@ exports.getAllEmployeeService = async (query) => {
             $match: matchCondition
         },
         {
+            $lookup: {
+                from: "roles", // Collection name of the Role model in MongoDB
+                localField: "userRole",
+                foreignField: "_id",
+                as: "roleDetails"
+            }
+        },
+        {
+            $unwind: "$roleDetails"
+        },
+        {
             $project: {
                 employeeId: 1,
                 email: 1,
@@ -63,7 +117,7 @@ exports.getAllEmployeeService = async (query) => {
                 firstName: 1,
                 lastName: 1,
                 department: 1,
-                userRole: 1,
+                userRole: "$roleDetails.roleName",
                 designation: 1,
                 image: 1,
                 joiningDate: 1,
