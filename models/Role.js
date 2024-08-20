@@ -9,7 +9,7 @@ const roleSchema = mongoose.Schema({
     users: [
         {
             type: ObjectId,
-            ref: "User"
+            ref: "Employee"
         }
     ],
     pageAccess: [
