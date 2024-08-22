@@ -1,5 +1,5 @@
 const Employee = require("../models/Employee");
-const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService } = require("../services/employee.service");
+const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService, loginByEmailService } = require("../services/employee.service");
 const { sendEmail } = require("../utils/sendEmail");
 const { generateToken } = require("../utils/token");
 // const app = require('../app')
@@ -108,7 +108,7 @@ exports.login = async (req, res) => {
             })
         }
 
-        const employee = await findEmployeeByEmailService(email);
+        const employee = await loginByEmailService(email);
         // console.log('employee from controller', employee);
 
         if (!employee) {
@@ -129,8 +129,9 @@ exports.login = async (req, res) => {
 
         const token = generateToken(employee);
         const { password: pwd, userRole, ...others } = employee.toObject();
-        others.name = `${others.firstName} ${others.lastName}`
-        others.userRole = employee.userRole.roleName
+        others.name = `${others.firstName} ${others.lastName}`;
+        others.userRole = employee.userRole.roleName;
+        others.pageAccess = employee.userRole.pageAccess;
         // console.log('Found employee:', others);
 
         res.status(200).json({

@@ -13,6 +13,24 @@ exports.createEmployeeService = async (employeeInfo) => {
     return employee;
 }
 
+exports.loginByEmailService = async (email) => {
+    const employee = await Employee.findOne({ email }, { firstName: 1, lastName: 1, designation: 1, department: 1, userRole: 1, image: 1, email: 1, password: 1 }).populate({
+        path: 'userRole',
+        select: 'roleName pageAccess -_id',
+        model: 'Role',
+        populate: {
+            path: 'pageAccess',
+            select: 'title url -_id',
+            model: 'Page',
+            options: {
+                sort: { serial: 1 }
+            }
+        }
+    })
+
+    return employee;
+}
+
 //find a employee by Id
 exports.findEmployeeByIdService = async (id) => {
 

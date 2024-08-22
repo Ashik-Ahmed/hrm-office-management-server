@@ -8,7 +8,7 @@ exports.createNewRoleService = async (data) => {
 exports.getAllRoleService = async () => {
     const roles = await Role.find({}, { _id: 1, roleName: 1, users: 1, pageAccess: 1 }).populate({
         path: 'users',
-        select: 'firstName lastName image -_id',
+        select: 'firstName lastName image department -_id',
         model: 'Employee'
     })
     return roles;
