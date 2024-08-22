@@ -445,14 +445,45 @@ exports.sendResetPasswordEmail = async (req, res) => {
         }
         else {
 
+            // const emailInfo = {
+            //     to: employee.email,
+            //     subject: "Reset your Password",
+            //     body: `Dear ${employee.firstName} ${employee.lastName}, <br> You have requested to change your current password. Click the following link to reset: <a href=${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}>Click here</a> <br><br> The link will be valid for 5 minutes. <br><br> Thank you.`,
+            // }
+
             const emailInfo = {
                 to: employee.email,
-                subject: "Reset your Password",
-                body: `Please reset your password. Click the following link to reset: <a href=${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}>Click here</a>`
-            }
+                subject: "Password Reset Request",
+                body: `
+                <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                    <p>Dear ${employee.firstName} ${employee.lastName},</p>
+                    
+                    <p>You recently requested to reset your password. Please click the button below to proceed with the password reset.</p>
+                    
+                    <p style="text-align: center;">
+                        <a href="${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}" 
+                           style="background-color: #007BFF; color: white; padding: 10px 20px; text-decoration: none; 
+                                  border-radius: 5px; display: inline-block; font-size: 16px;">
+                            Reset Your Password
+                        </a>
+                    </p>
+                    
+                    <p>If the button above doesn’t work, copy and paste the following link into your web browser:</p>
+                    <p style="word-wrap: break-word; font-size:10px">${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}</p>
+                    
+                    <p><strong>Note:</strong> The link will be valid for 5 minutes.</p>
+                    
+                    <p>Thank you,<br>The Team</p>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="font-size: 12px; color: #777;">If you didn't request a password reset, please ignore this email.</p>
+                </div>
+                `
+            };
+
 
             const emailSend = await sendEmail(emailInfo)
-
+            console.log(emailSend);
             if (emailSend.messageId) {
                 res.status(200).json({
                     status: "Success",
