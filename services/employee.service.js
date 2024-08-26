@@ -171,6 +171,7 @@ exports.getEmployeeByDepartmentService = async (department) => {
 //update user password
 exports.updateEmployeePasswordByEmailService = async (email, newPassword) => {
     const hashedPassword = bcrypt.hashSync(newPassword);
+    // console.log(hashedPassword);
     const result = await Employee.updateOne({ email }, { $set: { password: hashedPassword } })
     // console.log(result);
     return result;

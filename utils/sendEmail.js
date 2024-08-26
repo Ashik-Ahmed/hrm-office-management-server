@@ -24,17 +24,9 @@ exports.sendEmail = async (emailInfo) => {
         };
 
         // Send the email
-        const emailStatus = await transporter.sendMail(message, (error, info) => {
-            if (error) {
-                console.error('Error occurred:', error);
-                return error;
-            }
-            else {
-                console.log('Email sent successfully!');
-                console.log('Message ID:', info.messageId);
-                return info;
-            }
-        });
+        const emailStatus = await transporter.sendMail(message);
+
+        return emailStatus
 
     } catch (error) {
         console.log('Error: ', error);

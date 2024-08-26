@@ -331,7 +331,7 @@ exports.updatePasswordByToken = async (req, res) => {
         // console.log(employee);
         if (!employee) {
             res.send(`<h2>Invalid token</h2>
-            <p>Request could not be processed</p>`)
+            <p>Request could not be processed</p>`);
         }
 
         else {
@@ -339,11 +339,11 @@ exports.updatePasswordByToken = async (req, res) => {
             // console.log(date, employee.passwordResetTokenExpires);
 
             // if the current time is greater than expired time, the token is expired 
-            const isTokenExpired = date > employee.passwordResetTokenExpires
+            const isTokenExpired = date > employee.passwordResetTokenExpires;
             // console.log(isTokenExpired);
 
             if (isTokenExpired) {
-                res.send(`<h2>Sorry, Your token has expired</h2> <p>Please try again!!</p>`)
+                res.send(`<h2>Sorry, Your token has expired</h2> <p>Please try again!!</p>`);
             }
 
             else {
@@ -469,7 +469,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
                     </p>
                     
                     <p>If the button above doesn’t work, copy and paste the following link into your web browser:</p>
-                    <p style="word-wrap: break-word; font-size:10px">${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}</p>
+                    <p style="word-wrap: break-word; font-size:12px">${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}</p>
                     
                     <p><strong>Note:</strong> The link will be valid for 5 minutes.</p>
                     
@@ -483,7 +483,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
 
 
             const emailSend = await sendEmail(emailInfo)
-            console.log(emailSend);
+
             if (emailSend.messageId) {
                 res.status(200).json({
                     status: "Success",
