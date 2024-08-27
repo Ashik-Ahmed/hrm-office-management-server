@@ -322,6 +322,37 @@ exports.updateEmployeePasswordByEmail = async (req, res) => {
     }
 }
 
+exports.checkPasswordResetTokenValidity = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const employee = await findEmployeeByTokenService(token);
+
+        const date = new Date();
+        const isTokenExpired = date > employee?.passwordResetTokenExpires;
+
+        if (!employee?.passwordResetToken || isTokenExpired) {
+            res.status(400).json({
+                status: 'Failed',
+                error: 'Invalid token'
+            })
+        }
+
+        else {
+            res.status(200).json({
+                status: 'Success',
+                data: employee
+            })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            error: error.message
+        })
+    }
+}
+
 exports.updatePasswordByToken = async (req, res) => {
     try {
         const { token } = req.params;
@@ -428,6 +459,8 @@ exports.updatePasswordByToken = async (req, res) => {
 exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
+        const { resetPasswordUrl } = req.body;
+        console.log(email, resetPasswordUrl);
 
         // const employee = await findEmployeeByTokenService(token);
 
@@ -457,24 +490,24 @@ exports.sendResetPasswordEmail = async (req, res) => {
                 body: `
                 <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
                     <p>Dear ${employee.firstName} ${employee.lastName},</p>
-                    
+
                     <p>You recently requested to reset your password. Please click the button below to proceed with the password reset.</p>
-                    
+
                     <p style="text-align: center;">
-                        <a href="${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}" 
+                        <a href="${resetPasswordUrl}/${token}" 
                            style="background-color: #007BFF; color: white; padding: 10px 20px; text-decoration: none; 
                                   border-radius: 5px; display: inline-block; font-size: 16px;">
                             Reset Your Password
                         </a>
                     </p>
-                    
+
                     <p>If the button above doesn’t work, copy and paste the following link into your web browser:</p>
-                    <p style="word-wrap: break-word; font-size:12px">${req.protocol}://${req.get("host")}${req.baseUrl}/reset-password/${token}</p>
-                    
+                    <p style="word-wrap: break-word; font-size:12px">${resetPasswordUrl}/${token}</p>
+
                     <p><strong>Note:</strong> The link will be valid for 5 minutes.</p>
-                    
+
                     <p>Thank you,<br>The Team</p>
-                    
+
                     <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
                     <p style="font-size: 12px; color: #777;">If you didn't request a password reset, please ignore this email.</p>
                 </div>

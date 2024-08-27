@@ -23,7 +23,10 @@ router.route('/updatePassword/:email')
     .patch(verifyToken, employeeController.updateEmployeePasswordByEmail)
 
 router.route('/send-password-reset-email/:email')
-    .get(verifyToken, employeeController.sendResetPasswordEmail)
+    .post(verifyToken, employeeController.sendResetPasswordEmail)
+
+router.route('/check-password-reset-token/:token')
+    .get(employeeController.checkPasswordResetTokenValidity)
 
 router.route('/reset-password/:token')
     .get(employeeController.updatePasswordByToken)
