@@ -29,7 +29,7 @@ router.route('/check-password-reset-token/:token')
     .get(employeeController.checkPasswordResetTokenValidity)
 
 router.route('/reset-password/:token')
-    .get(employeeController.updatePasswordByToken)
+    .post(employeeController.updatePasswordByToken)
 
 router.route('/')
     .post(verifyToken, employeeController.createEmployee)

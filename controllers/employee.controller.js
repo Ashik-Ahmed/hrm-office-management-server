@@ -1,5 +1,5 @@
 const Employee = require("../models/Employee");
-const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService, loginByEmailService } = require("../services/employee.service");
+const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService, loginByEmailService, updatePasswordByTokenService } = require("../services/employee.service");
 const { sendEmail } = require("../utils/sendEmail");
 const { generateToken } = require("../utils/token");
 // const app = require('../app')
@@ -356,98 +356,55 @@ exports.checkPasswordResetTokenValidity = async (req, res) => {
 exports.updatePasswordByToken = async (req, res) => {
     try {
         const { token } = req.params;
-        // console.log(token);
+        const { newPassword, confirmPassword } = req.body;
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                status: 'Failed',
+                error: "Password didn't match"
+            })
+        }
 
         const employee = await findEmployeeByTokenService(token);
         // console.log(employee);
         if (!employee) {
-            res.send(`<h2>Invalid token</h2>
-            <p>Request could not be processed</p>`);
+            res.status(400).json({
+                status: 'Failed',
+                error: 'Invalid token'
+            })
         }
 
         else {
-            const date = new Date()
-            // console.log(date, employee.passwordResetTokenExpires);
+            const date = new Date();
 
             // if the current time is greater than expired time, the token is expired 
             const isTokenExpired = date > employee.passwordResetTokenExpires;
-            // console.log(isTokenExpired);
 
             if (isTokenExpired) {
-                res.send(`<h2>Sorry, Your token has expired</h2> <p>Please try again!!</p>`);
+                res.status(400).json({
+                    status: 'Failed',
+                    error: 'Token expired'
+                })
             }
 
             else {
-                res.send(`<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Reset Password</title>
-                <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: #f4f4f4;
-                        margin: 0;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        height: 100vh;
-                    }
-            
-                    .reset-container {
-                        background-color: #fff;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                        padding: 20px;
-                        border-radius: 8px;
-                        width: 300px;
-                        text-align: center;
-                    }
-            
-                    h2 {
-                        color: #333;
-                    }
-            
-                    input {
-                        width: 100%;
-                        padding: 10px;
-                        margin: 10px 0;
-                        box-sizing: border-box;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                    }
-            
-                    button {
-                        background-color: #4caf50;
-                        color: #fff;
-                        padding: 10px 15px;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                    }
-            
-                    button:hover {
-                        background-color: #45a049;
-                    }
-                </style>
-            </head>
-            <body>
-            
-            <div class="reset-container">
-                <h2>Reset Password</h2>
-                <form action="#" method="post">
-                    <input type="password" name="password" placeholder="New Password" required>
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
-                    <button type="submit">Reset Password</button>
-                </form>
-            </div>
-            
-            </body>
-            </html>
-            `)
+                const updatePassword = await updatePasswordByTokenService(token, newPassword);
+
+                if (updatePassword.modifiedCount > 0) {
+                    res.status(200).json({
+                        status: 'Success',
+                        data: updatePassword
+                    })
+                }
+
+                else {
+                    res.status(400).json({
+                        status: 'Failed',
+                        error: 'Please try again'
+                    })
+                }
             }
         }
-
     } catch (error) {
         res.status(500).json({
             status: 'Failed',

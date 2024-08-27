@@ -105,6 +105,12 @@ exports.findEmployeeByTokenService = async (token) => {
     return employee;
 }
 
+exports.updatePasswordByTokenService = async (token, newPassword) => {
+    const hashedPassword = bcrypt.hashSync(newPassword);
+    const employee = await Employee.updateOne({ passwordResetToken: token }, { passwordResetToken: null, passwordResetTokenExpires: null, password: hashedPassword })
+    return employee;
+}
+
 //find all users
 exports.getAllEmployeeService = async (query) => {
     const matchCondition = {};
