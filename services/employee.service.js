@@ -4,6 +4,7 @@ const Leave = require("../models/Leave");
 const Requisition = require("../models/Requisition");
 const { default: mongoose } = require("mongoose");
 const bcrypt = require('bcryptjs');
+const Role = require("../models/Role");
 
 //create a new user
 exports.createEmployeeService = async (employeeInfo) => {
@@ -153,6 +154,12 @@ exports.getAllEmployeeService = async (query) => {
 
 //update employee profile
 exports.updateEmployeeByIdService = async (empId, data) => {
+
+    if (data?.userRole) {
+        const pullUserRole = await Role.updateOne({ _id: data.userRole }, { $pull: { users: empId } });
+        const pushUserRole = await Role.updateOne({ _id: data.userRole }, { $push: { users: empId } });
+    }
+
     // console.log(empId, data);
     const result = await Employee.updateOne({ _id: empId }, data)
 
