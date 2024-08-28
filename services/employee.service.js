@@ -156,8 +156,15 @@ exports.getAllEmployeeService = async (query) => {
 exports.updateEmployeeByIdService = async (empId, data) => {
 
     if (data?.userRole) {
-        const pullUserRole = await Role.updateOne({ _id: data.userRole }, { $pull: { users: empId } });
+        // Log current role of the employee before the update
+        const currentRole = await Role.findOne({ users: empId });
+        // Pull the employee from the old role
+        const pullUserRole = await Role.updateOne({ _id: currentRole?._id }, { $pull: { users: empId } });
+
+        // Push the employee to the new role
         const pushUserRole = await Role.updateOne({ _id: data.userRole }, { $push: { users: empId } });
+
+        console.log(pushUserRole);
     }
 
     // console.log(empId, data);

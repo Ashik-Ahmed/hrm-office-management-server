@@ -63,7 +63,9 @@ const employeeSchema = mongoose.Schema(
             minLength: [3, 'Last Name must be at least 3 characters'],
             maxLength: [60, 'Last Name length  is too large'],
         },
-
+        birthDate: {
+            type: String,
+        },
         image: {
             type: String,
             validate: [validator.isURL, 'PLease provide a valid url'],
@@ -81,6 +83,18 @@ const employeeSchema = mongoose.Schema(
             type: ObjectId,
             ref: "Conveyance"
         }],
+        birthDate: {
+            type: Date
+        },
+        gender: {
+            type: String
+        },
+        bloodGroup: {
+            type: String
+        },
+        address: {
+            type: String
+        },
         bio: {
             type: String
         },
