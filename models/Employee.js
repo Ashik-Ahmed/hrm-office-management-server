@@ -63,16 +63,14 @@ const employeeSchema = mongoose.Schema(
             minLength: [3, 'Last Name must be at least 3 characters'],
             maxLength: [60, 'Last Name length  is too large'],
         },
-        birthDate: {
-            type: String,
-        },
         image: {
             type: String,
             validate: [validator.isURL, 'PLease provide a valid url'],
         },
 
         joiningDate: {
-            type: String,
+            type: Date,
+            required: [true, 'Joining Date is required'],
         },
 
         leaveHistory: [{

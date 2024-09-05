@@ -11,6 +11,12 @@ exports.createEmployeeService = async (employeeInfo) => {
     // console.log(employeeInfo);
 
     const employee = await Employee.create(employeeInfo);
+
+    if (employee?._id) {
+        // Push the employee to the role
+        const pushUserRole = await Role.updateOne({ _id: employeeInfo.userRole }, { $push: { users: employee._id } });
+    }
+
     return employee;
 }
 
@@ -156,15 +162,12 @@ exports.getAllEmployeeService = async (query) => {
 exports.updateEmployeeByIdService = async (empId, data) => {
 
     if (data?.userRole) {
-        // Log current role of the employee before the update
         const currentRole = await Role.findOne({ users: empId });
         // Pull the employee from the old role
         const pullUserRole = await Role.updateOne({ _id: currentRole?._id }, { $pull: { users: empId } });
 
         // Push the employee to the new role
         const pushUserRole = await Role.updateOne({ _id: data.userRole }, { $push: { users: empId } });
-
-        console.log(pushUserRole);
     }
 
     // console.log(empId, data);
