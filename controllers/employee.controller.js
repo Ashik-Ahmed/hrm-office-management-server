@@ -417,7 +417,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
         const { resetPasswordUrl } = req.body;
-        console.log(email, resetPasswordUrl);
+        // console.log(email, resetPasswordUrl);
 
         // const employee = await findEmployeeByTokenService(token);
 
@@ -474,7 +474,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
 
             const emailSend = await sendEmail(emailInfo)
 
-            if (emailSend.messageId) {
+            if (emailSend?.messageId) {
                 res.status(200).json({
                     status: "Success",
                     data: "Password reset email sent"

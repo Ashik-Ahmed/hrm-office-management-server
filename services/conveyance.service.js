@@ -66,9 +66,13 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                     $filter: {
                         input: '$conveyanceDetails',
                         cond: {
+                            // $and: [
+                            //     { $eq: [{ $year: '$$this.date' }, year] },
+                            //     { $eq: [{ $month: '$$this.date' }, month] }
+                            // ]
                             $and: [
-                                { $eq: [{ $year: '$$this.date' }, year] },
-                                { $eq: [{ $month: '$$this.date' }, month] }
+                                { $eq: [{ $year: { $add: ['$$this.date', 6 * 60 * 60 * 1000] } }, year] },
+                                { $eq: [{ $month: { $add: ['$$this.date', 6 * 60 * 60 * 1000] } }, month] }
                             ]
                         }
                     }

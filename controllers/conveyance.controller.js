@@ -59,7 +59,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
         const query = req.query;
-        console.log(query);
+        console.log("emp conveyance: ", query);
         const conveyance = await getConveyanceByEmployeeEmailService(employeeEmail, query);
 
         if (conveyance) {
@@ -162,9 +162,9 @@ exports.editConveyanceById = async (req, res) => {
     try {
         const { id } = req.params;
         const updatedData = req.body;
-
+        console.log("conveyance edit: ", updatedData);
         const result = await editConveyanceByIdService(id, updatedData)
-
+        console.log("conveyance edit result", result);
         if (result.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
