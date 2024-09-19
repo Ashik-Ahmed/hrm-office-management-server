@@ -16,7 +16,7 @@ exports.createNewTask = async (req, res) => {
             const task = await getTaskByIdService(result?._id)
 
             const emailInfo = {
-                to: `${task?.assigneeEmail}; "ashik@infotelebd.com"`,
+                to: `${task?.assigneeEmail};"ashik@infotelebd.com"`,
                 subject: "New Task Created",
                 body: `<p>Dear ${task?.assignee},</p> <p>${task?.creator} just created a new task. The task details are given below:
                 <br>
@@ -30,7 +30,7 @@ exports.createNewTask = async (req, res) => {
                 <b>Assignee:</b> ${task?.assignee}
                 <br>
                 <br>
-                <p>Visit this link to review the task: <a href="${req.protocol}://${req.get("host")}${req.baseUrl}/task-manager/${task?._id}">here</a></p>
+                <p>Visit this link to review the task: <a href="${req.protocol}://${req.get("host").split(":")[0]}/task-manager/${task?._id}">here</a></p>
                 <p>Thank you.</p>`
             }
 

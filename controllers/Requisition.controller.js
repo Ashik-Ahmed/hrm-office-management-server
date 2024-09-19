@@ -26,7 +26,7 @@ exports.createRequisition = async (req, res) => {
                 <b>Total amount:</b> ${requisitionDetails?.proposedAmount}
                 <br>
                 <br>
-                Click <a href="http://localhost:3000/manage-requisition">here</a> to review the requisition.
+                Click <a href="${req.protocol}://${req.get("host").split(":")[0]}/manage-requisition">here</a> to review the requisition.
                 <br>
                 <br> 
                 <p>Thank you.</p>`
