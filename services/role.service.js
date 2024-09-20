@@ -20,3 +20,18 @@ exports.editRoleByIdService = async (id, data) => {
 
     return editRole;
 }
+
+exports.removeEmployeeIdFromRoleService = async (id) => {
+    console.log(id);
+    // Find the role that contains the user
+    const role = await Role.findOne({ users: id });
+
+    if (!role) {
+        throw new Error('Role containing the user not found');
+    }
+
+    // Remove the user from that role
+    const removeEmployee = await Role.updateOne({ _id: role._id }, { $pull: { users: id } });
+
+    return removeEmployee;
+}

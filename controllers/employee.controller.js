@@ -1,5 +1,6 @@
 const Employee = require("../models/Employee");
 const { createEmployeeService, getAllEmployeeService, deleteEmployeeByIdService, findEmployeeByEmailService, findEmployeeByIdService, getleaveHistoryByEmployeeIdService, getLeaveStatusByEmployeeIdService, getAllRequisitionByEmployeeIdService, updateEmployeeByIdService, updateEmployeePasswordByEmailService, getEmployeeByDepartmentService, findEmployeeByTokenService, loginByEmailService, updatePasswordByTokenService } = require("../services/employee.service");
+const { removeEmployeeIdFromRoleService } = require("../services/role.service");
 const { sendEmail } = require("../utils/sendEmail");
 const { generateToken } = require("../utils/token");
 // const app = require('../app')
@@ -500,18 +501,20 @@ exports.deleteEmployee = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await deleteEmployeeByIdService(id)
+        const removeFromRoles = await removeEmployeeIdFromRoleService(id)
+        console.log(result, removeFromRoles);
 
-        if (!result) {
-            return res.status(401).json({
-                status: 'Failed',
-                error: 'Failed! Try again.'
+        if (result?.deletedCount > 0 && removeFromRoles?.modifiedCount > 0) {
+            res.status(200).json({
+                status: 'Success',
+                data: result
             })
         }
 
         else {
-            res.status(200).json({
-                status: 'Success',
-                data: result
+            return res.status(401).json({
+                status: 'Failed',
+                error: 'Failed! Try again.'
             })
         }
 
