@@ -22,7 +22,6 @@ exports.editRoleByIdService = async (id, data) => {
 }
 
 exports.removeEmployeeIdFromRoleService = async (id) => {
-    console.log(id);
     // Find the role that contains the user
     const role = await Role.findOne({ users: id });
 
