@@ -66,9 +66,13 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                     $filter: {
                         input: '$conveyanceDetails',
                         cond: {
+                            // $and: [
+                            //     { $eq: [{ $year: '$$this.date' }, year] },
+                            //     { $eq: [{ $month: '$$this.date' }, month] }
+                            // ]
                             $and: [
-                                { $eq: [{ $year: { $subtract: ['$$this.date', { $multiply: [offset, 60 * 60 * 1000] }] } }, year] },
-                                { $eq: [{ $month: { $subtract: ['$$this.date', { $multiply: [offset, 60 * 60 * 1000] }] } }, month] }
+                                { $eq: [{ $year: { $add: ['$$this.date', offset * 60 * 60 * 1000] } }, year] },
+                                { $eq: [{ $month: { $add: ['$$this.date', offset * 60 * 60 * 1000] } }, month] }
                             ]
                         }
                     }
@@ -109,12 +113,12 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                 pendingConveyances: 1
             }
         },
-        {
-            $sort: {
-                'conveyanceDetails.date': 1,
-                'conveyanceDetails.createdAt': 1
-            }
-        }
+        // {
+        //     $sort: {
+        //         'conveyanceDetails.date': 1,
+        //         'conveyanceDetails.createdAt': 1
+        //     }
+        // }
     ]);
 
     return conveyance[0];
