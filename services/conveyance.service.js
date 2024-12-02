@@ -41,12 +41,12 @@ exports.deleteConveyanceByIdServicce = async (conveyanceId) => {
     return result
 
 }
-
 exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
 
-    const month = parseInt(query.month || (new Date().getMonth() + 1))
-    const year = parseInt(query.year || new Date().getFullYear())
-    // console.log(month, year);
+    const month = parseInt(query.month || (new Date().getMonth() + 1));
+    const year = parseInt(query.year || new Date().getFullYear());
+
+    const offset = 6; // example offset in hours
 
     const conveyance = await Employee.aggregate([
         {
@@ -66,13 +66,9 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                     $filter: {
                         input: '$conveyanceDetails',
                         cond: {
-                            // $and: [
-                            //     { $eq: [{ $year: '$$this.date' }, year] },
-                            //     { $eq: [{ $month: '$$this.date' }, month] }
-                            // ]
                             $and: [
-                                { $eq: [{ $year: { $add: ['$$this.date', 6 * 60 * 60 * 1000] } }, year] },
-                                { $eq: [{ $month: { $add: ['$$this.date', 6 * 60 * 60 * 1000] } }, month] }
+                                { $eq: [{ $year: { $subtract: ['$$this.date', { $multiply: [offset, 60 * 60 * 1000] }] } }, year] },
+                                { $eq: [{ $month: { $subtract: ['$$this.date', { $multiply: [offset, 60 * 60 * 1000] }] } }, month] }
                             ]
                         }
                     }
@@ -83,7 +79,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
             $unwind: '$conveyanceDetails' // Unwind the array to treat each conveyance as a separate document
         },
         {
-            $sort: { 'conveyanceDetails.date': 1 } // Sort by date in ascending order
+            $sort: { 'conveyanceDetails.date': 1, 'conveyanceDetails.createdAt': 1 } // Sort by date and then by createdAt
         },
         {
             $group: {
@@ -112,16 +108,20 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
                 totalConveyances: 1,
                 pendingConveyances: 1
             }
+        },
+        {
+            $sort: {
+                'conveyanceDetails.date': 1,
+                'conveyanceDetails.createdAt': 1
+            }
         }
     ]);
 
-    // console.log(conveyance[0].conveyanceDetails);
-    // console.log(conveyance[0]);
     return conveyance[0];
 }
 
 exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
-    console.log("Monthly Conveyance");
+    // console.log("Monthly Conveyance");
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
 
@@ -130,8 +130,10 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
             $match: {
                 $expr: {
                     $and: [
-                        { $eq: [{ $month: '$date' }, month] },
-                        { $eq: [{ $year: '$date' }, year] },
+                        // { $eq: [{ $month: '$date' }, month] },
+                        // { $eq: [{ $year: '$date' }, year] },
+                        { $eq: [{ $year: { $add: ['$date', 6 * 60 * 60 * 1000] } }, year] },
+                        { $eq: [{ $month: { $add: ['$date', 6 * 60 * 60 * 1000] } }, month] }
                     ]
                 }
             }

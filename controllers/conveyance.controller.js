@@ -88,7 +88,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
 
 exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
     try {
-        console.log(req.query);
+        // console.log(req.query);
         const allConveyances = await getAllEmployeeMonthlyConveyanceService(req.query)
 
         if (allConveyances) {
