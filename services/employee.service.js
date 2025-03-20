@@ -8,7 +8,7 @@ const Role = require("../models/Role");
 
 //create a new user
 exports.createEmployeeService = async (employeeInfo) => {
-    // console.log(employeeInfo);
+
 
     const employee = await Employee.create(employeeInfo);
 
@@ -65,7 +65,7 @@ exports.findEmployeeByIdService = async (id) => {
             $project: { password: 0, leaveHistory: 0, conveyance: 0, roleDetails: 0 }
         }
     ])
-    // console.log(employee);
+
     return employee[0];
 }
 
@@ -103,7 +103,7 @@ exports.findEmployeeByEmailService = async (email) => {
     //         $project: { employeeId: 0, leaveHistory: 0, conveyance: 0, roleDetails: 0, bio: 0, mobile: 0, joiningDate: 0, passwordResetToken: 0, passwordResetTokenExpires: 0, updatedAt: 0 }
     //     }
     // ])
-    // // console.log(employee[0]);
+
     // return employee[0];
 }
 
@@ -170,7 +170,7 @@ exports.updateEmployeeByIdService = async (empId, data) => {
         const pushUserRole = await Role.updateOne({ _id: data.userRole }, { $push: { users: empId } });
     }
 
-    // console.log(empId, data);
+
     const result = await Employee.updateOne({ _id: empId }, data)
 
     return result;
@@ -194,12 +194,12 @@ exports.getEmployeeByDepartmentService = async (department) => {
 //update user password
 exports.updateEmployeePasswordByEmailService = async (email, newPassword) => {
     const hashedPassword = bcrypt.hashSync(newPassword);
-    // console.log(hashedPassword);
+
     const result = await Employee.updateOne({ email }, { $set: { password: hashedPassword } })
-    // console.log(result);
+
     return result;
 
-    // console.log(email, currentPassword, newPassword, confirmPassword);
+
 }
 
 //delete a user by id
@@ -210,7 +210,7 @@ exports.deleteEmployeeByIdService = async (id) => {
 
 exports.getleaveHistoryByEmployeeIdService = async (id, query) => {
     const { year } = query;
-    // console.log(year);
+
     const leaveHistoryFromDB = await Employee.findOne({
         _id: id,
     })
@@ -255,7 +255,7 @@ exports.getleaveHistoryByEmployeeIdService = async (id, query) => {
     //         }
     //     }
     // ]);
-    // console.log("Result:", leaveHistoryFromDB);
+
 
     const { leaveHistory } = leaveHistoryFromDB;
 
@@ -323,7 +323,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
         }
     ]);
 
-    // console.log(leaveStatus);
+
 
     // If result contains { _id: null, availed: 0 }, that means Emplpoyee doesn't have the property "leaveHistory", then set finalResult to an empty array
     const leaveStatusUpdated = leaveStatus.some(entry => entry._id === null && entry.availed === 0)
@@ -334,7 +334,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
             total: entry.total,
         }));
 
-    // console.log("leaveStatus:", leaveStatus);
+
 
     // Create a Map to store the aggregation result
     const resultMap = new Map();
@@ -343,7 +343,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
     leaveStatus.forEach(entry => {
         resultMap.set(entry._id, { availed: entry.availed, total: entry.total });
     });
-    // console.log("First result map:", resultMap);
+
     // Fetch all unique leaveType values from the Leaves collection
     const allLeaveTypes = await Leave.aggregate([
         {
@@ -355,7 +355,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
         }
     ]);
 
-    // console.log("aggregation:", allLeaveTypes);
+
 
     // For leave types not present in the result, set availed value to 0
     allLeaveTypes.forEach(leave => {
@@ -364,7 +364,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
         }
     });
 
-    // console.log("foreach resultMap:", resultMap);
+
 
     // Convert resultMap to an array of objects
     const finalResult = Array.from(resultMap, ([leaveType, values]) => ({
@@ -379,7 +379,7 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 
     // Sort the final result by leaveType
     finalResult.sort((a, b) => a.leaveType.localeCompare(b.leaveType));
-    // console.log("final:", finalResult);
+
 
     return finalResult;
 
@@ -387,10 +387,10 @@ exports.getLeaveStatusByEmployeeIdService = async (id, year) => {
 
 
 exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
-    // console.log('query get: ', query);
+
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
-    // console.log(month, year);
+
     const allRequisition = await Requisition.aggregate([
         {
             $match: {
@@ -441,7 +441,7 @@ exports.getAllRequisitionByEmployeeIdService = async (employeeId, query) => {
             }
         }
     ])
-    // console.log('service');
-    // console.log(allRequisition);
+
+
     return allRequisition;
 }

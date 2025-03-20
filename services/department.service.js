@@ -6,7 +6,7 @@ exports.createDepartmentService = async (data) => {
 }
 
 exports.getAllDepartmentService = async (query) => {
-    console.log(query);
+
     const departments = await Department.aggregate([
         {
             $match: query
@@ -24,10 +24,10 @@ exports.getAllDepartmentService = async (query) => {
 }
 
 exports.updateDepartmentByIdService = async (deptId, updatedData) => {
-    console.log(deptId, updatedData);
+
     const result = await Department.updateOne({ _id: deptId }, updatedData)
 
-    // console.log(result);
+
     return result;
 }
 

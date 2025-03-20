@@ -12,10 +12,10 @@ const { generateToken } = require("../utils/token");
 
 
 exports.createEmployee = async (req, res) => {
-    // console.log(req.body);
+
     try {
         const employee = await createEmployeeService(req.body);
-        console.log(employee);
+
         if (employee) {
             res.status(200).json({
                 status: 'Success',
@@ -40,7 +40,7 @@ exports.createEmployee = async (req, res) => {
 // exports.getEmployeeByEmail = async (req, res) => {
 //     try {
 //         const { email } = req.params;
-//         console.log(email);
+
 //         const employee = await Employee.find({ email })
 
 //         if (employee) {
@@ -96,11 +96,11 @@ exports.createEmployee = async (req, res) => {
 
 // user login 
 exports.login = async (req, res) => {
-    // console.log(req.body);
+
     try {
 
         const { email, password } = req.body;
-        // console.log(email, password);
+
 
         if (!email || !password) {
             return res.status(401).json({
@@ -110,7 +110,7 @@ exports.login = async (req, res) => {
         }
 
         const employee = await loginByEmailService(email);
-        // console.log('employee from controller', employee);
+
 
         if (!employee) {
             return res.status(401).json({
@@ -133,7 +133,7 @@ exports.login = async (req, res) => {
         others.name = `${others.firstName} ${others.lastName}`;
         others.userRole = employee.userRole.roleName;
         others.pageAccess = employee.userRole.pageAccess;
-        // console.log('Found employee:', others);
+
 
         res.status(200).json({
             status: 'Success',
@@ -147,7 +147,7 @@ exports.login = async (req, res) => {
         })
 
     } catch (error) {
-        // console.log(error);
+
         res.status(500).json({
             status: 'Failed',
             error: error.message,
@@ -217,7 +217,7 @@ exports.getEmployeeByDepartment = async (req, res) => {
     try {
 
         const { department } = req.query;
-        // console.log(department);
+
 
         const employees = await getEmployeeByDepartmentService(department);
         if (employees.length > 0) {
@@ -248,7 +248,7 @@ exports.updateEmployeeById = async (req, res) => {
         const data = req.body;
 
         const result = await updateEmployeeByIdService(id, data);
-        // console.log(result);
+
         if (result.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
@@ -367,7 +367,7 @@ exports.updatePasswordByToken = async (req, res) => {
         }
 
         const employee = await findEmployeeByTokenService(token);
-        // console.log(employee);
+
         if (!employee) {
             res.status(400).json({
                 status: 'Failed',
@@ -418,7 +418,7 @@ exports.sendResetPasswordEmail = async (req, res) => {
     try {
         const { email } = req.params;
         const { resetPasswordUrl } = req.body;
-        // console.log(email, resetPasswordUrl);
+
 
         // const employee = await findEmployeeByTokenService(token);
 
@@ -502,7 +502,7 @@ exports.deleteEmployee = async (req, res) => {
         const { id } = req.params;
         const result = await deleteEmployeeByIdService(id)
         const removeFromRoles = await removeEmployeeIdFromRoleService(id)
-        console.log(result, removeFromRoles);
+
 
         if (result?.deletedCount > 0 && removeFromRoles?.modifiedCount > 0) {
             res.status(200).json({
@@ -588,7 +588,7 @@ exports.getAllRequisitionByEmployeeId = async (req, res) => {
     try {
         const { id: employeeId } = req.params;
         const query = req.query;
-        // console.log(employeeId, query);
+
         const requisitions = await getAllRequisitionByEmployeeIdService(employeeId, query);
 
         if (requisitions.length > 0) {

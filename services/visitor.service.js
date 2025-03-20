@@ -2,14 +2,14 @@ const Visitor = require("../models/Visitor");
 
 
 exports.createNewVisitorService = async (data) => {
-    console.log(data);
+
     const visitor = await Visitor.create(data)
 
     return visitor;
 }
 
 exports.getMonthlyVisitorService = async (month, year) => {
-    console.log(month, year);
+
     const visitors = await Visitor.aggregate([
         {
             $match: {
@@ -41,6 +41,6 @@ exports.getMonthlyVisitorService = async (month, year) => {
             }
         }
     ]);
-    // console.log(visitors);
+
     return visitors;
 }

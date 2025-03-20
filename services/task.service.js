@@ -2,9 +2,9 @@ const { default: mongoose } = require("mongoose");
 const Task = require("../models/Task")
 
 exports.createNewTaskService = async (taskData) => {
-    console.log(taskData);
+
     const result = await Task.create(taskData)
-    // console.log(result);
+
     return result;
 }
 
@@ -64,16 +64,16 @@ exports.getTaskByIdService = async (taskId) => {
 
 
 exports.getAllTasksService = async (employee, query) => {
-    // console.log(employee);
+
 
     const { page = 0, limit = 10 } = query;
     const queryObject = { ...query }
-    console.log(queryObject);
+
     const excludeFields = ['page', 'sort', 'limit'];
 
     excludeFields.forEach(field => delete queryObject[field])
 
-    console.log(queryObject);
+
 
     let tasks, totalDocuments;
 
@@ -234,17 +234,17 @@ exports.getAllTasksService = async (employee, query) => {
             }
         ]);
     }
-    console.log(totalDocuments[0].totalDocumentCount, parseInt(limit));
+
 
     const totalPage = Math.ceil(totalDocuments[0]?.totalDocumentCount / parseInt(limit));
-    console.log(totalPage);
+
     const taskData = { totalPage, tasks }
 
     return taskData;
 }
 
 exports.updateTaskByIdService = async (taskId, updatedData) => {
-    console.log(taskId, updatedData);
+
     let result;
     if (updatedData.updateMessage) {
         const update = updatedData.updates
@@ -262,7 +262,7 @@ exports.getRunningTasks = async () => {
 
     // if employee is management send all the tasks 
     if (employee.department == "Management") {
-        // console.log('Employee is management');
+
         tasks = await Task.aggregate([
             {
                 $lookup: {
@@ -306,7 +306,7 @@ exports.getRunningTasks = async () => {
 
     //if employee is not management check the other conditions
     else {
-        // console.log('Employee is not management');
+
         tasks = await Task.aggregate([
             {
                 $match: {

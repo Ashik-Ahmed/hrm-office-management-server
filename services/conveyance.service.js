@@ -4,7 +4,6 @@ const Employee = require("../models/Employee");
 const { default: mongoose } = require("mongoose");
 
 exports.createConveyanceService = async (conveyanceData) => {
-    console.log(conveyanceData);
 
     const result = await Conveyance.create(conveyanceData);
 
@@ -17,7 +16,7 @@ exports.createConveyanceService = async (conveyanceData) => {
             { email: employee.email },
             { $push: { conveyance: conveyanceId } }
         );
-        console.log(result);
+
         if (res.modifiedCount > 0) {
             return result;
         }
@@ -35,8 +34,6 @@ exports.createConveyanceService = async (conveyanceData) => {
 exports.deleteConveyanceByIdServicce = async (conveyanceId) => {
 
     const result = await Conveyance.deleteOne({ _id: conveyanceId })
-
-    console.log(result);
 
     return result
 
@@ -125,7 +122,7 @@ exports.getConveyanceByEmployeeEmailService = async (employeeEmail, query) => {
 }
 
 exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
-    // console.log("Monthly Conveyance");
+
     const month = parseInt(query.month || (new Date().getMonth() + 1))
     const year = parseInt(query.year || new Date().getFullYear())
 
@@ -200,7 +197,7 @@ exports.getAllEmployeeMonthlyConveyanceService = async (query) => {
 
 
 exports.makePaymentConveyanceBillService = async (pendingIds) => {
-    console.log(pendingIds);
+
     const result = await Conveyance.updateMany(
         {
             _id: { $in: pendingIds.map(id => new mongoose.Types.ObjectId(id)) } // Correct usage of mongoose.Types.ObjectId
@@ -212,17 +209,12 @@ exports.makePaymentConveyanceBillService = async (pendingIds) => {
         }
     )
 
-    console.log(result);
     return result;
 }
 
 
 exports.editConveyanceByIdService = async (id, updatedData) => {
-    console.log(id);
-    console.log(updatedData);
 
     const result = await Conveyance.updateOne({ _id: id }, updatedData)
-
-    console.log(result);
     return result;
 }

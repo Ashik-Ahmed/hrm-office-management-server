@@ -7,10 +7,10 @@ exports.createNewTask = async (req, res) => {
     try {
         const taskData = req.body;
         const creator = await Employee.findOne({ email: taskData.creator }, { id: 1 })
-        // console.log(creator);
+
         taskData.creator = creator._id;
         const result = await createNewTaskService(taskData)
-        // console.log(result);
+
 
         if (result?._id) {
             const task = await getTaskByIdService(result?._id)
@@ -84,10 +84,10 @@ exports.getTaskById = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
-        // console.log(req.params);
+
 
         const employee = await Employee.findOne({ email: employeeEmail }, { firstName: 1, lastName: 1, department: 1 })
-        console.log(employee);
+
 
         if (!employee) {
             res.status(401).json({

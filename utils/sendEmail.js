@@ -30,5 +30,6 @@ exports.sendEmail = async (emailInfo) => {
 
     } catch (error) {
         console.log('Error: ', error);
+        return error;
     }
 }

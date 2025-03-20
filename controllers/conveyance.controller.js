@@ -4,7 +4,7 @@ const { sendEmail } = require("../utils/sendEmail")
 exports.createConveyance = async (req, res) => {
     try {
         const conveyanceData = req.body
-        // console.log(conveyanceData);
+
         const result = await createConveyanceService(conveyanceData)
 
         if (result._id) {
@@ -59,7 +59,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
     try {
         const { employeeEmail } = req.params;
         const query = req.query;
-        console.log("emp conveyance: ", query);
+
         const conveyance = await getConveyanceByEmployeeEmailService(employeeEmail, query);
 
         if (conveyance) {
@@ -75,7 +75,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
                 error: "No data found."
             })
         }
-        // console.log(conveyance);
+
 
     } catch (error) {
         res.status(500).json({
@@ -88,7 +88,7 @@ exports.getConveyanceByEmployeeEmail = async (req, res) => {
 
 exports.getAllEmployeeMonthlyConveyance = async (req, res) => {
     try {
-        // console.log(req.query);
+
         const allConveyances = await getAllEmployeeMonthlyConveyanceService(req.query)
 
         if (allConveyances) {
@@ -116,11 +116,11 @@ exports.makePaymentConveyanceBill = async (req, res) => {
     try {
 
         const { employeeEmail, amount } = req.query;
-        // console.log(employeeEmail, amount);
+
 
         // const data = JSON.parse(req.body)
         const pendingIds = req.body
-        // console.log('data: ', pendingIds);
+
         const result = await makePaymentConveyanceBillService(pendingIds)
 
         if (result.modifiedCount > 0) {
@@ -162,9 +162,9 @@ exports.editConveyanceById = async (req, res) => {
     try {
         const { id } = req.params;
         const updatedData = req.body;
-        console.log("conveyance edit: ", updatedData);
+
         const result = await editConveyanceByIdService(id, updatedData)
-        console.log("conveyance edit result", result);
+
         if (result.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
@@ -179,7 +179,7 @@ exports.editConveyanceById = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+
         res.status(500).json({
             status: 'Failed',
             error: error.message

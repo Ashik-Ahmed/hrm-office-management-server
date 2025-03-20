@@ -4,7 +4,7 @@ exports.createDepartment = async (req, res) => {
     try {
         const data = req.body;
         const result = await createDepartmentService(data);
-        console.log(result);
+
         if (result._id) {
             res.status(200).json({
                 status: "Success",
@@ -30,7 +30,7 @@ exports.getAllDepartment = async (req, res) => {
     try {
 
         const query = req.query;
-        console.log(query);
+
         const departments = await getAllDepartmentService(query);
 
         if (departments) {

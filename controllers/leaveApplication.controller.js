@@ -58,7 +58,7 @@ exports.leaveApplication = async (req, res) => {
 exports.getAllLeaveApplications = async (req, res) => {
     try {
         const query = req.query;
-        // console.log(query);
+
         const leaveApplications = await getAllLeaveApplicationsService(query);
 
         if (leaveApplications) {
@@ -122,7 +122,7 @@ exports.updateLeaveApplicationStatus = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message);
+
         res.status(500).json({
             status: 'Failed',
             error: error.message

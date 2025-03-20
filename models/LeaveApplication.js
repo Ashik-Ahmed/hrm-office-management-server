@@ -67,7 +67,7 @@ const leaveApplicationSchema = mongoose.Schema(
 // leaveApplicationSchema.pre('save', function (next) {
 //     const bdTime = moment().tz('Asia/Dhaka');
 
-//     console.log(bdTime);
+
 //     this.updateTime = bdTime; // Set updateTime to current time
 //     if (!this.creationTime) {
 //         this.creationTime = bdTime; // Set creationTime only if it's not set
@@ -80,6 +80,6 @@ const leaveApplicationSchema = mongoose.Schema(
 //     this.set({ updateTime: new Date() }); // Set updateTime to current time
 // });
 
-// console.log(leaveApplicationSchema);
+
 const LeaveApplication = mongoose.model("LeaveApplication", leaveApplicationSchema);
 module.exports = LeaveApplication;

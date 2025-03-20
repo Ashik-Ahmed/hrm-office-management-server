@@ -10,7 +10,7 @@ exports.createRequisition = async (req, res) => {
 
         if (result?._id) {
             const requisitionDetails = await getRequisitionDetailsByIdService(result?._id)
-            // console.log(requisitionDetails);
+
 
             // send email
             const emailInfo = {
@@ -59,7 +59,7 @@ exports.getRequisitionDetailsById = async (req, res) => {
     try {
         const { id } = req.params;
         const requisitionDetails = await getRequisitionDetailsByIdService(id)
-        console.log(requisitionDetails);
+
 
         if (requisitionDetails) {
             res.status(200).json({
@@ -114,7 +114,7 @@ exports.completePurchaseById = async (req, res) => {
         let data = req.body;
 
         const result = await completePurchaseByIdSevice(id, data)
-        console.log(result);
+
         if (result.modifiedCount > 0) {
             res.status(200).json({
                 status: "Success",
@@ -129,7 +129,7 @@ exports.completePurchaseById = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message);
+
         res.status(500).json({
             status: 'Failed',
             error: error.message
@@ -144,7 +144,7 @@ exports.cancelRequisitionById = async (req, res) => {
 
         const requisition = await Requisition.findOne({ _id: id }, { "submittedBy": 1, _id: 0 }).populate('submittedBy', 'email')
 
-        // console.log(requisition);
+
 
         if (result.modifiedCount > 0) {
 

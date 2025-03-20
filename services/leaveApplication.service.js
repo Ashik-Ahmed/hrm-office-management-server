@@ -6,7 +6,7 @@ const Employee = require("../models/Employee");
 
 
 exports.leaveApplicationService = async (leaveApplicationData) => {
-    console.log(leaveApplicationData);
+
 
     const leaveApplication = await LeaveApplication.create(leaveApplicationData)
 
@@ -49,7 +49,7 @@ exports.getAllLeaveApplicationsService = async (query) => {
             $sort: { createdAt: -1 }
         }
     ])
-    // console.log(leaveApplications);
+
     return leaveApplications;
 }
 
@@ -60,7 +60,7 @@ exports.updateLeaveApplicationStatusService = async ({ id, data }) => {
         { $set: { currentStatus: data } }
     )
 
-    console.log("from service : ", updateStatus);
+
 
     return updateStatus;
 }

@@ -23,7 +23,6 @@ exports.getAllLeaveService = async () => {
 
 
 exports.updateLeaveByIdService = async (leaveId, updatedData) => {
-    // console.log(leaveId, updatedData);
     const updateStatus = await Leave.updateOne(
         { _id: leaveId },
         { $set: updatedData }
