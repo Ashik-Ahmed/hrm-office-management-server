@@ -27,7 +27,9 @@ exports.createHoliday = async (req, res) => {
 
 exports.getAllHoliday = async (req, res) => {
     try {
-        const holiday = await getAllHolidayService();
+        const year = req.query.year || new Date();
+
+        const holiday = await getAllHolidayService(year);
         if (holiday?.length > 0) {
             res.status(200).json({
                 status: 'Success',
