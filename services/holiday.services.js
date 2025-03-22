@@ -15,6 +15,7 @@ exports.getAllHolidayService = async () => {
             path: "updatedBy",
             select: { _id: 0, firstName: 1, lastName: 1 }, // Select only firstName & lastName
         })
+        .sort({ date: 1 })
         .lean(); // Convert Mongoose documents to plain objects
 
     // Merge firstName & lastName into createdBy field
