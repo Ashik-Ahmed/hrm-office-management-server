@@ -30,3 +30,8 @@ exports.getAllHolidayService = async () => {
 
     return holidays;
 }
+
+exports.deleteHolidayByIdService = async (id) => {
+    const result = await Holiday.deleteOne({ _id: id });
+    return result;
+}
