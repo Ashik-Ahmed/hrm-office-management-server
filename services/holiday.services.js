@@ -45,6 +45,11 @@ exports.getAllHolidayService = async (date) => {
     return holidays;
 }
 
+exports.editHolidayByIdService = async (id, data) => {
+    const result = await Holiday.updateOne({ _id: id }, data);
+    return result;
+}
+
 exports.deleteHolidayByIdService = async (id) => {
     const result = await Holiday.deleteOne({ _id: id });
     return result;

@@ -131,6 +131,7 @@ exports.login = async (req, res) => {
         const token = generateToken(employee);
         const { password: pwd, userRole, ...others } = employee.toObject();
         others.name = `${others.firstName} ${others.lastName}`;
+        others.nickName = others.firstName;
         others.userRole = employee.userRole.roleName;
         others.pageAccess = employee.userRole.pageAccess;
 

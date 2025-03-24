@@ -1,5 +1,5 @@
 const express = require('express');
-const { createHoliday, getAllHoliday, deleteHolidayById } = require('../controllers/holiday.controller');
+const { createHoliday, getAllHoliday, deleteHolidayById, editHolidayById } = require('../controllers/holiday.controller');
 const verifyToken = require('../middleware/verifyToken');
 const authorization = require('../middleware/authorization');
 
@@ -14,7 +14,7 @@ router.route('/')
 
 router.route('/:id')
     .get()
-    .patch()
+    .patch(verifyToken, authorization('Super Admin'), editHolidayById)
     .delete(verifyToken, authorization('Super Admin'), deleteHolidayById)
 
 
